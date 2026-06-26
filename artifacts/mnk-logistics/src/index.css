@@ -45,6 +45,126 @@
   --ink: #0B2447;
 }
 
+/* ─── Dark Mode ──────────────────────────────────────────────────────────── */
+[data-theme="dark"] {
+  --paper:      #07111F;
+  --surface:    #0D1E35;
+  --blue:       #2E85D9;
+  --blue-light: #4AA0EE;
+  --blue-dark:  #081829;
+  --red:        #E0141A;
+  --hairline:   #1A3255;
+  --muted:      #7A90A8;
+  --success:    #22C576;
+  --amber:      #F59E0B;
+  --ink:        #E8F0FA;
+}
+
+[data-theme="dark"] body {
+  background-color: var(--paper);
+  color: var(--ink);
+}
+
+/* Dark mode: navbar */
+[data-theme="dark"] .mnk-nav-bar {
+  background: #0D1E35;
+  border-bottom-color: var(--hairline);
+}
+[data-theme="dark"] .mnk-logo-block {
+  background: #07111F;
+}
+[data-theme="dark"] .mnk-logo-block:hover {
+  background: #0a1a2e;
+}
+[data-theme="dark"] .mnk-nav-link {
+  color: var(--muted);
+}
+[data-theme="dark"] .mnk-nav-link:hover {
+  color: var(--ink);
+}
+[data-theme="dark"] .mnk-nav-link--active {
+  color: var(--blue);
+}
+[data-theme="dark"] .mnk-hamburger span {
+  background: var(--ink);
+}
+
+/* Dark mode: glass cards */
+[data-theme="dark"] .glass {
+  background: rgba(13, 30, 53, 0.85);
+  border-color: rgba(255, 255, 255, 0.07);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+}
+
+/* Dark mode: footer & dark sections stay the same (already dark) */
+[data-theme="dark"] .mnk-ticker-wrapper {
+  background: #07111F;
+}
+
+/* Theme toggle button */
+.mnk-theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--muted);
+  transition: color 0.2s;
+  flex-shrink: 0;
+  margin: 0 4px;
+  border-radius: 8px;
+}
+
+.mnk-theme-toggle:hover {
+  color: var(--ink);
+  background: rgba(10, 77, 156, 0.06);
+}
+
+[data-theme="dark"] .mnk-theme-toggle {
+  color: var(--muted);
+}
+
+[data-theme="dark"] .mnk-theme-toggle:hover {
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.mnk-toggle-icon {
+  position: relative;
+  width: 20px;
+  height: 20px;
+}
+
+.mnk-toggle-icon svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: opacity 0.3s ease, transform 0.4s ease;
+}
+
+.mnk-toggle-icon .icon-sun {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.7);
+}
+
+.mnk-toggle-icon .icon-moon {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+
+[data-theme="dark"] .mnk-toggle-icon .icon-sun {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+
+[data-theme="dark"] .mnk-toggle-icon .icon-moon {
+  opacity: 0;
+  transform: rotate(90deg) scale(0.7);
+}
+
 @layer base {
   html { 
     scroll-behavior: smooth; 
