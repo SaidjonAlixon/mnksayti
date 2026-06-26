@@ -1,0 +1,273 @@
+# TECHNICAL SPECIFICATION (TZ)
+## Corporate Website — MNK Logistics LLC
+
+> **Project Code:** TRK-WEB-001
+> **Version:** 3.0 — **full design pivot**
+> **Status:** Draft for approval
+> **Goal:** A one-of-a-kind, modern website that looks like **nothing** else in trucking — and nothing like the previous dark-poster draft, which is fully retired.
+
+> 🔴 **TWO HARD REQUIREMENTS (from client):**
+> 1. **Each section is its own separate page** — HOME, ABOUT, DRIVERS, CONTACT are four distinct pages (separate URLs / HTML files), **not** one long scroll.
+> 2. **A completely different, standout design** — especially the **home page**. The old direction (near-black background, oversized condensed poster type, dark "freight poster" mood) is **rejected and will not be reused.**
+
+---
+
+## 1. WHAT CHANGES FROM v2 (so there's no confusion)
+
+| Topic | OLD (rejected) | NEW (this spec) |
+|---|---|---|
+| Structure | One single-page full-scroll site | **4 separate pages**, classic multi-page site |
+| Mood | Dark, near-black, "freight poster" | **Bright, clean, operational** — a logistics control console |
+| Hero | Giant condensed type fills the screen | **A live U.S. freight-network map + dispatch board** is the star; type is secondary |
+| Typeface | Heavy condensed grotesque (poster feel) | **Precise technical sans** (product/console feel) |
+| Color base | Black / graphite | **Off-white / paper** with MNK blue as the structural ink |
+| Signature | A red "route line" scroll spine | **An interactive freight map** + **live dispatch ticker** |
+
+Everything below describes the NEW direction only.
+
+---
+
+## 2. PROJECT OVERVIEW
+
+A corporate marketing + recruitment website for **MNK Logistics LLC**, a U.S. full-truckload carrier. Two jobs:
+1. **Win clients (shippers / brokers)** — request-a-quote conversions.
+2. **Recruit drivers (CDL-A)** — application conversions.
+
+The creative idea: present MNK not as a poster, but as a **living operations desk**. Visitors should feel they're looking at the screen a real dispatcher works on — a clean, bright console showing freight moving across the country in real time. Premium, technical, trustworthy.
+
+> ⚠️ **Confirmed:** Company = MNK Logistics LLC; brand = royal blue + red + white. **Still needed:** phone, email, address, MC/DOT, real stats, driver pay. We start with clean placeholders and swap real data in.
+
+---
+
+## 3. GOALS & SUCCESS METRICS
+
+| Goal | KPI |
+|---|---|
+| Look unmistakably unique | "This is not a normal trucking site" reaction |
+| Client leads | Completed quote requests |
+| Driver applications | Completed driver applications |
+| Instant trust | Live map + real numbers + DOT/MC visible above the fold |
+| Fast & mobile | Lighthouse 90+ on all categories |
+
+---
+
+## 4. TARGET AUDIENCE
+
+- **Clients (shippers, brokers):** want proof of reliability and coverage at a glance — the map and live board sell this instantly.
+- **Drivers (CDL-A):** mostly on mobile — want pay, home time, benefits, and a 30-second application.
+
+---
+
+## 5. DESIGN CONCEPT — "THE DISPATCH DESK"
+
+A bright, operational, control-room aesthetic. The whole site reads like a modern logistics SaaS console, not an ad.
+
+### 5.1. Bright & operational (the opposite of the rejected look)
+- **Paper-white base** with lots of clean negative space.
+- **MNK royal blue** is the structural ink: headers, key panels, the map, links.
+- **Red is the signal only** — active states, alerts, primary CTAs, the live "moving" dots on the map.
+- Thin **hairline grids** and subtle panel borders give it the precise, engineered feel of a dashboard.
+
+### 5.2. Signature element — the LIVE FREIGHT MAP (home page hero)
+This is what the site is remembered by, and it replaces the giant poster headline:
+- A stylized **map of the U.S.** with MNK's hub cities as **pulsing nodes**.
+- **Animated route arcs** travel between hubs (a glowing dot runs along each arc like a truck on a lane).
+- A small **floating "load tag"** pops on an arc showing e.g. `CHI → DAL · DRY VAN · ON TIME`.
+- Calm, continuous motion — ambient, not flashy.
+
+### 5.3. Secondary signature — the LIVE DISPATCH BOARD
+A compact, monospaced **status board** (like an airport departures board) that updates row by row:
+
+```
+LANE              EQUIP     STATUS        ETA
+CHI → DAL         DRY VAN   ● IN TRANSIT  06:42
+ATL → MIA         REEFER    ● LOADING     —
+LAX → PHX         FLATBED   ● DELIVERED   ✓
+```
+
+It feels alive (rows flip/refresh) and proves MNK is actually *moving freight right now*.
+
+### 5.4. Data as hero, type as support
+Instead of type dominating the screen, the **map + board + a tight KPI strip** lead. Headlines are present but **medium-sized and confident**, never wall-sized. This is the cleanest break from the rejected poster.
+
+### 5.5. Distinct hero per page
+Each of the four pages opens with its own purposeful module, so they don't feel like clones:
+- **HOME** → live map + dispatch board + KPIs.
+- **ABOUT** → a coverage/lanes map + company timeline.
+- **DRIVERS** → a pay & lifestyle panel with an application form right in view.
+- **CONTACT** → a quote console with a stylized map pin to HQ.
+
+---
+
+## 6. DESIGN SYSTEM
+
+### 6.1. Color palette (light, MNK brand)
+
+| Role | Color | HEX |
+|---|---|---|
+| Paper / base | Soft white | `#F7F9FC` |
+| Surface / cards | White | `#FFFFFF` |
+| Brand blue (primary) | MNK Royal Blue | `#0A4D9C` |
+| Blue (bright accent) | Highway Blue | `#1E6FBF` |
+| Ink (headlines/text) | Deep Navy | `#0B2447` |
+| Red (signal / CTA) | MNK Red | `#E0141A` |
+| Hairline / border | Cool grey | `#E3E8F0` |
+| Muted text | Slate grey | `#5B6B82` |
+| Success (status) | Green | `#1FA463` |
+
+> The page is **bright**. Blue carries structure and the map; red is reserved for live/active signals and primary buttons; green/amber appear only as live status dots on the board.
+
+### 6.2. Typography — a new, technical personality
+Deliberately **not** the heavy condensed poster face from v2.
+
+| Use | Typeface (suggested) | Feel |
+|---|---|---|
+| Headlines | **Space Grotesk** (or Sora) | Precise, modern, slightly technical |
+| Body | **Inter** | Clean, neutral, readable |
+| Data / board / labels | **Space Mono** (or JetBrains Mono) | The "console / manifest" voice |
+
+Headlines are **medium scale** (clamp ~28–56px), tracked tight. The mono face does a lot of the personality work in labels, the board, and coordinates.
+
+### 6.3. Layout language
+- **Panel-based dashboard grid** — content sits in clean cards/panels with hairline borders, like widgets on a console.
+- 8-pt spacing, max width ~1200–1280px.
+- Soft, small radii (4–8px) — engineered, not playful.
+- Subtle shadows for elevation on white.
+
+---
+
+## 7. SITE ARCHITECTURE (separate pages)
+
+Four standalone pages sharing one header + footer shell. Navigation = real page links (the active page's link is marked). No single-page scroll.
+
+```
+index.html      →  HOME      (live map + dispatch board + KPIs)
+about.html      →  ABOUT     (story, coverage map, timeline, credentials)
+drivers.html    →  DRIVERS   (pay, benefits, requirements, application, FAQ)
+contact.html    →  CONTACT   (quote console, contact info, map pin)
+```
+
+Shared shell: sticky header (logo left · HOME / ABOUT / DRIVERS / CONTACT · `GET A QUOTE`), and a consistent footer (DOT/MC, contact, nav). A short **page-transition animation** plays on navigation so moving between pages feels smooth, not like hard reloads.
+
+---
+
+## 8. PAGE-BY-PAGE
+
+### 8.1. HOME (index.html)
+1. **Hero console** — the live **freight map** (left/center) beside a short headline + sub + two CTAs (`GET A QUOTE`, `JOIN OUR FLEET`).
+2. **Live dispatch board** — the updating LANE/EQUIP/STATUS/ETA panel.
+3. **KPI strip** — `10M+ MILES · 48 STATES · 99.2% ON-TIME · 500+ LOADS/MO` (count-up).
+4. **Services as console tiles** — Dry Van, Reefer, Flatbed, Power Only, Expedited.
+5. **"How a load moves"** — a compact 3-step operations flow.
+6. **Trust strip** — insurance, safety rating, partner/authority badges.
+7. **CTA panel** → quote.
+
+### 8.2. ABOUT (about.html)
+- Short, human company story (medium headline, not a wall of type).
+- **Coverage map** highlighting MNK's main lanes/regions.
+- Company **timeline** (founded → today) as a clean horizontal track.
+- **Credentials panel:** years, cargo insurance, safety rating, 24/7 dispatch.
+- Mission / values in a tidy 3-up.
+
+### 8.3. DRIVERS (drivers.html)
+- Recruitment hero with a bold **pay figure** panel (placeholder `$0.70/MILE`).
+- **Benefits grid** (weekly pay, home time, newer trucks, sign-on bonus, real dispatch, fuel & benefits).
+- **Requirements** checklist.
+- **Application form** — short, mobile-first, sitting in view (name, phone, email, CDL class, experience).
+- **FAQ** accordion.
+
+### 8.4. CONTACT (contact.html)
+- **Quote console** form: company, freight type, origin → destination, date, details.
+- **Contact panel:** 24/7 dispatch phone, email, HQ, MC/DOT.
+- Stylized **map pin** to headquarters.
+- Big tappable call / email buttons (mobile).
+
+---
+
+## 9. FUNCTIONAL REQUIREMENTS
+
+| # | Feature | Description |
+|---|---|---|
+| F1 | Multi-page site | 4 separate pages, shared header/footer, active-link state |
+| F2 | Page transitions | Smooth animated transition between pages (no jarring reloads) |
+| F3 | Live freight map | Animated route arcs + pulsing hub nodes (home hero) |
+| F4 | Live dispatch board | Rows refresh/flip with status + ETA |
+| F5 | KPI count-up | Numbers animate when in view |
+| F6 | Quote form | Validation + success state |
+| F7 | Driver application | Validated, mobile-first |
+| F8 | FAQ accordion | Expand/collapse |
+| F9 | Responsive | Mobile, tablet, desktop; map + board simplify gracefully on small screens |
+| F10 | SEO | Per-page titles/meta, semantic HTML, Open Graph, sitemap |
+| F11 | Performance | Lightweight, lazy assets, optimized fonts, Lighthouse 90+ |
+| F12 | Accessibility | WCAG AA, keyboard nav, focus states, `prefers-reduced-motion` |
+
+> **Note:** Form backend (receiving submissions) is a later phase; v1 ships the frontend forms, then we wire email/Formspree.
+
+---
+
+## 10. MOTION & INTERACTION
+
+The motion personality is **calm and ambient**, not aggressive:
+- Map arcs and node pulses loop continuously and softly.
+- Dispatch board rows refresh on a gentle timer (e.g. a row flips every few seconds).
+- On-scroll: panels **fade + rise** in subtly.
+- Hover: tiles lift slightly, links underline, buttons fill.
+- Page change: a quick wipe/fade transition.
+- Everything respects `prefers-reduced-motion` (map freezes to a clean static state, board stops cycling).
+
+---
+
+## 11. TECH STACK (proposed)
+
+- **Frontend:** semantic HTML + modern CSS + vanilla JS, one page per section + shared `styles.css` / `app.js`.
+- **Map:** lightweight inline SVG of the U.S. with JS-animated arcs/nodes (no heavy mapping library needed).
+- **Fonts:** Google Fonts or self-hosted (Space Grotesk / Inter / Space Mono).
+- **Hosting (later):** Netlify / Vercel / shared hosting.
+
+---
+
+## 12. RESPONSIVE / MOBILE
+
+- **Mobile-first.** Breakpoints: `≤480` / `481–768` / `769+`.
+- On mobile: header → hamburger; the freight map becomes a simpler static/animated graphic; the dispatch board scrolls horizontally or stacks; forms are single-column with large touch targets.
+
+---
+
+## 13. SEO & PERFORMANCE
+
+- Unique `<title>` + meta description per page (HOME/ABOUT/DRIVERS/CONTACT).
+- Semantic structure, Open Graph cards, sitemap.xml.
+- Optimized assets, lazy loading, preloaded critical fonts. Target Lighthouse 90+.
+
+---
+
+## 14. DELIVERY PHASES
+
+| Phase | Scope | Status |
+|---|---|---|
+| **0. TZ** | This document (v3) — approval | ⏳ Current |
+| **1. Design system + shell** | Tokens, header/footer, page-transition | Next |
+| **2. HOME** | Live map + dispatch board + KPIs | — |
+| **3. ABOUT / DRIVERS / CONTACT** | The three inner pages | — |
+| **4. Polish** | Motion, micro-interactions, QA | — |
+| **5. Responsive QA** | All devices | — |
+| **6. Form integration** | Backend / email | — |
+
+---
+
+## 15. WHAT WE NEED FROM YOU
+
+1. **Approve the new direction** ("The Dispatch Desk" — bright console + live map + separate pages) — or tell me which part to adjust.
+2. Real **phone / email / address / MC / DOT**.
+3. **Hub cities / main lanes** to plot on the map (e.g. Chicago, Dallas, Atlanta…).
+4. **Service types** to confirm (Dry Van / Reefer / Flatbed / Power Only / Expedited?).
+5. **Driver pay & benefits** for the DRIVERS page.
+6. **Real stats** (years, miles, states) for trust.
+
+---
+
+## 16. NEXT STEP
+
+Review this revised spec. If the **"Dispatch Desk"** direction and the **separate-pages** structure are approved, we begin **Phase 1 (design system + shared shell)**, then build **HOME** first and confirm the look before the inner pages.
+
+> If anything here still feels too close to a "normal" trucking site, tell me and I'll push the concept further before any code is written.

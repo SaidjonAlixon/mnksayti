@@ -76,6 +76,7 @@
   },
   "dependencies": {
     "react-countup": "^6.5.3",
-    "react-intersection-observer": "^10.0.3"
+    "react-intersection-observer": "^10.0.3",
+    "react-router-dom": "^6.30.4"
   }
 }
