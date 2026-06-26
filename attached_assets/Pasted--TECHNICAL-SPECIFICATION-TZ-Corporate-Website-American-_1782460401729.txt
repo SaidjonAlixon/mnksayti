@@ -1,0 +1,298 @@
+# TECHNICAL SPECIFICATION (TZ)
+## Corporate Website — American Trucking & Logistics Company
+
+> **Project Code:** TRK-WEB-001
+> **Version:** 2.0 (Full English, Extended)
+> **Status:** Draft for approval
+> **Goal:** Build a one-of-a-kind, modern, premium-grade website that does **not** look like any other trucking website on the market.
+
+> 🔴 **CORE REQUIREMENT (mandatory):** The website is a **single-page, full-scroll experience** — all four sections (HOME · ABOUT · DRIVERS · CONTACT) live on one continuous page and are reached by smooth-scrolling, not separate page loads. The entire experience is **animation-driven**: every section reveals, moves, and responds as the user scrolls. See **Section 4.5** for the full specification.
+
+---
+
+## 1. PROJECT OVERVIEW
+
+A corporate marketing and recruitment website for a U.S.-based trucking / logistics company. The site serves two business goals at once:
+
+1. **Win clients (shippers / brokers)** — convince freight partners to trust us with their loads.
+2. **Recruit drivers** — attract qualified CDL drivers to join the fleet.
+
+The core creative idea is to **completely abandon the generic trucking template** (blue gradient hero + stock photo of a truck on a highway + three identical service cards + a testimonial slider) and instead fuse a **"Dispatch Terminal" aesthetic** with **premium editorial design**. The result feels engineered, confident, and expensive — like a control-room dashboard crossed with a high-end magazine.
+
+> ⚠️ **Confirmed:** Company = **MNK Logistics LLC**; brand colors = royal blue + red + white (sampled from logo). **Still needed:** address, phone, MC/DOT numbers, real statistics (years, miles, states), driver pay figures. We will start with clean placeholders and swap in real data when you provide it.
+
+---
+
+## 2. GOALS & SUCCESS METRICS
+
+| Goal | Success Metric (KPI) |
+|---|---|
+| Memorable, distinctive brand | A unique visual language — "this doesn't look like other trucking sites" |
+| Generate client leads | Completed "Request a Quote" submissions |
+| Generate driver applications | Completed "Apply" form submissions |
+| Build instant trust | Visible DOT/MC, years in business, miles driven, on-time % |
+| Fast & mobile-first | Lighthouse score 90+ across Performance, Accessibility, SEO |
+
+---
+
+## 3. TARGET AUDIENCE
+
+**A. Clients (shippers, brokers, logistics managers)**
+- Age 35–55, value reliability, professionalism, and proof of trust.
+- Primarily visit on desktop; scan quickly for credibility signals.
+
+**B. Drivers (CDL-A holders, owner-operators, company drivers)**
+- Mostly visit on mobile.
+- Want clear pay, home time, benefits, and a fast, simple application.
+
+The design must speak to both without confusing either — clients lean into the trust/quality story, drivers lean into the pay/lifestyle story.
+
+---
+
+## 4. DESIGN CONCEPT — "ASPHALT & SIGNAL"
+
+This is the heart of what makes the site unique. The concept stands on four pillars.
+
+### 4.1. "Dispatch Terminal" Layer
+The interface borrows the language of a professional dispatch screen and a freight manifest:
+- **Monospace data labels** for small text, numbers, and coordinates: `MC-1234567`, `48 STATES`, `LOAD #4821`, `ETA 06:42`.
+- **Oversized display headlines** (condensed grotesque) that hit like newspaper front-page type.
+- A **route line** — a thin signal-colored spine that runs through the entire site, connecting sections with "mile-marker" nodes. As the user scrolls, the line **fills in** like a live progress route. This is the signature element that ties every page together.
+
+### 4.2. Editorial, Asymmetric Grid
+No centered, three-column cookie-cutter layout. Instead:
+- A magazine-style, **asymmetric grid** with intentional imbalance.
+- Generous **negative space** paired with dense, high-contrast text blocks.
+- **Numbers as design elements** — miles, years, and states are set huge and treated like typography, not footnotes.
+
+### 4.3. Kinetic Motion
+- Content slides **horizontally** on scroll — as if a truck just passed by.
+- An **infinite marquee** ribbon in the hero scrolls phrases like `RELIABLE • ON-TIME • 48 STATES • FULLY INSURED •`.
+- **Counter animations** — stats count up from zero when they enter the viewport.
+- Subtle **grain / asphalt texture** overlay for an industrial, tactile feel.
+- A **custom cursor accent** on desktop (small crosshair / target reticle) over interactive elements — reinforces the "terminal" feel.
+
+### 4.4. Restraint
+Dark mode, industrial, premium, "less is more." Signal-red appears **only** at the most important moments (primary CTAs, key emphasis), so it stays powerful instead of decorative.
+
+### 4.5. Full-Scroll, Fully-Animated Experience (MANDATORY)
+The site is **one continuous scrolling page**, not a set of separate page loads. This is a hard requirement.
+
+**Single-page structure**
+- All four sections — **HOME · ABOUT · DRIVERS · CONTACT** — live on one page as anchored sections (`#home`, `#about`, `#drivers`, `#contact`).
+- The nav links **smooth-scroll** to their section; no full page reload ever happens.
+- The active nav link (red underline) updates automatically based on which section is in view (scroll-spy).
+- Smooth scrolling is enabled site-wide; an optional inertia/eased scroll can be layered on for a more premium glide.
+
+**Animation everywhere (scroll-driven)**
+Every section animates in response to scroll position. Required behaviors:
+
+| Trigger | Animation |
+|---|---|
+| Page load | Hero sequence: headline lines rise in one after another, marquee starts, route line "ignites" |
+| Section enters viewport | Scroll-reveal — content fades + translates up `24px`, staggered per element |
+| Scroll progress | The **route-line spine fills** top-to-bottom in sync with scroll; mile-marker nodes pulse as they activate |
+| Stats enter viewport | Numbers **count up from 0** (odometer feel) |
+| Horizontal bands | Marquee ribbons and select rows **slide horizontally** as the user scrolls past |
+| Hover (desktop) | Buttons, cards, and links have micro-interactions (slide, fill, lift) + reticle cursor |
+| Section transitions | Backgrounds shift tone subtly between sections for depth |
+
+**Quality floor (non-negotiable)**
+- Animations are smooth (target 60fps), GPU-friendly (`transform` / `opacity` only).
+- Fully respects `prefers-reduced-motion` — motion reduces to simple fades, the site stays usable.
+- Scroll performance must not jank on mid-range mobile; heavy effects simplify on small screens.
+
+---
+
+## 5. DESIGN SYSTEM (TOKENS)
+
+### 5.1. Color Palette — MNK Brand
+Sampled directly from the **MNK Logistics LLC** logo (royal blue + signal red + white). The dark base is a deep **navy** (not pure black) so it reads as brand-blue territory, not generic black.
+
+| Role | Color | HEX |
+|---|---|---|
+| Brand blue (primary) | MNK Royal Blue | `#0A4D9C` |
+| Brand blue (bright accent) | Highway Blue | `#1E6FBF` |
+| Brand red (signal / CTA) | MNK Red | `#E0141A` |
+| Dark base (navy) | Deep Navy | `#08152E` |
+| Dark surface | Navy Surface | `#0E2244` |
+| Light base | White | `#FFFFFF` |
+| Light surface | Off-white | `#F4F6FA` |
+| Ink (text on light) | Navy Ink | `#0A1A33` |
+| Text (on dark) | Off-white | `#EAF0F8` |
+| Text (secondary) | Steel grey | `#8A97AC` |
+| Border / divider | Hairline | `#1B335C` |
+
+> **Usage rule:** Blue carries structure and trust (dark navy sections, links, headlines). Red is the *signal* — used only for primary CTAs, the route-line spine, and key emphasis. White/off-white sections keep the corporate, clean feel of the logo. Alternating **navy ⇄ white** sections give the full-scroll page its rhythm.
+
+### 5.2. Typography Scale
+
+| Use | Typeface (suggested) | Notes |
+|---|---|---|
+| Display / Headlines | Condensed grotesque (e.g. *Anton*, *Archivo Expanded*, *Bebas Neue*) | Bold, tight, uppercase for impact |
+| Body | Neo-grotesque (e.g. *Inter*, *Geist*) | Clean, highly readable |
+| Labels / Data | Monospace (e.g. *JetBrains Mono*, *Space Mono*) | For tags, numbers, coordinates |
+
+Type scale (desktop): `H1 96px / H2 64px / H3 40px / H4 28px / Body 18px / Label 13px (mono, uppercase, tracked)`. Scales down responsively.
+
+### 5.3. Spacing & Layout
+- 8-point spacing system: `4 · 8 · 16 · 24 · 40 · 64 · 96 · 128`.
+- Max content width: `1280px`; full-bleed sections allowed for hero/marquee.
+- Asymmetric 12-column grid; sections intentionally break alignment for editorial tension.
+
+### 5.4. Core Components
+- **Buttons:** Primary (solid signal-red, square-ish corners), Secondary (outline), Ghost (text + arrow). Hover = slight slide + accent fill.
+- **Cards:** Bordered, dark surface, mono label in the corner, large headline, hover lift.
+- **Nav:** Sticky top bar (matching the supplied design), red underline on active link, mobile hamburger → full-screen overlay menu.
+- **Forms:** Dark inputs, mono labels, inline validation, large touch targets.
+- **Stat block:** Huge number + mono caption, count-up on scroll.
+- **Route line:** Persistent vertical/horizontal spine with mile-marker nodes and scroll-fill.
+
+---
+
+## 6. SITE STRUCTURE & PAGES
+
+The site has the four pages shown in the supplied navigation, with their original names kept exactly:
+
+```
+HOME  ·  ABOUT  ·  DRIVERS  ·  CONTACT
+```
+
+Sticky header (as in the reference image): logo on the left, the four links centered/left, and a primary CTA (`GET A QUOTE`) on the right. Active link gets the red underline.
+
+---
+
+## 7. PAGE-BY-PAGE CONTENT
+
+### 7.1. HOME
+
+1. **Hero**
+   - Oversized display headline (e.g. *"WE HAUL. YOU GROW."* — placeholder slogan).
+   - Sub-line in body text + two CTAs: `GET A QUOTE` (red) and `JOIN OUR FLEET` (outline).
+   - Infinite marquee ribbon beneath.
+   - Background: subtle asphalt texture + animated route line.
+2. **Live Stats Bar** — terminal-style metrics with count-up: `10M+ MILES` · `48 STATES` · `99.2% ON-TIME` · `500+ LOADS / MO`.
+3. **Operations / Services** — asymmetric cards: Dry Van, Reefer, Flatbed, Expedited, Dispatch (adjusted to your real services).
+4. **How We Move** — a 3–4 step process timeline connected by the route line.
+5. **Why Us** — concise, high-impact value blocks (fully insured, real-time tracking, 24/7 dispatch, safety record).
+6. **Trust Layer** — client testimonials and/or partner logos.
+7. **CTA Section** — "Ready to move freight?" with a link to the quote form.
+8. **Footer** — address, DOT/MC, navigation, social links, copyright.
+
+### 7.2. ABOUT
+
+- Company story told in editorial style with large typography.
+- **Timeline:** founding year → today, plotted along the route line with mile-marker nodes.
+- Mission and core values.
+- Team / fleet imagery (placeholder).
+- Credentials: insurance, safety rating, certifications, DOT/MC.
+
+### 7.3. DRIVERS
+
+- Recruitment hero: *"DRIVE WITH THE BEST"* + a headline figure (e.g. pay `$0.70 / MILE` — placeholder).
+- **Benefits grid:** pay, home time, health benefits, newer trucks, sign-on bonus, fuel program.
+- **Requirements:** CDL-A, minimum experience, age, clean record.
+- **Application form (mobile-first):** name, phone, email, CDL class, experience, message. Must be extremely fast and easy on a phone.
+- **FAQ** — accordion of common driver questions.
+
+### 7.4. CONTACT
+
+- Terminal-style contact panel: phone, email, address, hours.
+- **Quote / inquiry form:** company name, freight type, origin → destination, date, message.
+- Map (Google Maps embed or stylized).
+- Large, tappable quick-contact buttons for phone and email.
+
+---
+
+## 8. FUNCTIONAL REQUIREMENTS
+
+| # | Feature | Description |
+|---|---|---|
+| F1 | Responsive design | Fully fluid across mobile, tablet, desktop |
+| F2 | Quote form | Field validation + success confirmation state |
+| F3 | Driver application form | Validated, mobile-optimized |
+| F4 | Navigation | Sticky header, active-link underline, mobile overlay menu |
+| F5 | Animations | Scroll-reveal, count-up, marquee, route-line fill, horizontal slide |
+| F6 | FAQ accordion | Expand/collapse questions |
+| F7 | SEO basics | Meta tags, semantic HTML, Open Graph, sitemap |
+| F8 | Performance | Lazy-loaded images, optimized/self-hosted fonts |
+| F9 | Accessibility | WCAG AA contrast, keyboard navigation, alt text, focus states |
+| F10 | Custom cursor | Reticle accent on interactive elements (desktop only) |
+| F11 | Single-page full-scroll | All sections on one page; smooth-scroll nav + scroll-spy active link (no page reloads) |
+| F12 | Scroll-driven animation | Every section animates on scroll; route-line fill synced to scroll progress; `prefers-reduced-motion` honored |
+
+> **Note:** Form **backend** (receiving submissions) is a separate phase. In v1 the forms are fully built on the frontend; connecting them to email or a service (e.g. Formspree / EmailJS) is agreed in a later step.
+
+---
+
+## 9. MOTION & INTERACTION SPEC
+
+- **Easing:** custom cubic-bezier `(0.16, 1, 0.3, 1)` for a confident, weighty feel.
+- **Durations:** micro-interactions `150–250ms`; section reveals `600–800ms`.
+- **Scroll reveals:** elements fade + translate up 24px as they enter the viewport.
+- **Route line:** fills proportionally to scroll progress; mile-marker nodes "ping" (small pulse) as they activate.
+- **Reduced motion:** all animation respects `prefers-reduced-motion` and degrades gracefully.
+
+---
+
+## 10. TECH STACK (proposed)
+
+- **Frontend:** Semantic HTML + modern CSS + vanilla JavaScript (or React if interactivity grows).
+- **Animation:** CSS animations + lightweight JS; GSAP/Framer Motion only if needed.
+- **Fonts:** self-hosted or Google Fonts.
+- **Hosting (later):** Netlify / Vercel / standard shared hosting.
+- No heavy dependencies — keep it fast.
+
+---
+
+## 11. RESPONSIVE / MOBILE
+
+- **Mobile-first** (drivers mostly arrive on phones).
+- Breakpoints: `≤480px` (mobile), `481–768px` (tablet), `769px+` (desktop).
+- On mobile: hamburger → full-screen menu, horizontal motion simplifies, single-column forms, large thumb-friendly buttons, no custom cursor.
+
+---
+
+## 12. SEO & PERFORMANCE
+
+- Unique `<title>` and meta description per page.
+- Semantic structure (`header`, `nav`, `main`, `section`, `footer`).
+- Open Graph + Twitter cards for social sharing.
+- Optimized images (WebP), lazy loading, preloaded critical fonts.
+- Target: Lighthouse 90+ on all categories.
+
+---
+
+## 13. DELIVERY PHASES
+
+| Phase | Scope | Status |
+|---|---|---|
+| **0. TZ** | This document — approval | ⏳ Current |
+| **1. Design system** | Colors, type, components, route-line behavior | Next |
+| **2. HOME** | Build the full homepage | — |
+| **3. Inner pages** | ABOUT, DRIVERS, CONTACT | — |
+| **4. Polish** | Kinetics, micro-interactions, cursor | — |
+| **5. Responsive QA** | Test across all devices | — |
+| **6. Form integration** | Connect backend / email | — |
+
+---
+
+## 14. WHAT WE NEED FROM YOU
+
+Provide these to fill in real data (or we start with polished placeholders):
+
+1. **Company name** + logo (if available).
+2. **Slogan / main message** (or we propose one).
+3. **Service types** (Dry Van? Reefer? Flatbed? Dispatch? Brokerage?).
+4. **DOT / MC numbers**, address, phone, email.
+5. **Driver pay & benefits** (for the DRIVERS page).
+6. **Real numbers** (years, miles, states) for trust.
+7. **Color confirmation** — is black + red right, or another palette?
+
+---
+
+## 15. NEXT STEP
+
+Review this specification. Once approved (or edited), we begin **Phase 1 — Design System + the HOME page**.
+
+> If you say **"start,"** I will immediately begin building the HOME page using polished placeholder data, and we refine from there.

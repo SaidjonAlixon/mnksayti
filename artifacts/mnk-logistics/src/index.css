@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700;800&display=swap');
+@import "tailwindcss";
+@import "tw-animate-css";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--mnk-navy);
+  --color-foreground: var(--mnk-text-dark);
+  --color-border: var(--mnk-hairline);
+  --color-input: var(--mnk-surface);
+  --color-ring: var(--mnk-blue);
+
+  --color-primary: var(--mnk-red);
+  --color-primary-foreground: var(--mnk-white);
+
+  --color-secondary: var(--mnk-blue);
+  --color-secondary-foreground: var(--mnk-white);
+
+  --color-muted: var(--mnk-surface);
+  --color-muted-foreground: var(--mnk-steel);
+
+  --color-accent: var(--mnk-blue-bright);
+  --color-accent-foreground: var(--mnk-white);
+
+  --font-sans: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-display: 'Bebas Neue', sans-serif;
+}
+
+:root {
+  --mnk-navy: #08152E;
+  --mnk-surface: #0E2244;
+  --mnk-blue: #0A4D9C;
+  --mnk-blue-bright: #1E6FBF;
+  --mnk-red: #E0141A;
+  --mnk-white: #FFFFFF;
+  --mnk-offwhite: #F4F6FA;
+  --mnk-ink: #0A1A33;
+  --mnk-text-dark: #EAF0F8;
+  --mnk-steel: #8A97AC;
+  --mnk-hairline: #1B335C;
+}
+
+.dark {
+  --mnk-navy: #08152E;
+  --mnk-surface: #0E2244;
+  --mnk-blue: #0A4D9C;
+  --mnk-blue-bright: #1E6FBF;
+  --mnk-red: #E0141A;
+  --mnk-white: #FFFFFF;
+  --mnk-offwhite: #F4F6FA;
+  --mnk-ink: #0A1A33;
+  --mnk-text-dark: #EAF0F8;
+  --mnk-steel: #8A97AC;
+  --mnk-hairline: #1B335C;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply font-sans antialiased bg-[var(--mnk-navy)] text-[var(--mnk-text-dark)] overflow-x-hidden;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    letter-spacing: 0.05em;
+  }
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.bg-noise {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+}
+
+.marquee-container {
+  overflow: hidden;
+  white-space: nowrap;
+  display: flex;
+}
+.marquee-content {
+  display: inline-flex;
+  animation: marquee 20s linear infinite;
+}
+.marquee-container:hover .marquee-content {
+  animation-play-state: paused;
+}
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
