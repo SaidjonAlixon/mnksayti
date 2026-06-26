@@ -26,7 +26,7 @@ export function Layout() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="h-full pt-28" // space for floating nav
+            className="h-full pt-[88px]" /* ticker 28px + nav 60px */
           >
             <Outlet />
           </motion.div>

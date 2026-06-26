@@ -1,117 +1,160 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { X } from "lucide-react";
+
+const TICKER_ITEMS = [
+  "● ACTIVE LOADS: 47",
+  "IN TRANSIT: 31",
+  "DELIVERED TODAY: 16",
+  "99.2% ON-TIME RATE",
+  "MC-XXXXXXX",
+  "DOT-XXXXXXX",
+  "48 STATES COVERED",
+  "24/7 DISPATCH ACTIVE",
+  "500+ LOADS / MONTH",
+  "FULLY INSURED",
+];
+
+function Ticker() {
+  return (
+    <div className="mnk-ticker-strip">
+      <div className="mnk-ticker-track">
+        {[...TICKER_ITEMS, ...TICKER_ITEMS].map((item, i) => (
+          <span key={i} className="mnk-ticker-item">
+            {item}
+            <span className="mnk-ticker-dot">·</span>
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location]);
 
   const navLinks = [
     { name: "HOME", path: "/" },
     { name: "ABOUT", path: "/about" },
     { name: "DRIVERS", path: "/drivers" },
-    { name: "CONTACT", path: "/contact" }
+    { name: "CONTACT", path: "/contact" },
   ];
 
   return (
     <>
-      <motion.nav 
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.6, duration: 0.5 }}
-        className="fixed top-0 left-0 right-0 z-50 pointer-events-none"
-      >
-        <div className={`mx-auto max-w-[760px] mt-4 transition-all duration-300 pointer-events-auto ${scrolled ? 'px-2' : 'px-4'}`}>
-          <div className={`glass flex items-center justify-between transition-all duration-300 ${scrolled ? 'py-2 px-4 shadow-[0_12px_40px_rgba(11,36,71,0.15)]' : 'py-3 px-6'}`} style={{ borderRadius: '100px' }}>
-            
-            {/* Logo */}
-            <Link to="/" className="font-display font-bold text-lg md:text-xl tracking-tight text-[var(--ink)] flex-shrink-0">
-              MNK <span className="text-[var(--blue)]">LOGISTICS</span>
-            </Link>
-
-            {/* Desktop Links */}
-            <div className="hidden md:flex items-center gap-1 relative">
-              {navLinks.map((link) => {
-                const isActive = location.pathname === link.path;
-                return (
-                  <Link 
-                    key={link.name}
-                    to={link.path}
-                    className={`relative px-4 py-2 font-mono text-xs tracking-widest transition-colors ${isActive ? 'text-[var(--blue)] font-bold' : 'text-[var(--muted)] hover:text-[var(--ink)]'}`}
-                  >
-                    {link.name}
-                    {isActive && (
-                      <motion.div 
-                        layoutId="nav-indicator"
-                        className="absolute bottom-1 left-4 right-4 h-[2px] bg-[var(--blue)]"
-                        transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                      />
-                    )}
-                  </Link>
-                );
-              })}
-            </div>
-
-            {/* CTA & Mobile Toggle */}
-            <div className="flex items-center gap-3">
-              <Link to="/contact" className="hidden md:flex items-center bg-[var(--red)] text-white font-mono text-xs font-bold tracking-widest px-5 py-2.5 rounded-full hover:bg-[#c01015] transition-colors">
-                GET A QUOTE
-              </Link>
-              <button 
-                className="md:hidden p-2 text-[var(--ink)]"
-                onClick={() => setMobileMenuOpen(true)}
-              >
-                <Menu size={24} />
-              </button>
-            </div>
-          </div>
+      <header className={`mnk-header ${scrolled ? "mnk-header--scrolled" : ""}`}>
+        {/* Live Status Ticker Strip */}
+        <div className={`mnk-ticker-wrapper ${scrolled ? "mnk-ticker-wrapper--hidden" : ""}`}>
+          <Ticker />
         </div>
-      </motion.nav>
 
-      {/* Mobile Menu Overlay */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[60] glass-dark flex flex-col items-center justify-center pointer-events-auto"
-          >
-            <button 
-              className="absolute top-6 right-6 text-white p-2"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              <X size={32} />
-            </button>
-            
-            <div className="flex flex-col items-center gap-8">
-              {navLinks.map((link) => (
-                <Link 
-                  key={link.name} 
+        {/* Main Navigation Bar */}
+        <div className="mnk-nav-bar">
+          {/* Left: Logo Block — dark navy panel */}
+          <Link to="/" className="mnk-logo-block">
+            <span className="mnk-logo-text">
+              MNK<span className="mnk-logo-red">.</span>
+            </span>
+            <span className="mnk-logo-sub">LOGISTICS LLC</span>
+          </Link>
+
+          {/* Center: Nav Links */}
+          <nav className="mnk-nav-links">
+            {navLinks.map((link) => {
+              const isActive = location.pathname === link.path;
+              return (
+                <Link
+                  key={link.name}
                   to={link.path}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="font-display text-4xl text-white font-bold tracking-tight"
+                  className={`mnk-nav-link ${isActive ? "mnk-nav-link--active" : ""}`}
                 >
                   {link.name}
+                  {isActive && (
+                    <motion.span
+                      layoutId="nav-bar-indicator"
+                      className="mnk-nav-indicator"
+                      transition={{ type: "spring", stiffness: 400, damping: 35 }}
+                    />
+                  )}
                 </Link>
+              );
+            })}
+          </nav>
+
+          {/* Right: CTA block + mobile toggle */}
+          <div className="mnk-nav-right">
+            <Link to="/contact" className="mnk-cta-block">
+              <span className="mnk-cta-label">GET A QUOTE</span>
+              <svg className="mnk-cta-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </Link>
+            <button
+              className="mnk-hamburger"
+              onClick={() => setMobileOpen(true)}
+              aria-label="Open menu"
+            >
+              <span /><span /><span />
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ opacity: 0, x: "100%" }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: "100%" }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            className="mnk-mobile-menu"
+          >
+            <div className="mnk-mobile-header">
+              <span className="mnk-logo-text" style={{ color: "#fff", fontSize: "1.4rem" }}>
+                MNK<span style={{ color: "var(--red)" }}>.</span>
+              </span>
+              <button className="mnk-mobile-close" onClick={() => setMobileOpen(false)}>
+                <X size={28} />
+              </button>
+            </div>
+            <nav className="mnk-mobile-links">
+              {navLinks.map((link, i) => (
+                <motion.div
+                  key={link.name}
+                  initial={{ opacity: 0, x: 40 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.1 + i * 0.08, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  <Link
+                    to={link.path}
+                    className={`mnk-mobile-link ${location.pathname === link.path ? "mnk-mobile-link--active" : ""}`}
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    <span className="mnk-mobile-link-num">0{i + 1}</span>
+                    {link.name}
+                  </Link>
+                </motion.div>
               ))}
-              <Link 
-                to="/contact"
-                onClick={() => setMobileMenuOpen(false)}
-                className="mt-8 bg-[var(--red)] text-white font-mono text-sm font-bold tracking-widest px-8 py-4 rounded-full"
-              >
-                GET A QUOTE
+            </nav>
+            <div className="mnk-mobile-footer">
+              <Link to="/contact" className="mnk-mobile-cta" onClick={() => setMobileOpen(false)}>
+                GET A QUOTE →
               </Link>
+              <p className="mnk-mobile-status">● DISPATCH ACTIVE · 24/7</p>
             </div>
           </motion.div>
         )}
