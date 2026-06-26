@@ -1,64 +1,53 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
-@plugin "@tailwindcss/typography";
-
-@custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --font-sans: 'Inter', sans-serif;
+  --font-mono: 'Space Mono', monospace;
+  --font-display: 'Space Grotesk', sans-serif;
+
   --color-background: var(--paper);
   --color-foreground: var(--ink);
   --color-border: var(--hairline);
   --color-input: var(--surface);
   --color-ring: var(--blue);
-
+  
   --color-primary: var(--blue);
   --color-primary-foreground: #FFFFFF;
-
-  --color-secondary: var(--blue-bright);
-  --color-secondary-foreground: #FFFFFF;
-
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted);
-
-  --color-accent: var(--red);
-  --color-accent-foreground: #FFFFFF;
-
-  --font-sans: 'Inter', sans-serif;
-  --font-mono: 'Space Mono', monospace;
-  --font-display: 'Space Grotesk', sans-serif;
 }
 
 :root {
+  --blue: #0A4D9C;
+  --blue-light: #1E6FBF;
+  --blue-dark: #0B2447;
+  --red: #E0141A;
   --paper: #F7F9FC;
   --surface: #FFFFFF;
-  --blue: #0A4D9C;
-  --blue-bright: #1E6FBF;
-  --ink: #0B2447;
-  --red: #E0141A;
   --hairline: #E3E8F0;
   --muted: #5B6B82;
   --success: #1FA463;
   --amber: #F59E0B;
+  --ink: #0B2447;
 }
 
 .dark {
-  /* Using light theme as forced base */
+  --blue: #0A4D9C;
+  --blue-light: #1E6FBF;
+  --blue-dark: #0B2447;
+  --red: #E0141A;
   --paper: #F7F9FC;
   --surface: #FFFFFF;
-  --blue: #0A4D9C;
-  --blue-bright: #1E6FBF;
-  --ink: #0B2447;
-  --red: #E0141A;
   --hairline: #E3E8F0;
   --muted: #5B6B82;
   --success: #1FA463;
   --amber: #F59E0B;
+  --ink: #0B2447;
 }
 
 @layer base {
-  * {
-    @apply border-border;
+  html { 
+    scroll-behavior: smooth; 
   }
   body {
     @apply font-sans antialiased bg-[var(--paper)] text-[var(--ink)] overflow-x-hidden;
@@ -73,17 +62,48 @@
   font-family: var(--font-display);
 }
 
-.pulse-ring {
-  animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+.font-mono {
+  font-family: var(--font-mono);
 }
 
-@keyframes pulse-ring {
-  0% {
-    transform: scale(0.8);
-    opacity: 0.5;
-  }
-  80%, 100% {
-    transform: scale(2.5);
-    opacity: 0;
-  }
+/* Premium CSS Patterns */
+.glass {
+  background: rgba(255,255,255,0.75);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.6);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(11,36,71,0.08);
+}
+
+.glass-dark {
+  background: rgba(11,36,71,0.6);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px;
+}
+
+@keyframes float { 
+  0%, 100% { transform: translateY(0); } 
+  50% { transform: translateY(-10px); } 
+}
+.float { 
+  animation: float 4s ease-in-out infinite; 
+}
+
+@keyframes node-pulse { 
+  0% { r: 8; opacity: 0.8; } 
+  100% { r: 20; opacity: 0; } 
+}
+.node-pulse {
+  animation: node-pulse 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: var(--red);
+  z-index: 10000;
+  transform-origin: 0%;
 }

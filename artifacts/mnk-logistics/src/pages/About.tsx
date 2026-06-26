@@ -1,152 +1,192 @@
+import { useEffect } from "react";
 import { motion } from "framer-motion";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FreightMap } from "../components/FreightMap";
+import { Check, Shield, TrendingUp, Users } from "lucide-react";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const fadeIn = {
-  hidden: { opacity: 0, y: 12 },
-  visible: { 
-    opacity: 1, 
-    y: 0,
-    transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] }
-  }
+  hidden: { opacity: 0, y: 40 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } }
 };
 
 export function About() {
+  useEffect(() => {
+    // Timeline drawing animation
+    gsap.fromTo(".timeline-line", 
+      { height: 0 }, 
+      { 
+        height: "100%", 
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".timeline-container",
+          start: "top center",
+          end: "bottom center",
+          scrub: 1
+        }
+      }
+    );
+  }, []);
+
   return (
-    <div className="w-full">
-      {/* Page Header */}
-      <section className="bg-[var(--paper)] pt-24 pb-16 border-b border-[var(--hairline)]">
-        <div className="max-w-5xl mx-auto px-4 md:px-8">
+    <div className="w-full bg-[var(--paper)]">
+      
+      {/* Hero */}
+      <section className="bg-[var(--blue-dark)] pt-32 pb-24 text-center border-b border-white/10">
+        <div className="max-w-[1000px] mx-auto px-4 md:px-8">
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="font-mono text-sm font-bold tracking-widest text-[var(--blue-light)] mb-8">
+            HOME / ABOUT
+          </motion.div>
           <motion.h1 
-            initial="hidden" animate="visible" variants={fadeIn}
-            className="font-display text-4xl md:text-6xl text-[var(--ink)] font-bold tracking-tight mb-8"
+            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+            className="font-display text-5xl md:text-7xl font-bold text-white tracking-tight"
           >
             About MNK Logistics
           </motion.h1>
+        </div>
+      </section>
+
+      {/* Story Split */}
+      <section className="py-24">
+        <div className="max-w-[1400px] mx-auto px-4 md:px-8 flex flex-col lg:flex-row gap-16 items-center">
           <motion.div 
-            initial="hidden" animate="visible" variants={fadeIn} transition={{ delay: 0.1 }}
-            className="prose prose-lg prose-p:text-[var(--muted)] prose-p:font-sans prose-p:leading-relaxed"
+            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn}
+            className="w-full lg:w-[60%] prose prose-lg prose-p:font-sans prose-p:text-[var(--muted)] prose-headings:font-display prose-headings:text-[var(--ink)]"
           >
+            <h2>Built on reliability. Driven by data.</h2>
             <p>
-              Founded on the principles of reliability and transparency, MNK Logistics has grown from a single truck operation into a nationwide carrier serving all 48 contiguous states. We built this company because we saw a gap between what brokers promise and what carriers actually deliver.
+              Founded in 2018, MNK Logistics started with a simple observation: the freight industry was full of promises, but lacked execution. We set out to build an asset-based carrier that operates with the speed and transparency of a modern tech company.
             </p>
             <p>
-              Today, our modern fleet of dry vans, reefers, and flatbeds moves essential freight for some of America's most demanding supply chains. Our dispatch desk operates 24/7, meaning you're never left wondering where your freight is or if it will arrive on time.
+              Today, our fleet moves essential freight across all 48 contiguous states. From temperature-sensitive pharmaceuticals to just-in-time manufacturing components, we treat every load as critical. Our 24/7 dispatch desk ensures that when you hand us a load, you can stop worrying about it.
             </p>
-            <p>
-              Safety isn't just a metric for us—it's the foundation of everything we do. We hire experienced CDL-A professionals, maintain rigorous equipment standards, and utilize real-time tracking to ensure every load is executed flawlessly.
-            </p>
+          </motion.div>
+          
+          <motion.div 
+            initial="hidden" whileInView="visible" viewport={{ once: true }} transition={{ delay: 0.2 }} variants={fadeIn}
+            className="w-full lg:w-[40%]"
+          >
+            <div className="glass p-10 border border-[var(--blue)] shadow-[0_20px_40px_rgba(11,36,71,0.08)] relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--blue-light)] rounded-full blur-[50px] opacity-20" />
+              <h3 className="font-mono text-sm font-bold tracking-widest text-[var(--blue)] mb-8">AT A GLANCE</h3>
+              <div className="space-y-6">
+                <div>
+                  <div className="font-display text-4xl font-bold text-[var(--ink)]">2018</div>
+                  <div className="font-sans text-[var(--muted)]">Year Founded</div>
+                </div>
+                <div className="h-[1px] w-full bg-[var(--hairline)]" />
+                <div>
+                  <div className="font-display text-4xl font-bold text-[var(--ink)]">48</div>
+                  <div className="font-sans text-[var(--muted)]">States Covered</div>
+                </div>
+                <div className="h-[1px] w-full bg-[var(--hairline)]" />
+                <div>
+                  <div className="font-display text-4xl font-bold text-[var(--ink)]">24/7</div>
+                  <div className="font-sans text-[var(--muted)]">Live Operations</div>
+                </div>
+              </div>
+            </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Coverage Map */}
-      <section className="py-20 bg-white">
-        <div className="max-w-5xl mx-auto px-4 md:px-8">
+      {/* Values */}
+      <section className="py-24 bg-white border-y border-[var(--hairline)]">
+        <div className="max-w-[1400px] mx-auto px-4 md:px-8">
           <motion.h2 
             initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn}
-            className="font-display text-3xl text-[var(--ink)] font-bold mb-8"
+            className="font-display text-4xl md:text-5xl font-bold text-[var(--ink)] mb-16 text-center"
           >
-            National Coverage
+            Our Core Values
           </motion.h2>
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.98 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }}
-            className="rounded-xl overflow-hidden shadow-sm border border-[var(--hairline)]"
-          >
-            <FreightMap staticMode={true} />
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Timeline */}
-      <section className="py-20 bg-[var(--paper)] border-y border-[var(--hairline)]">
-        <div className="max-w-5xl mx-auto px-4 md:px-8">
-          <h2 className="font-display text-3xl text-[var(--ink)] font-bold mb-16">Our Journey</h2>
           
-          <div className="relative">
-            <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-[var(--hairline)] -translate-y-1/2 hidden md:block" />
-            
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-4 relative z-10">
-              {[
-                { date: "2018", title: "Founded", desc: "Started with a single truck and a commitment to service." },
-                { date: "2020", title: "100 Loads", desc: "Crossed our first major milestone of loads hauled safely." },
-                { date: "2022", title: "48 States", desc: "Expanded operating authority across the contiguous US." },
-                { date: "Today", title: "Modern Fleet", desc: "Serving national supply chains with real-time visibility." }
-              ].map((node, i) => (
-                <motion.div 
-                  key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                  className="flex flex-col items-center md:items-start text-center md:text-left bg-[var(--paper)] md:bg-transparent"
-                >
-                  <div className="font-mono text-sm text-[var(--blue)] font-bold mb-4 bg-[var(--paper)] px-2">{node.date}</div>
-                  <div className="w-4 h-4 rounded-full bg-[var(--blue)] mb-4 hidden md:block" />
-                  <h3 className="font-display text-xl text-[var(--ink)] font-bold mb-2">{node.title}</h3>
-                  <p className="font-sans text-sm text-[var(--muted)]">{node.desc}</p>
-                </motion.div>
-              ))}
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              { icon: Shield, title: "Uncompromising Safety", desc: "We never prioritize speed over safety. Vetted drivers, maintained equipment." },
+              { icon: TrendingUp, title: "Data-Driven Execution", desc: "Real-time tracking and metrics drive our operational decisions." },
+              { icon: Users, title: "Partnership Approach", desc: "We view brokers, shippers, and our drivers as long-term partners." }
+            ].map((v, i) => (
+              <motion.div 
+                key={i}
+                initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+                className="bg-[var(--paper)] p-10 rounded-[20px] border border-[var(--hairline)] text-center"
+              >
+                <div className="w-16 h-16 rounded-full bg-white shadow-sm flex items-center justify-center mx-auto mb-6 border border-[var(--hairline)]">
+                  <v.icon className="w-8 h-8 text-[var(--blue)]" />
+                </div>
+                <h3 className="font-display text-2xl font-bold text-[var(--ink)] mb-4">{v.title}</h3>
+                <p className="font-sans text-[var(--muted)]">{v.desc}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Credentials & Values */}
-      <section className="py-20 bg-white">
-        <div className="max-w-5xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+      {/* Timeline & Credentials Split */}
+      <section className="py-32">
+        <div className="max-w-[1400px] mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-24">
           
-          {/* Values */}
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn}>
-            <h2 className="font-display text-3xl text-[var(--ink)] font-bold mb-8">Core Values</h2>
-            <div className="space-y-6">
+          {/* Timeline */}
+          <div>
+            <motion.h2 initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn} className="font-display text-4xl font-bold text-[var(--ink)] mb-12">
+              The Journey
+            </motion.h2>
+            <div className="relative timeline-container pl-8">
+              <div className="absolute top-0 bottom-0 left-[11px] w-[2px] bg-[var(--hairline)]" />
+              <div className="timeline-line absolute top-0 left-[11px] w-[2px] bg-[var(--blue)]" />
+              
               {[
-                { title: "RELIABILITY", desc: "If we commit to a load, it gets covered. No excuses." },
-                { title: "SAFETY", desc: "Zero compromises on driver, equipment, and public safety." },
-                { title: "TRANSPARENCY", desc: "Honest communication, real-time tracking, and proactive updates." }
-              ].map((val, i) => (
-                <div key={i} className="bg-[var(--paper)] border border-[var(--hairline)] p-6 rounded-lg">
-                  <h3 className="font-mono text-lg text-[var(--blue)] font-bold tracking-wide mb-2">{val.title}</h3>
-                  <p className="font-sans text-[var(--muted)]">{val.desc}</p>
+                { year: "2018", title: "The Beginning", desc: "Started operations with a single truck." },
+                { year: "2020", title: "Regional Expansion", desc: "Secured direct contracts and expanded to 15 states." },
+                { temp: true },
+                { year: "2022", title: "National Authority", desc: "Granted operating authority for all 48 contiguous states." },
+                { year: "2024", title: "Tech Integration", desc: "Launched full API-integrated tracking and automated dispatch." }
+              ].map((node, i) => (
+                <div key={i} className={`relative mb-12 last:mb-0 ${node.temp ? 'opacity-0 h-4' : ''}`}>
+                  {!node.temp && (
+                    <>
+                      <div className="absolute left-[-32px] top-1 w-6 h-6 rounded-full bg-white border-4 border-[var(--blue)] z-10 shadow-[0_0_10px_rgba(10,77,156,0.3)]" />
+                      <div className="font-mono text-sm font-bold text-[var(--blue)] mb-2">{node.year}</div>
+                      <h3 className="font-display text-2xl font-bold text-[var(--ink)] mb-2">{node.title}</h3>
+                      <p className="font-sans text-[var(--muted)]">{node.desc}</p>
+                    </>
+                  )}
                 </div>
               ))}
             </div>
-          </motion.div>
+          </div>
 
           {/* Credentials */}
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn} transition={{ delay: 0.2 }}>
-            <h2 className="font-display text-3xl text-[var(--ink)] font-bold mb-8">Credentials</h2>
-            <div className="bg-white border border-[var(--hairline)] rounded-lg shadow-sm overflow-hidden">
-              <div className="bg-[var(--ink)] px-6 py-4">
+          <div>
+            <motion.h2 initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn} className="font-display text-4xl font-bold text-[var(--ink)] mb-12">
+              Credentials
+            </motion.h2>
+            <div className="bg-white border border-[var(--hairline)] rounded-[20px] shadow-sm overflow-hidden">
+              <div className="bg-[var(--blue-dark)] px-8 py-6">
                 <h3 className="font-mono text-white text-sm tracking-widest font-bold">MNK LOGISTICS LLC</h3>
               </div>
               <ul className="divide-y divide-[var(--hairline)] font-mono text-sm">
-                <li className="flex justify-between px-6 py-4">
-                  <span className="text-[var(--muted)]">DOT NUMBER</span>
-                  <span className="font-bold text-[var(--ink)]">XXXXXXX</span>
-                </li>
-                <li className="flex justify-between px-6 py-4">
-                  <span className="text-[var(--muted)]">MC NUMBER</span>
-                  <span className="font-bold text-[var(--ink)]">XXXXXXX</span>
-                </li>
-                <li className="flex justify-between px-6 py-4">
-                  <span className="text-[var(--muted)]">CARGO INSURANCE</span>
-                  <span className="font-bold text-[var(--ink)]">$1,000,000</span>
-                </li>
-                <li className="flex justify-between px-6 py-4">
-                  <span className="text-[var(--muted)]">LIABILITY INSURANCE</span>
-                  <span className="font-bold text-[var(--ink)]">$1,000,000</span>
-                </li>
-                <li className="flex justify-between px-6 py-4">
-                  <span className="text-[var(--muted)]">SAFETY RATING</span>
-                  <span className="font-bold text-[var(--success)]">SATISFACTORY</span>
-                </li>
-                <li className="flex justify-between px-6 py-4">
-                  <span className="text-[var(--muted)]">DISPATCH</span>
-                  <span className="font-bold text-[var(--ink)]">24/7/365</span>
-                </li>
+                {[
+                  { label: "DOT NUMBER", val: "XXXXXXX" },
+                  { label: "MC NUMBER", val: "XXXXXXX" },
+                  { label: "CARGO INSURANCE", val: "$1,000,000" },
+                  { label: "LIABILITY", val: "$1,000,000" },
+                  { label: "SAFETY RATING", val: "SATISFACTORY", color: "text-[var(--success)]" },
+                  { label: "SCAC CODE", val: "MNKL" },
+                ].map((row, i) => (
+                  <li key={i} className="flex justify-between items-center px-8 py-6">
+                    <span className="text-[var(--muted)]">{row.label}</span>
+                    <span className={`font-bold ${row.color || 'text-[var(--ink)]'}`}>
+                      {row.label === 'SAFETY RATING' && <Check className="inline w-4 h-4 mr-1" />}
+                      {row.val}
+                    </span>
+                  </li>
+                ))}
               </ul>
             </div>
-          </motion.div>
+          </div>
 
         </div>
       </section>

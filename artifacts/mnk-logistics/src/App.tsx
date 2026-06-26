@@ -6,6 +6,7 @@ import { About } from "./pages/About";
 import { Drivers } from "./pages/Drivers";
 import { Contact } from "./pages/Contact";
 import { useEffect } from "react";
+import Lenis from 'lenis';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -33,6 +34,16 @@ function AnimatedRoutes() {
 }
 
 function App() {
+  useEffect(() => {
+    const lenis = new Lenis({ lerp: 0.08, smoothWheel: true });
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+    return () => lenis.destroy();
+  }, []);
+
   return (
     <BrowserRouter>
       <ScrollToTop />

@@ -1,76 +1,121 @@
 import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { Menu, X } from "lucide-react";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      setScrolled(window.scrollY > 20);
     };
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollTo = (id: string) => {
-    setMobileMenuOpen(false);
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
-  const navLinks = ["HOME", "ABOUT", "DRIVERS", "CONTACT"];
+  const navLinks = [
+    { name: "HOME", path: "/" },
+    { name: "ABOUT", path: "/about" },
+    { name: "DRIVERS", path: "/drivers" },
+    { name: "CONTACT", path: "/contact" }
+  ];
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-[var(--mnk-navy)]/90 backdrop-blur-md border-b border-[var(--mnk-hairline)]" : "bg-transparent"}`}>
-      <div className="max-w-7xl mx-auto px-4 md:px-8 h-20 flex items-center justify-between ml-8 md:ml-16">
-        <div className="font-display text-3xl font-bold tracking-wider text-[var(--mnk-white)] cursor-pointer" onClick={() => scrollTo("home")}>
-          MNK LOGISTICS
+    <>
+      <motion.nav 
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.6, duration: 0.5 }}
+        className="fixed top-0 left-0 right-0 z-50 pointer-events-none"
+      >
+        <div className={`mx-auto max-w-[760px] mt-4 transition-all duration-300 pointer-events-auto ${scrolled ? 'px-2' : 'px-4'}`}>
+          <div className={`glass flex items-center justify-between transition-all duration-300 ${scrolled ? 'py-2 px-4 shadow-[0_12px_40px_rgba(11,36,71,0.15)]' : 'py-3 px-6'}`} style={{ borderRadius: '100px' }}>
+            
+            {/* Logo */}
+            <Link to="/" className="font-display font-bold text-lg md:text-xl tracking-tight text-[var(--ink)] flex-shrink-0">
+              MNK <span className="text-[var(--blue)]">LOGISTICS</span>
+            </Link>
+
+            {/* Desktop Links */}
+            <div className="hidden md:flex items-center gap-1 relative">
+              {navLinks.map((link) => {
+                const isActive = location.pathname === link.path;
+                return (
+                  <Link 
+                    key={link.name}
+                    to={link.path}
+                    className={`relative px-4 py-2 font-mono text-xs tracking-widest transition-colors ${isActive ? 'text-[var(--blue)] font-bold' : 'text-[var(--muted)] hover:text-[var(--ink)]'}`}
+                  >
+                    {link.name}
+                    {isActive && (
+                      <motion.div 
+                        layoutId="nav-indicator"
+                        className="absolute bottom-1 left-4 right-4 h-[2px] bg-[var(--blue)]"
+                        transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                      />
+                    )}
+                  </Link>
+                );
+              })}
+            </div>
+
+            {/* CTA & Mobile Toggle */}
+            <div className="flex items-center gap-3">
+              <Link to="/contact" className="hidden md:flex items-center bg-[var(--red)] text-white font-mono text-xs font-bold tracking-widest px-5 py-2.5 rounded-full hover:bg-[#c01015] transition-colors">
+                GET A QUOTE
+              </Link>
+              <button 
+                className="md:hidden p-2 text-[var(--ink)]"
+                onClick={() => setMobileMenuOpen(true)}
+              >
+                <Menu size={24} />
+              </button>
+            </div>
+          </div>
         </div>
+      </motion.nav>
 
-        <div className="hidden md:flex items-center gap-8">
-          <ul className="flex items-center gap-6">
-            {navLinks.map((link) => (
-              <li key={link}>
-                <button 
-                  onClick={() => scrollTo(link.toLowerCase())}
-                  className="font-mono text-sm tracking-widest text-[var(--mnk-steel)] hover:text-[var(--mnk-white)] transition-colors relative group"
-                >
-                  {link}
-                  <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[var(--mnk-red)] transition-all group-hover:w-full"></span>
-                </button>
-              </li>
-            ))}
-          </ul>
-          <button onClick={() => scrollTo('contact')} className="bg-[var(--mnk-red)] text-white font-mono font-bold tracking-widest px-6 py-3 text-sm hover:-translate-y-[2px] transition-transform">
-            GET A QUOTE
-          </button>
-        </div>
-
-        <button className="md:hidden text-[var(--mnk-white)]" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M3 12H21M3 6H21M3 18H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </button>
-      </div>
-
-      {/* Mobile Menu */}
-      {mobileMenuOpen && (
-        <div className="fixed inset-0 bg-[var(--mnk-navy)] z-[60] flex flex-col items-center justify-center gap-8">
-          <button className="absolute top-6 right-6 text-white" onClick={() => setMobileMenuOpen(false)}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12" /></svg>
-          </button>
-          {navLinks.map((link) => (
-            <button key={link} onClick={() => scrollTo(link.toLowerCase())} className="font-display text-4xl text-white">
-              {link}
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[60] glass-dark flex flex-col items-center justify-center pointer-events-auto"
+          >
+            <button 
+              className="absolute top-6 right-6 text-white p-2"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <X size={32} />
             </button>
-          ))}
-          <button onClick={() => scrollTo('contact')} className="bg-[var(--mnk-red)] text-white font-mono tracking-widest px-8 py-4 mt-8">
-            GET A QUOTE
-          </button>
-        </div>
-      )}
-    </nav>
+            
+            <div className="flex flex-col items-center gap-8">
+              {navLinks.map((link) => (
+                <Link 
+                  key={link.name} 
+                  to={link.path}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="font-display text-4xl text-white font-bold tracking-tight"
+                >
+                  {link.name}
+                </Link>
+              ))}
+              <Link 
+                to="/contact"
+                onClick={() => setMobileMenuOpen(false)}
+                className="mt-8 bg-[var(--red)] text-white font-mono text-sm font-bold tracking-widest px-8 py-4 rounded-full"
+              >
+                GET A QUOTE
+              </Link>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }

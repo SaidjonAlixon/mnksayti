@@ -1,36 +1,46 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 export function CustomCursor() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    if (window.matchMedia("(pointer: coarse)").matches) {
-      setIsTouchDevice(true);
-      return;
-    }
-
-    const updateMousePosition = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
+    const handleMouseMove = (e: MouseEvent) => {
+      setPosition({ x: e.clientX, y: e.clientY });
+      if (!isVisible) setIsVisible(true);
     };
 
-    window.addEventListener("mousemove", updateMousePosition);
+    const handleMouseLeave = () => setIsVisible(false);
+
+    window.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseleave", handleMouseLeave);
+
     return () => {
-      window.removeEventListener("mousemove", updateMousePosition);
+      window.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseleave", handleMouseLeave);
     };
-  }, []);
+  }, [isVisible]);
 
-  if (isTouchDevice) return null;
+  if (typeof window === "undefined" || window.innerWidth < 768) return null;
 
   return (
     <motion.div
-      className="fixed top-0 left-0 w-8 h-8 pointer-events-none z-[100] mix-blend-difference flex items-center justify-center"
-      animate={{ x: mousePosition.x - 16, y: mousePosition.y - 16 }}
-      transition={{ type: "spring", stiffness: 500, damping: 28, mass: 2 }}
-    >
-      <div className="w-full h-[1px] bg-[var(--mnk-red)] absolute" />
-      <div className="h-full w-[1px] bg-[var(--mnk-red)] absolute" />
-    </motion.div>
+      className="fixed top-0 left-0 w-[200px] h-[200px] rounded-full pointer-events-none z-[9999]"
+      style={{
+        background: "radial-gradient(circle, var(--blue) 0%, transparent 70%)",
+        opacity: isVisible ? 0.1 : 0,
+        filter: "blur(40px)",
+      }}
+      animate={{
+        x: position.x - 100,
+        y: position.y - 100,
+      }}
+      transition={{
+        type: "tween",
+        ease: "linear",
+        duration: 0.1
+      }}
+    />
   );
 }

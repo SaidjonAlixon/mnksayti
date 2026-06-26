@@ -1,0 +1,410 @@
+PROMPT
+
+Create a completely redesigned premium logistics website UI/UX while keeping the exact existing color palette (blue, white, red). Do NOT change the brand colors. Instead, redesign the entire layout, spacing, typography, sections, navigation, animations, and user experience.
+
+Requirements:
+
+Overall Style
+Modern SaaS + Premium Enterprise style
+Clean and minimal
+Large white spaces
+Glassmorphism where appropriate
+Soft shadows
+Rounded corners (16-24px)
+High-end typography
+Responsive
+Smooth professional feeling
+Navbar
+
+Do NOT make a traditional horizontal navbar.
+
+Instead create something unique.
+
+Ideas:
+
+Option A
+
+Floating Glass Navbar
+Centered navigation
+Logo on left
+CTA button on right
+Navbar slightly transparent
+Blur background
+Rounded pill container
+Appears floating over hero
+
+OR
+
+Option B
+
+Vertical left floating navigation
+Small icons beside menu items
+Scroll indicator
+Active page highlighted
+Modern hover animation
+
+OR
+
+Option C
+
+Split Navigation
+
+Logo
+
+center navigation
+
+CTA button separated inside rounded red capsule
+
+Navbar becomes smaller while scrolling.
+
+Animation:
+
+fade in
+blur
+shrink on scroll
+active underline slides smoothly
+Hero Section
+
+Do NOT keep the current two-column layout.
+
+Create something more unique.
+
+Example layout:
+
+Left
+
+Large headline
+
+Small description
+
+CTA Buttons
+
+Statistics Cards
+
+Right
+
+Interactive USA map
+
+Animated routes
+
+Moving trucks
+
+Pulsing shipment nodes
+
+Animated connection lines
+
+Background gradients
+
+Floating cards
+
+OR
+
+Use diagonal layout instead of standard columns.
+
+Hero Animations
+
+Every shipment route should animate.
+
+Truck icons move along paths.
+
+Nodes pulse.
+
+Lines draw themselves.
+
+Background slowly moves.
+
+Statistics count up.
+
+Buttons have ripple hover.
+
+Cards float slightly.
+
+Scroll Animations
+
+Entire website must use scroll-triggered animations.
+
+Examples:
+
+Fade Up
+
+Slide Left
+
+Slide Right
+
+Scale In
+
+Cards reveal
+
+Timeline animation
+
+Counter animation
+
+Map zoom
+
+Truck movement
+
+Every section appears naturally.
+
+No harsh animations.
+
+Everything smooth.
+
+Mouse Effects
+
+Mouse parallax
+
+Hover lift
+
+Magnetic buttons
+
+Cursor glow
+
+Cards tilt slightly
+
+Interactive background
+
+Sections
+
+Instead of ordinary layout create:
+
+Hero
+
+↓
+
+Live Freight Dashboard
+
+↓
+
+Why Choose Us
+
+↓
+
+Fleet Showcase
+
+↓
+
+Coverage Map
+
+↓
+
+How Shipping Works
+
+↓
+
+Company Numbers
+
+↓
+
+Testimonials
+
+↓
+
+Partners
+
+↓
+
+FAQ
+
+↓
+
+CTA Banner
+
+↓
+
+Footer
+
+Every section should look different.
+
+Alternate backgrounds.
+
+Alternate layouts.
+
+Avoid repetition.
+
+Cards
+
+Premium cards
+
+Rounded
+
+Hover elevation
+
+Animated border
+
+Glass effect
+
+Gradient accents
+
+Icons inside colored circles
+
+Live Dispatch Table
+
+Transform current table into modern dashboard.
+
+Features:
+
+Live status badges
+
+Animated ETA countdown
+
+Truck icons
+
+Color indicators
+
+Hover highlight
+
+Search
+
+Filters
+
+Pagination
+
+Responsive
+
+Fleet Section
+
+Large truck cards
+
+Image hover zoom
+
+Specifications
+
+Availability badge
+
+CTA button
+
+Hover animation
+
+Coverage Map
+
+Interactive USA map
+
+Animated routes
+
+Zoom effect
+
+State highlights
+
+Moving shipment dots
+
+Animated legends
+
+Statistics
+
+Animated counters
+
+Loads Delivered
+
+Miles Driven
+
+Drivers
+
+Customers
+
+Years Experience
+
+Count up animation.
+
+Testimonials
+
+Modern cards
+
+Glass background
+
+Profile images
+
+Rating stars
+
+Auto slider
+
+Buttons
+
+Rounded
+
+Bold
+
+Premium
+
+Magnetic hover
+
+Gradient shadow
+
+Ripple click
+
+Smooth transitions
+
+Typography
+
+Large bold headlines
+
+Professional spacing
+
+Readable paragraphs
+
+Consistent hierarchy
+
+Footer
+
+Modern multi-column
+
+Large CTA
+
+Newsletter
+
+Quick Links
+
+Social Icons
+
+Animated hover
+
+Background illustration
+
+Performance
+
+Use:
+
+Framer Motion
+
+GSAP
+
+Lenis Smooth Scroll
+
+Intersection Observer
+
+Lazy Loading
+
+Optimized animations
+
+Technical
+
+React
+
+Next.js
+
+Tailwind CSS
+
+Framer Motion
+
+GSAP
+
+Lenis
+
+Responsive
+
+SEO Friendly
+
+Reusable Components
+
+Accessible
+
+Important
+
+Do NOT copy existing logistics websites.
+
+Design should feel like a premium tech company rather than an ordinary trucking company.
+
+Keep only the current color palette.
+
+Everything else should be redesigned from scratch with a fresh, modern, animated, enterprise-level experience.
+
+Make the interface memorable, elegant, and unique.
