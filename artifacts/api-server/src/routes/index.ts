@@ -2,8 +2,8 @@ import { Router, type IRouter } from "express";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import express from "express";
-import healthRouter from "./health";
-import driverApplicationRouter from "./driver-application";
+import healthRouter from "./health.js";
+import driverApplicationRouter from "./driver-application.js";
 
 const router: IRouter = Router();
 const artifactDir = path.dirname(fileURLToPath(import.meta.url));

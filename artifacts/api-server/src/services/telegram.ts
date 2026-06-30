@@ -1,5 +1,7 @@
-import type { File as MulterFile } from "multer";
+import type { Express } from "express";
 import type { StoredFile } from "./storage.js";
+
+type MulterFile = Express.Multer.File;
 
 type DriverApplicationPayload = {
   applicationId: string;
@@ -78,7 +80,7 @@ function escapeHtml(value: string): string {
 async function telegramRequest(
   token: string,
   method: string,
-  body: FormData | Record<string, string>,
+  body: FormData | Record<string, string | boolean>,
 ): Promise<void> {
   const isFormData = body instanceof FormData;
   const response = await fetch(`https://api.telegram.org/bot${token}/${method}`, {

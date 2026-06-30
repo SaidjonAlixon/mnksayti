@@ -1,4 +1,4 @@
-import { createApp } from "../artifacts/api-server/src/create-app";
+import { createApp } from "../artifacts/api-server/src/create-app.js";
 
 /** Required for multer file uploads on Vercel serverless */
 export const config = {

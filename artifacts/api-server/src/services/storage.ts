@@ -4,6 +4,8 @@ import { fileURLToPath } from "node:url";
 import { put } from "@vercel/blob";
 import { randomUUID } from "node:crypto";
 
+import type { Express } from "express";
+
 const artifactDir = path.dirname(fileURLToPath(import.meta.url));
 const LOCAL_UPLOAD_ROOT = path.resolve(artifactDir, "../../uploads");
 
@@ -15,7 +17,7 @@ export type StoredFile = {
   mimeType: string;
 };
 
-import type { File as MulterFile } from "multer";
+type MulterFile = Express.Multer.File;
 
 function getApiPublicUrl(): string {
   if (process.env.API_PUBLIC_URL) {
