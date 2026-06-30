@@ -1,4 +1,8 @@
-# See https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+# Vercel
+.vercel
+
+# Local API uploads (when BLOB_READ_WRITE_TOKEN is not set)
+artifacts/api-server/uploads/
 
 # compiled output
 dist

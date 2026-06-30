@@ -1,166 +1,223 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import * as Accordion from "@radix-ui/react-accordion";
-import { ChevronDown, Check, Briefcase, Clock, Truck, Heart } from "lucide-react";
+import { ChevronDown } from "lucide-react";
+import { useDriverApplication } from "../context/DriverApplicationContext";
 
 const fadeIn = {
   hidden: { opacity: 0, y: 40 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } },
 };
 
-export function Drivers() {
-  const [formStatus, setFormStatus] = useState<"idle" | "submitting" | "success">("idle");
+const FLT_TICKETS = [
+  { code: "PAY-01", icon: "$0.70", unit: "per mile", iconClass: "", title: "Weekly pay", desc: "Direct deposit every Friday — no holdbacks, no surprises." },
+  { code: "FLT-02", icon: "2024", unit: "model year", iconClass: "flt-ticket-icon--blue", title: "Fleet", desc: "Late-model Freightliner & Volvo sleepers, governed at 68 mph." },
+  { code: "HTM-03", icon: "2 & 3", unit: "out & home", iconClass: "flt-ticket-icon--dark", title: "Home time", desc: "Guaranteed home time based on your lane — typical 2 weeks out, 3 home." },
+  { code: "LSE-04", icon: "90", unit: "day program", iconClass: "", title: "Lease purchase", desc: "Walk-away lease purchase available after 90 days of company driving." },
+];
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setFormStatus("submitting");
-    setTimeout(() => setFormStatus("success"), 1500);
-  };
+const FLT_DOCKS = [
+  { num: "01", title: "Call recruiting", val: "(555) 000-0000", desc: "Speak to a recruiter Mon–Fri, 8am–6pm CST.", href: "tel:5550000000" },
+  { num: "02", title: "Email resume", val: "drivers@mnklogistics.com", desc: "Send CDL, MVR, and work history — reply within 24 hrs.", href: "mailto:drivers@mnklogistics.com" },
+  { num: "03", title: "Orientation", val: "3 days", desc: "Paid orientation at our Chicago terminal — hotel covered." },
+  { num: "04", title: "First dispatch", val: "Day 4", desc: "Assigned a dedicated dispatcher who knows your lane prefs." },
+  { num: "05", title: "Rider policy", val: "Pets OK", desc: "One pet under 40 lbs allowed after 30 days with deposit." },
+  { num: "06", title: "Referral bonus", val: "$1,000", desc: "Paid after your referral completes 90 days on the road." },
+];
+
+const FLT_LANES = [
+  { id: "LN-01", from: "CHI", to: "DAL", meta: "Open · OTR" },
+  { id: "LN-02", from: "ATL", to: "MIA", meta: "Open · Regional" },
+  { id: "LN-03", from: "LAX", to: "PHX", meta: "Open · OTR" },
+  { id: "LN-04", from: "HOU", to: "DEN", meta: "Open · OTR" },
+  { id: "LN-05", from: "MEM", to: "NYC", meta: "Limited · OTR" },
+];
+
+const FLT_SPECS = [
+  { type: "SPEC-A", name: "Freightliner Cascadia", rows: [["Year", "2022–2024"], ["Engine", "Detroit DD15"], ["Governor", "68 mph"], ["APU", "Yes"]] },
+  { type: "SPEC-B", name: "Volvo VNL 760", rows: [["Year", "2023–2024"], ["Engine", "Volvo D13"], ["Governor", "68 mph"], ["Fridge", "Yes"]] },
+  { type: "SPEC-C", name: "Trailer Fleet", rows: [["Dry Van", "53 ft"], ["Reefer", "53 ft"], ["Flatbed", "48 ft"], ["Avg Age", "< 3 yrs"]] },
+];
+
+const REQUIREMENTS = [
+  "Valid CDL-A License",
+  "Minimum 1 year OTR experience",
+  "23+ years of age",
+  "Clean MVR (Motor Vehicle Record)",
+  "No DUI / DWI in last 5 years",
+];
+
+export function Drivers() {
+  const { open: openApplication } = useDriverApplication();
 
   return (
     <div className="w-full bg-[var(--paper)]">
-      
-      {/* Hero */}
+
       <section className="bg-[var(--blue-dark)] pt-32 pb-24 text-center">
         <div className="max-w-[1000px] mx-auto px-4 md:px-8">
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="font-mono text-sm font-bold tracking-widest text-[var(--red)] mb-6 bg-white/10 inline-block px-4 py-2 rounded-full">
             COMPANY DRIVER · CDL-A
           </motion.div>
-          <motion.h1 
+          <motion.h1
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
             className="font-display text-[80px] md:text-[120px] font-bold text-[var(--red)] tracking-tighter leading-none mb-6"
           >
             $0.70 <span className="text-4xl md:text-6xl text-white">/ MILE</span>
           </motion.h1>
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}
-            className="font-sans text-xl text-white/70 max-w-2xl mx-auto"
+            className="font-sans text-xl text-white/70 max-w-2xl mx-auto mb-8"
           >
             Drive late-model equipment, get home when promised, and get paid weekly. No games, just freight.
           </motion.p>
+          <motion.button
+            type="button"
+            initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.28 }}
+            className="dap-hero-apply"
+            onClick={openApplication}
+          >
+            Start application →
+          </motion.button>
         </div>
       </section>
 
-      {/* Split Layout: Benefits & Application */}
-      <section className="py-24 max-w-[1400px] mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-        
-        {/* Left: Benefits & Requirements */}
-        <div>
-          <motion.h2 initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn} className="font-display text-4xl font-bold text-[var(--ink)] mb-10">
-            Why Drive For MNK?
-          </motion.h2>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-16">
-            {[
-              { icon: Briefcase, title: "Weekly Pay", desc: "Direct deposit every Friday." },
-              { icon: Clock, title: "Home Time", desc: "Guaranteed home time based on your lane." },
-              { icon: Truck, title: "Newer Trucks", desc: "Late-model Freightliner & Volvo sleepers." },
-              { icon: Heart, title: "Full Benefits", desc: "Health, dental, and vision available." }
-            ].map((b, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} className="glass p-6">
-                <div className="w-10 h-10 rounded-full bg-[var(--blue)]/10 flex items-center justify-center mb-4">
-                  <b.icon className="w-5 h-5 text-[var(--blue)]" />
-                </div>
-                <h3 className="font-display text-xl font-bold text-[var(--ink)] mb-2">{b.title}</h3>
-                <p className="font-sans text-sm text-[var(--muted)]">{b.desc}</p>
-              </motion.div>
-            ))}
-          </div>
+      <section className="flt-strip">
+        <div className="flt-head">
+          <span className="flt-head-label">FLT · Driver program</span>
+          <h2 className="flt-head-title">What you actually get</h2>
+        </div>
+        <div className="flt-grid">
+          {FLT_TICKETS.map((t, i) => (
+            <motion.article
+              key={t.code}
+              className="flt-ticket"
+              initial={{ opacity: 0, x: -16 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.08, duration: 0.45 }}
+            >
+              <span className="flt-ticket-notch" aria-hidden="true" />
+              <div className="flt-ticket-code">{t.code}</div>
+              <div className={`flt-ticket-icon ${t.iconClass}`}>{t.icon}</div>
+              <div className="flt-ticket-unit">{t.unit}</div>
+              <div className="flt-ticket-title">{t.title}</div>
+              <p className="flt-ticket-desc">{t.desc}</p>
+            </motion.article>
+          ))}
+        </div>
+      </section>
 
-          <motion.h2 initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn} className="font-display text-3xl font-bold text-[var(--ink)] mb-8">
-            Minimum Requirements
+      <section className="flt-split">
+        <div>
+          <motion.h2 initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn} className="flt-section-title">
+            Minimum requirements
           </motion.h2>
-          <ul className="space-y-4">
-            {[
-              "Valid CDL-A License",
-              "Minimum 1 year OTR experience",
-              "23+ years of age",
-              "Clean MVR (Motor Vehicle Record)",
-              "No DUI / DWI in last 5 years"
-            ].map((req, i) => (
-              <motion.li key={i} initial={{ opacity: 0, x: -10 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} className="flex items-center gap-4 bg-white p-4 rounded-lg border border-[var(--hairline)]">
-                <div className="w-6 h-6 rounded-full bg-[var(--success)]/20 flex items-center justify-center shrink-0">
-                  <Check className="w-4 h-4 text-[var(--success)]" />
-                </div>
-                <span className="font-mono text-sm font-bold text-[var(--ink)]">{req}</span>
+          <ul className="flt-req-list">
+            {REQUIREMENTS.map((req, i) => (
+              <motion.li
+                key={req}
+                className="flt-req-item"
+                initial={{ opacity: 0, x: -10 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.07 }}
+              >
+                <span className="flt-req-check">✓</span>
+                {req}
               </motion.li>
             ))}
           </ul>
         </div>
 
-        {/* Right: Application Form */}
-        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn} className="bg-white border border-[var(--hairline)] rounded-[24px] shadow-sm p-8 md:p-12 sticky top-32">
-          <h2 className="font-display text-3xl font-bold text-[var(--ink)] mb-8">Quick Application</h2>
-          
-          <AnimatePresence mode="wait">
-            {formStatus === "success" ? (
-              <motion.div 
-                key="success"
-                initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
-                className="bg-[#ecfdf5] border border-[var(--success)] rounded-xl p-10 text-center h-[400px] flex flex-col items-center justify-center"
+        <div className="flt-recruit">
+          <div className="flt-recruit-head">
+            <span className="flt-recruit-label">FLT · Recruiting dock</span>
+            <h2 className="flt-recruit-title">How to join the fleet</h2>
+          </div>
+          <div className="flt-recruit-grid">
+            {FLT_DOCKS.map((d, i) => (
+              <motion.article
+                key={d.num}
+                className="flt-dock"
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.06 }}
               >
-                <div className="w-20 h-20 bg-[var(--success)] rounded-full flex items-center justify-center text-white mb-6">
-                  <Check size={40} />
-                </div>
-                <h3 className="font-display text-2xl font-bold text-[var(--ink)] mb-4">Application Sent</h3>
-                <p className="font-sans text-[var(--muted)] mb-8">Our recruiting team will contact you within 24 hours to discuss opportunities.</p>
-                <button onClick={() => setFormStatus("idle")} className="font-mono text-sm font-bold text-[var(--blue)] hover:underline">
-                  SUBMIT ANOTHER
-                </button>
-              </motion.div>
-            ) : (
-              <motion.form key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onSubmit={handleSubmit} className="space-y-6">
-                
-                {/* Premium Floating Label Inputs */}
-                <div className="relative group">
-                  <input required type="text" id="name" className="peer w-full px-4 pt-6 pb-2 rounded-lg border border-[var(--hairline)] bg-[var(--paper)] focus:bg-white focus:outline-none focus:border-[var(--blue)] font-sans text-[var(--ink)] transition-all placeholder-transparent" placeholder="Full Name" />
-                  <label htmlFor="name" className="absolute left-4 top-2 text-[10px] font-mono font-bold text-[var(--muted)] transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:top-4 peer-focus:top-2 peer-focus:text-[10px] peer-focus:text-[var(--blue)] pointer-events-none">FULL NAME</label>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="relative group">
-                    <input required type="tel" id="phone" className="peer w-full px-4 pt-6 pb-2 rounded-lg border border-[var(--hairline)] bg-[var(--paper)] focus:bg-white focus:outline-none focus:border-[var(--blue)] font-sans text-[var(--ink)] transition-all placeholder-transparent" placeholder="Phone" />
-                    <label htmlFor="phone" className="absolute left-4 top-2 text-[10px] font-mono font-bold text-[var(--muted)] transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:top-4 peer-focus:top-2 peer-focus:text-[10px] peer-focus:text-[var(--blue)] pointer-events-none">PHONE</label>
-                  </div>
-                  <div className="relative group">
-                    <input required type="email" id="email" className="peer w-full px-4 pt-6 pb-2 rounded-lg border border-[var(--hairline)] bg-[var(--paper)] focus:bg-white focus:outline-none focus:border-[var(--blue)] font-sans text-[var(--ink)] transition-all placeholder-transparent" placeholder="Email" />
-                    <label htmlFor="email" className="absolute left-4 top-2 text-[10px] font-mono font-bold text-[var(--muted)] transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:top-4 peer-focus:top-2 peer-focus:text-[10px] peer-focus:text-[var(--blue)] pointer-events-none">EMAIL</label>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="relative group">
-                    <select required id="cdl" className="peer w-full px-4 pt-6 pb-2 rounded-lg border border-[var(--hairline)] bg-[var(--paper)] focus:bg-white focus:outline-none focus:border-[var(--blue)] font-sans text-[var(--ink)] transition-all appearance-none">
-                      <option value="" disabled selected></option>
-                      <option value="A">Class A</option>
-                      <option value="B">Class B</option>
-                    </select>
-                    <label htmlFor="cdl" className="absolute left-4 top-2 text-[10px] font-mono font-bold text-[var(--muted)] transition-all peer-focus:text-[var(--blue)] pointer-events-none">CDL CLASS</label>
-                  </div>
-                  <div className="relative group">
-                    <input required type="number" id="exp" min="0" className="peer w-full px-4 pt-6 pb-2 rounded-lg border border-[var(--hairline)] bg-[var(--paper)] focus:bg-white focus:outline-none focus:border-[var(--blue)] font-sans text-[var(--ink)] transition-all placeholder-transparent" placeholder="Exp" />
-                    <label htmlFor="exp" className="absolute left-4 top-2 text-[10px] font-mono font-bold text-[var(--muted)] transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:top-4 peer-focus:top-2 peer-focus:text-[10px] peer-focus:text-[var(--blue)] pointer-events-none">YEARS EXP.</label>
-                  </div>
-                </div>
-
-                <button 
-                  disabled={formStatus === "submitting"}
-                  className="w-full bg-[var(--blue)] text-white font-display text-xl font-bold tracking-wide py-5 rounded-lg hover:bg-[var(--blue-light)] transition-colors disabled:opacity-70 mt-4 shadow-[0_10px_20px_rgba(10,77,156,0.2)]"
-                >
-                  {formStatus === "submitting" ? (
-                    <motion.div animate={{ opacity: [0.5, 1, 0.5] }} transition={{ repeat: Infinity, duration: 1 }}>
-                      PROCESSING...
-                    </motion.div>
-                  ) : "APPLY NOW"}
-                </button>
-              </motion.form>
-            )}
-          </AnimatePresence>
-        </motion.div>
+                {d.href ? (
+                  <a href={d.href} className="flt-dock-link">
+                    <span className="flt-dock-num">{d.num}</span>
+                    <div className="flt-dock-body">
+                      <span className="flt-dock-title">{d.title}</span>
+                      <span className="flt-dock-val">{d.val}</span>
+                      <p className="flt-dock-desc">{d.desc}</p>
+                    </div>
+                  </a>
+                ) : (
+                  <>
+                    <span className="flt-dock-num">{d.num}</span>
+                    <div className="flt-dock-body">
+                      <span className="flt-dock-title">{d.title}</span>
+                      <span className="flt-dock-val">{d.val}</span>
+                      <p className="flt-dock-desc">{d.desc}</p>
+                    </div>
+                  </>
+                )}
+              </motion.article>
+            ))}
+          </div>
+        </div>
       </section>
 
-      {/* FAQ */}
-      <section className="py-24 bg-white border-y border-[var(--hairline)]">
+      <section className="flt-lanes">
+        <span className="flt-lanes-label">FLT · Active lanes</span>
+        <h2 className="flt-lanes-title">Routes we're hiring for</h2>
+        <div className="flt-lanes-track">
+          {FLT_LANES.map((l, i) => (
+            <motion.div
+              key={l.id}
+              className="flt-lane"
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.07 }}
+            >
+              <span className="flt-lane-id">{l.id}</span>
+              <span className="flt-lane-route">{l.from}<span>→</span>{l.to}</span>
+              <span className="flt-lane-meta">{l.meta}</span>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      <section className="flt-spec">
+        <span className="flt-spec-label">FLT · Equipment specs</span>
+        <h2 className="flt-spec-title">What you'll drive</h2>
+        <div className="flt-spec-grid">
+          {FLT_SPECS.map((s, i) => (
+            <motion.article
+              key={s.type}
+              className="flt-spec-sheet"
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.08 }}
+            >
+              <div className="flt-spec-type">{s.type}</div>
+              <div className="flt-spec-name">{s.name}</div>
+              <div className="flt-spec-rows">
+                {s.rows.map(([k, v]) => (
+                  <div key={k} className="flt-spec-row">
+                    <span>{k}</span>
+                    <strong>{v}</strong>
+                  </div>
+                ))}
+              </div>
+            </motion.article>
+          ))}
+        </div>
+      </section>
+
+      <section className="py-24 bg-[var(--surface)] border-y border-[var(--hairline)]">
         <div className="max-w-4xl mx-auto px-4 md:px-8">
           <h2 className="font-display text-4xl font-bold text-[var(--ink)] mb-12 text-center">Driver FAQ</h2>
           <Accordion.Root type="single" collapsible className="space-y-4">
@@ -169,7 +226,7 @@ export function Drivers() {
               { q: "What is your home time policy?", a: "We guarantee home time based on your route preferences. Typical OTR drivers are out 2 weeks, home 3 days." },
               { q: "Are trucks governed?", a: "Yes, our late-model Freightliner and Volvo sleepers are governed at 68 mph for safety and fuel efficiency." },
               { q: "Do you offer lease purchase?", a: "Yes, we have a walk-away lease purchase program available after 90 days of company driving." },
-              { q: "Can I take my truck home?", a: "Yes, as long as you have a secure, legal place to park it during your home time." }
+              { q: "Can I take my truck home?", a: "Yes, as long as you have a secure, legal place to park it during your home time." },
             ].map((faq, i) => (
               <Accordion.Item key={i} value={`driver-faq-${i}`} className="border-b border-[var(--hairline)]">
                 <Accordion.Header>
@@ -179,16 +236,13 @@ export function Drivers() {
                   </Accordion.Trigger>
                 </Accordion.Header>
                 <Accordion.Content className="overflow-hidden text-lg data-[state=closed]:animate-slideUp data-[state=open]:animate-slideDown">
-                  <div className="pb-6 text-[var(--muted)] font-sans">
-                    {faq.a}
-                  </div>
+                  <div className="pb-6 text-[var(--muted)] font-sans">{faq.a}</div>
                 </Accordion.Content>
               </Accordion.Item>
             ))}
           </Accordion.Root>
         </div>
       </section>
-
     </div>
   );
 }

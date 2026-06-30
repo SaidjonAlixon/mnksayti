@@ -7,6 +7,27 @@ const fadeIn = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } }
 };
 
+const COM_CHANNELS = [
+  { freq: "146.520", type: "Voice", variant: "live", val: "(555) 000-0000", desc: "24/7 live dispatch — speak to ops, not a voicemail.", href: "tel:5550000000" },
+  { freq: "DATA-02", type: "Email", variant: "data", val: "dispatch@mnklogistics.com", desc: "Quote requests, lane inquiries, and load updates.", href: "mailto:dispatch@mnklogistics.com", sm: true },
+  { freq: "RT-03", type: "Response", variant: "wait", val: "< 30 min", desc: "Average quote turnaround during business hours.", href: undefined },
+  { freq: "HQ-04", type: "Location", variant: "loc", val: "Chicago, IL", desc: "1234 Freight Parkway, Suite 500 · DOT & MC on file.", href: undefined },
+];
+
+const COM_HOURS = [
+  { time: "24/7", zone: "Dispatch desk", desc: "Live ops for load tracking, breakdowns, and urgent lane changes." },
+  { time: "6am–8pm", zone: "Quote desk", desc: "Rate requests answered same-day — fastest before 4pm CST." },
+  { time: "Mon–Fri", zone: "Billing", desc: "Invoice questions, POD requests, and payment status." },
+  { time: "Mon–Sat", zone: "Recruiting", desc: "Driver applications and fleet inquiries." },
+];
+
+const COM_STAMPS = [
+  { rate: "Dry Van", type: "Standard freight", desc: "53 ft trailers, 45,000 lbs max. General commodity.", tag: "Most requested" },
+  { rate: "Reefer", type: "Temperature controlled", desc: "Food-grade certified units, continuous temp monitoring.", tag: "Food & pharma" },
+  { rate: "Flatbed", type: "Open deck", desc: "Step-deck and standard flatbed for oversized loads.", tag: "Construction" },
+  { rate: "Power Only", type: "Drop & hook", desc: "You provide the trailer — we provide the tractor and driver.", tag: "Flexible" },
+];
+
 export function Contact() {
   const [formStatus, setFormStatus] = useState<"idle" | "submitting" | "success">("idle");
 
@@ -36,7 +57,96 @@ export function Contact() {
         </div>
       </section>
 
-      <section className="py-24 max-w-[1400px] mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-24 -mt-16">
+      {/* COM dispatch channels */}
+      <section className="com-strip">
+        <div className="com-head">
+          <span className="com-head-label">COM · Dispatch channels</span>
+          <h2 className="com-head-title">Reach ops directly</h2>
+        </div>
+        <div className="com-grid">
+          {COM_CHANNELS.map((ch, i) => {
+            const inner = (
+              <>
+                <div className="com-panel-top">
+                  <div className="com-signal" aria-hidden="true">
+                    <span className="com-signal-bar" />
+                    <span className="com-signal-bar" />
+                    <span className="com-signal-bar" />
+                    <span className="com-signal-bar" />
+                  </div>
+                  <span className="com-freq">{ch.freq}</span>
+                </div>
+                <span className="com-panel-type">{ch.type}</span>
+                <div className={`com-panel-val ${ch.sm ? "com-panel-val--sm" : ""} ${ch.variant === "live" ? "com-live-dot" : ""}`}>
+                  {ch.val}
+                </div>
+                <p className="com-panel-desc">{ch.desc}</p>
+              </>
+            );
+            return (
+              <motion.article
+                key={ch.freq}
+                className={`com-panel com-panel--${ch.variant}`}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08, duration: 0.45 }}
+              >
+                {ch.href ? (
+                  <a href={ch.href} className="com-panel-link">{inner}</a>
+                ) : inner}
+              </motion.article>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* COM hours timetable */}
+      <section className="com-hours">
+        <span className="com-hours-label">COM · Operations window</span>
+        <h2 className="com-hours-title">When we're available</h2>
+        <div className="com-hours-grid">
+          {COM_HOURS.map((h, i) => (
+            <motion.article
+              key={h.zone}
+              className="com-hours-slot"
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.07 }}
+            >
+              <div className="com-hours-time">{h.time}</div>
+              <span className="com-hours-zone">{h.zone}</span>
+              <p className="com-hours-desc">{h.desc}</p>
+            </motion.article>
+          ))}
+        </div>
+      </section>
+
+      {/* COM stamp cards */}
+      <section className="com-stamps">
+        <span className="com-stamps-label">COM · Equipment quotes</span>
+        <h2 className="com-stamps-title">What we haul</h2>
+        <div className="com-stamps-grid">
+          {COM_STAMPS.map((s, i) => (
+            <motion.article
+              key={s.rate}
+              className="com-stamp"
+              initial={{ opacity: 0, rotate: -2 }}
+              whileInView={{ opacity: 1, rotate: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.08 }}
+            >
+              <div className="com-stamp-rate">{s.rate}</div>
+              <div className="com-stamp-type">{s.type}</div>
+              <p className="com-stamp-desc">{s.desc}</p>
+              <span className="com-stamp-tag">{s.tag}</span>
+            </motion.article>
+          ))}
+        </div>
+      </section>
+
+      <section className="py-24 max-w-[1400px] mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-24">
         
         {/* Left: Premium Quote Form */}
         <motion.div initial="hidden" animate="visible" variants={fadeIn} className="lg:col-span-3 bg-white border border-[var(--hairline)] rounded-[24px] shadow-[0_20px_40px_rgba(11,36,71,0.06)] p-8 md:p-12 relative z-10">

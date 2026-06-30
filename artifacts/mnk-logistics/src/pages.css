@@ -1,0 +1,1225 @@
+/* ═══════════════════════════════════════════════════════════
+   ABOUT — CORP registry dossier cards (diamond + dashed rail)
+   ═══════════════════════════════════════════════════════════ */
+
+.corp-strip {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  padding: 56px 6vw 64px;
+  background: #EDE9E0;
+  border-bottom: 2px solid rgba(26, 26, 26, 0.1);
+  position: relative;
+}
+
+.corp-strip::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: repeating-linear-gradient(
+    -45deg,
+    #E0141A,
+    #E0141A 8px,
+    #1A1A1A 8px,
+    #1A1A1A 16px
+  );
+}
+
+[data-theme="dark"] .corp-strip {
+  background: #0A0F18;
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.corp-head {
+  margin-bottom: 36px;
+}
+
+.corp-head-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: var(--red);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.corp-head-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #1A1A1A;
+  margin: 0;
+}
+
+[data-theme="dark"] .corp-head-title { color: #E8F0FA; }
+
+.corp-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1px;
+  background: rgba(26, 26, 26, 0.12);
+}
+
+@media (min-width: 640px) {
+  .corp-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 1024px) {
+  .corp-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+[data-theme="dark"] .corp-grid {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.corp-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 24px 20px 28px;
+  background: #F7F4EE;
+  position: relative;
+}
+
+[data-theme="dark"] .corp-card {
+  background: #0D1520;
+}
+
+.corp-card-icon {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  position: relative;
+}
+
+.corp-card-icon::after {
+  content: "";
+  flex: 1;
+  height: 0;
+  border-top: 1px dashed rgba(26, 26, 26, 0.2);
+  margin-left: 12px;
+}
+
+[data-theme="dark"] .corp-card-icon::after {
+  border-top-color: rgba(255, 255, 255, 0.12);
+}
+
+.corp-diamond {
+  width: 14px;
+  height: 14px;
+  background: rgba(26, 26, 26, 0.25);
+  transform: rotate(45deg);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+[data-theme="dark"] .corp-diamond {
+  background: rgba(200, 212, 228, 0.25);
+}
+
+.corp-diamond-inner {
+  transform: rotate(-45deg);
+  font-family: var(--font-mono);
+  font-size: 7px;
+  font-weight: 700;
+  color: #1A1A1A;
+  line-height: 1;
+}
+
+[data-theme="dark"] .corp-diamond-inner { color: #E8F0FA; }
+
+.corp-card-code {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: rgba(26, 26, 26, 0.35);
+  text-transform: uppercase;
+}
+
+[data-theme="dark"] .corp-card-code {
+  color: rgba(200, 212, 228, 0.35);
+}
+
+.corp-card-val {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #1A1A1A;
+  line-height: 1;
+}
+
+[data-theme="dark"] .corp-card-val { color: #E8F0FA; }
+
+.corp-card-title {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--red);
+}
+
+.corp-card-desc {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: rgba(26, 26, 26, 0.5);
+  margin: 0;
+}
+
+[data-theme="dark"] .corp-card-desc {
+  color: rgba(200, 212, 228, 0.45);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   DRIVERS — FLT pay-stub ticket cards (parallelogram + notch)
+   ═══════════════════════════════════════════════════════════ */
+
+.flt-strip {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  padding: 48px 6vw 56px;
+  background: #1A1A1A;
+  border-bottom: 3px solid var(--red);
+}
+
+.flt-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.flt-head-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--red);
+  text-transform: uppercase;
+}
+
+.flt-head-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.flt-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+@media (min-width: 640px) {
+  .flt-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 1024px) {
+  .flt-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+.flt-ticket {
+  position: relative;
+  background: #fff;
+  padding: 20px 18px 22px;
+  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+  overflow: hidden;
+}
+
+.flt-ticket::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--red);
+}
+
+.flt-ticket-notch {
+  position: absolute;
+  top: 50%;
+  right: -6px;
+  width: 12px;
+  height: 12px;
+  background: #1A1A1A;
+  border-radius: 50%;
+  transform: translateY(-50%);
+}
+
+.flt-ticket-code {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.flt-ticket-icon {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: var(--red);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.flt-ticket-icon--blue { color: var(--blue); }
+.flt-ticket-icon--dark { color: #1A1A1A; }
+
+.flt-ticket-unit {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.flt-ticket-title {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #1A1A1A;
+  margin-bottom: 6px;
+}
+
+.flt-ticket-desc {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--muted);
+  margin: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CONTACT — COM dispatch channel panels (signal bars + freq)
+   ═══════════════════════════════════════════════════════════ */
+
+.com-strip {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  padding: 48px 6vw 56px;
+  background: var(--paper);
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.com-head {
+  margin-bottom: 28px;
+}
+
+.com-head-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--blue);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.com-head-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  margin: 0;
+}
+
+.com-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+@media (min-width: 640px) {
+  .com-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 1024px) {
+  .com-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+.com-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px 16px 20px;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-left: 3px solid var(--blue);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.com-panel:hover {
+  border-color: var(--blue);
+  box-shadow: 0 4px 20px rgba(10, 77, 156, 0.08);
+}
+
+[data-theme="dark"] .com-panel {
+  background: #0D1520;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="dark"] .com-panel:hover {
+  border-color: var(--blue-light);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.com-panel-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.com-signal {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 16px;
+}
+
+.com-signal-bar {
+  width: 3px;
+  background: var(--hairline);
+  border-radius: 1px;
+}
+
+.com-signal-bar:nth-child(1) { height: 4px; }
+.com-signal-bar:nth-child(2) { height: 7px; }
+.com-signal-bar:nth-child(3) { height: 10px; }
+.com-signal-bar:nth-child(4) { height: 14px; }
+
+.com-panel--live .com-signal-bar { background: var(--success); }
+.com-panel--data .com-signal-bar:nth-child(-n+3) { background: var(--blue); }
+.com-panel--data .com-signal-bar:nth-child(4) { background: var(--hairline); }
+.com-panel--wait .com-signal-bar:nth-child(-n+2) { background: var(--amber); }
+.com-panel--loc .com-signal-bar { background: var(--muted); }
+
+.com-freq {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+}
+
+.com-panel-type {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--blue);
+}
+
+.com-panel-val {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.25;
+  word-break: break-word;
+}
+
+.com-panel-val--sm {
+  font-size: 0.95rem;
+}
+
+.com-panel-desc {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--muted);
+  margin: 0;
+}
+
+.com-panel-link {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+
+.com-panel-link:hover .com-panel-val {
+  color: var(--blue);
+}
+
+.com-live-dot {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.com-live-dot::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--success);
+  animation: ops-pulse 2s ease-in-out infinite;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ABOUT §2 — CORP folio index rows (tab + ledger)
+   ═══════════════════════════════════════════════════════════ */
+
+.corp-folio {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  padding: 56px 6vw;
+  background: var(--paper);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.corp-folio-head {
+  margin-bottom: 28px;
+}
+
+.corp-folio-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--blue);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.corp-folio-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0;
+  letter-spacing: -0.03em;
+}
+
+.corp-folio-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.corp-folio-row {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  gap: 0;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.corp-folio-row:hover {
+  border-color: var(--blue);
+}
+
+[data-theme="dark"] .corp-folio-row {
+  background: #0D1520;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.corp-folio-tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #fff;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  padding: 12px 0;
+}
+
+.corp-folio-tab--blue { background: var(--blue); }
+.corp-folio-tab--red { background: var(--red); }
+.corp-folio-tab--dark { background: #1A1A1A; }
+.corp-folio-tab--green { background: var(--success); }
+
+.corp-folio-body {
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.corp-folio-row-title {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.corp-folio-row-desc {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: var(--muted);
+  margin: 0;
+}
+
+/* ABOUT §3 — CORP seal stamps */
+
+.corp-seal {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  padding: 56px 6vw 64px;
+  background: var(--blue-dark);
+}
+
+.corp-seal-head-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--blue-light);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.corp-seal-head-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 32px;
+  letter-spacing: -0.03em;
+}
+
+.corp-seal-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .corp-seal-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+.corp-seal-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+  padding: 20px 12px;
+}
+
+.corp-seal-ring {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 2px dashed rgba(255, 255, 255, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.corp-seal-ring::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.corp-seal-glyph {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--red);
+  z-index: 1;
+}
+
+.corp-seal-name {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.corp-seal-desc {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.4);
+  margin: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   DRIVERS §2 — FLT recruit dock slots (replaces form)
+   ═══════════════════════════════════════════════════════════ */
+
+.flt-recruit {
+  padding: 0;
+}
+
+.flt-recruit-head {
+  margin-bottom: 24px;
+}
+
+.flt-recruit-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--red);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.flt-recruit-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0;
+}
+
+.flt-recruit-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+@media (min-width: 640px) {
+  .flt-recruit-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.flt-dock {
+  display: flex;
+  gap: 14px;
+  padding: 16px;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-top: 3px solid var(--red);
+  transition: box-shadow 0.2s;
+}
+
+.flt-dock:hover {
+  box-shadow: 0 6px 24px rgba(224, 20, 26, 0.08);
+}
+
+[data-theme="dark"] .flt-dock {
+  background: #0D1520;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.flt-dock-num {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--red);
+  line-height: 1;
+  flex-shrink: 0;
+  width: 36px;
+}
+
+.flt-dock-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.flt-dock-title {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.flt-dock-val {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--blue);
+}
+
+.flt-dock-desc {
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--muted);
+  margin: 0;
+}
+
+.flt-dock-link {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  gap: 14px;
+  flex: 1;
+}
+
+.flt-dock-link:hover .flt-dock-val {
+  color: var(--red);
+}
+
+/* DRIVERS §3 — FLT lane strips */
+
+.flt-lanes {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  padding: 48px 6vw 56px;
+  background: #eef2f8;
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+}
+
+[data-theme="dark"] .flt-lanes {
+  background: #0A0F18;
+}
+
+.flt-lanes-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--blue);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.flt-lanes-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 28px;
+}
+
+.flt-lanes-track {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.flt-lane {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 18px;
+  background: var(--surface);
+  border-left: 4px solid var(--blue);
+}
+
+[data-theme="dark"] .flt-lane {
+  background: #0D1520;
+}
+
+.flt-lane-id {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+}
+
+.flt-lane-route {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: 0.02em;
+}
+
+.flt-lane-route span {
+  color: var(--red);
+  margin: 0 6px;
+}
+
+.flt-lane-meta {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--success);
+  text-align: right;
+}
+
+/* DRIVERS §4 — FLT equipment spec sheets */
+
+.flt-spec {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  padding: 48px 6vw 56px;
+  background: var(--paper);
+}
+
+.flt-spec-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--red);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.flt-spec-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 28px;
+}
+
+.flt-spec-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+@media (min-width: 768px) {
+  .flt-spec-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+.flt-spec-sheet {
+  padding: 20px 18px;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  position: relative;
+  overflow: hidden;
+}
+
+[data-theme="dark"] .flt-spec-sheet {
+  background: #0D1520;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.flt-spec-sheet::after {
+  content: "";
+  position: absolute;
+  bottom: 12px;
+  left: 18px;
+  right: 18px;
+  height: 24px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--ink) 0,
+    var(--ink) 2px,
+    transparent 2px,
+    transparent 5px
+  );
+  opacity: 0.08;
+}
+
+[data-theme="dark"] .flt-spec-sheet::after {
+  opacity: 0.15;
+}
+
+.flt-spec-type {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.flt-spec-name {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 12px;
+}
+
+.flt-spec-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 36px;
+}
+
+.flt-spec-row {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  border-bottom: 1px dotted var(--hairline);
+  padding-bottom: 4px;
+}
+
+.flt-spec-row strong {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CONTACT §2 — COM hours timetable
+   ═══════════════════════════════════════════════════════════ */
+
+.com-hours {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  padding: 48px 6vw 56px;
+  background: #0B2447;
+}
+
+.com-hours-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--blue-light);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.com-hours-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 28px;
+}
+
+.com-hours-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+@media (min-width: 640px) {
+  .com-hours-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 1024px) {
+  .com-hours-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+.com-hours-slot {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px 16px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.com-hours-time {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.02em;
+}
+
+.com-hours-zone {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--red);
+  text-transform: uppercase;
+}
+
+.com-hours-desc {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.45);
+  margin: 0;
+}
+
+/* CONTACT §3 — COM postal stamp cards */
+
+.com-stamps {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  padding: 48px 6vw 64px;
+  background: var(--paper);
+  border-top: 1px solid var(--hairline);
+}
+
+.com-stamps-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--red);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.com-stamps-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 28px;
+}
+
+.com-stamps-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+@media (min-width: 640px) {
+  .com-stamps-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 1024px) {
+  .com-stamps-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+.com-stamp {
+  padding: 20px 16px;
+  background: var(--surface);
+  border: 2px solid var(--hairline);
+  position: relative;
+  clip-path: polygon(
+    0 8px, 8px 0, calc(100% - 8px) 0, 100% 8px,
+    100% calc(100% - 8px), calc(100% - 8px) 100%, 8px 100%, 0 calc(100% - 8px)
+  );
+}
+
+[data-theme="dark"] .com-stamp {
+  background: #0D1520;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.com-stamp-rate {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--red);
+  margin-bottom: 4px;
+}
+
+.com-stamp-type {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 10px;
+}
+
+.com-stamp-desc {
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--muted);
+  margin: 0 0 12px;
+}
+
+.com-stamp-tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  padding: 3px 8px;
+  border: 1px solid var(--hairline);
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.flt-split {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 48px;
+  padding: 48px 6vw;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+@media (min-width: 1024px) {
+  .flt-split { grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+}
+
+.flt-req-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.flt-req-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--surface);
+  border-left: 3px solid var(--success);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+[data-theme="dark"] .flt-req-item {
+  background: #0D1520;
+}
+
+.flt-req-check {
+  width: 18px;
+  height: 18px;
+  background: rgba(31, 164, 99, 0.15);
+  color: var(--success);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  flex-shrink: 0;
+}
+
+.flt-section-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 20px;
+}

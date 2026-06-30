@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { FreightMap } from "../components/FreightMap";
 import { Check, Shield, TrendingUp, Users } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -11,6 +10,27 @@ const fadeIn = {
   hidden: { opacity: 0, y: 40 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } }
 };
+
+const CORP_CARDS = [
+  { code: "REG-01", glyph: "F", val: "2018", title: "Founded", desc: "Asset-based carrier built in Chicago with one truck and a dispatch-first mindset." },
+  { code: "REG-02", glyph: "A", val: "48", title: "Authority", desc: "FMCSA interstate operating authority across all contiguous United States." },
+  { code: "REG-03", glyph: "I", val: "$1M+", title: "Insured", desc: "Cargo and liability coverage on every load — no exceptions, no gaps." },
+  { code: "REG-04", glyph: "S", val: "SAT", title: "Safety rating", desc: "FMCSA satisfactory safety rating with vetted CDL-A operators." },
+];
+
+const CORP_FOLIO = [
+  { tab: "OPS", color: "blue", title: "Operations-first culture", desc: "Every decision runs through dispatch reality — not a slide deck. Loads move because ops says so." },
+  { tab: "TEC", color: "red", title: "Tech-integrated fleet", desc: "GPS on every truck, API tracking for shippers, automated status updates from wheels rolling to delivery." },
+  { tab: "PRT", color: "dark", title: "Long-term partnerships", desc: "Brokers and shippers stay because we answer the phone, hit appointments, and document every mile." },
+  { tab: "SAF", color: "green", title: "Safety above speed", desc: "Vetted CDL-A drivers, maintained equipment, and a culture that never cuts corners on compliance." },
+];
+
+const CORP_SEALS = [
+  { glyph: "DOT", name: "DOT Registered", desc: "Active USDOT operating authority" },
+  { glyph: "MC", name: "MC Authority", desc: "Interstate motor carrier certified" },
+  { glyph: "CARGO", name: "Cargo Bond", desc: "$1M cargo insurance per load" },
+  { glyph: "ATA", name: "Industry Member", desc: "American Trucking Associations" },
+];
 
 export function About() {
   useEffect(() => {
@@ -45,6 +65,86 @@ export function About() {
           >
             About MNK Logistics
           </motion.h1>
+        </div>
+      </section>
+
+      {/* CORP registry cards */}
+      <section className="corp-strip">
+        <div className="corp-head">
+          <span className="corp-head-label">CORP · Company registry</span>
+          <h2 className="corp-head-title">MNK at a glance</h2>
+        </div>
+        <div className="corp-grid">
+          {CORP_CARDS.map((c, i) => (
+            <motion.article
+              key={c.code}
+              className="corp-card"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.08, duration: 0.5 }}
+            >
+              <div className="corp-card-icon">
+                <span className="corp-diamond">
+                  <span className="corp-diamond-inner">{c.glyph}</span>
+                </span>
+              </div>
+              <span className="corp-card-code">{c.code}</span>
+              <div className="corp-card-val">{c.val}</div>
+              <div className="corp-card-title">{c.title}</div>
+              <p className="corp-card-desc">{c.desc}</p>
+            </motion.article>
+          ))}
+        </div>
+      </section>
+
+      {/* CORP folio index */}
+      <section className="corp-folio">
+        <div className="corp-folio-head">
+          <span className="corp-folio-label">CORP · Company folio</span>
+          <h2 className="corp-folio-title">How we operate</h2>
+        </div>
+        <div className="corp-folio-list">
+          {CORP_FOLIO.map((row, i) => (
+            <motion.article
+              key={row.tab}
+              className="corp-folio-row"
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.08 }}
+            >
+              <span className={`corp-folio-tab corp-folio-tab--${row.color}`}>{row.tab}</span>
+              <div className="corp-folio-body">
+                <h3 className="corp-folio-row-title">{row.title}</h3>
+                <p className="corp-folio-row-desc">{row.desc}</p>
+              </div>
+            </motion.article>
+          ))}
+        </div>
+      </section>
+
+      {/* CORP seal stamps */}
+      <section className="corp-seal">
+        <span className="corp-seal-head-label">CORP · Certifications</span>
+        <h2 className="corp-seal-head-title">Verified & compliant</h2>
+        <div className="corp-seal-grid">
+          {CORP_SEALS.map((s, i) => (
+            <motion.div
+              key={s.glyph}
+              className="corp-seal-item"
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.08 }}
+            >
+              <div className="corp-seal-ring">
+                <span className="corp-seal-glyph">{s.glyph}</span>
+              </div>
+              <span className="corp-seal-name">{s.name}</span>
+              <p className="corp-seal-desc">{s.desc}</p>
+            </motion.div>
+          ))}
         </div>
       </section>
 

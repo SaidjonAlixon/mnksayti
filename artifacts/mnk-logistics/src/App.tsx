@@ -8,6 +8,8 @@ import { Contact } from "./pages/Contact";
 import { useEffect } from "react";
 import Lenis from 'lenis';
 import { ThemeProvider } from "./context/ThemeContext";
+import { DriverApplicationProvider } from "./context/DriverApplicationContext";
+import { DriverApplicationModal } from "./components/DriverApplication/DriverApplicationModal";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -47,10 +49,13 @@ function App() {
 
   return (
     <ThemeProvider>
-      <BrowserRouter>
-        <ScrollToTop />
-        <AnimatedRoutes />
-      </BrowserRouter>
+      <DriverApplicationProvider>
+        <BrowserRouter>
+          <ScrollToTop />
+          <AnimatedRoutes />
+          <DriverApplicationModal />
+        </BrowserRouter>
+      </DriverApplicationProvider>
     </ThemeProvider>
   );
 }

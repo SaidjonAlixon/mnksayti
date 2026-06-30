@@ -1,60 +1,64 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
+import { X, Menu, Sun, Moon } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
+import { useDriverApplication } from "../context/DriverApplicationContext";
 
 const NAV_LINKS = [
-  { num: "01", name: "HOME", path: "/" },
-  { num: "02", name: "ABOUT", path: "/about" },
-  { num: "03", name: "DRIVERS", path: "/drivers" },
-  { num: "04", name: "CONTACT", path: "/contact" },
+  { code: "HUB", name: "Home", path: "/" },
+  { code: "CORP", name: "About", path: "/about" },
+  { code: "FLT", name: "Drivers", path: "/drivers" },
+  { code: "COM", name: "Contact", path: "/contact" },
 ];
 
-function ThemeToggle() {
+const ROUTE_CITIES = [
+  "HOUSTON", "DALLAS", "CHICAGO", "NYC", "ATLANTA", "PHOENIX",
+  "DENVER", "SEATTLE", "MIAMI", "DETROIT", "MEMPHIS", "LA",
+];
+
+const TICKER_ITEMS = [...ROUTE_CITIES, ...ROUTE_CITIES, ...ROUTE_CITIES, ...ROUTE_CITIES];
+
+function TickerStrip({ ariaHidden = false }: { ariaHidden?: boolean }) {
+  return (
+    <div className="mfx-ticker-strip" aria-hidden={ariaHidden || undefined}>
+      {TICKER_ITEMS.map((city, i) => (
+        <span key={`${city}-${i}`} className="mfx-ticker-item">
+          <span className="mfx-ticker-city">{city}</span>
+          <span className="mfx-ticker-sep">▸</span>
+        </span>
+      ))}
+    </div>
+  );
+}
+
+function ThemeShift({ compact = false }: { compact?: boolean }) {
   const { theme, toggle } = useTheme();
+  const isDark = theme === "dark";
+
   return (
     <button
       onClick={toggle}
-      className="ops-theme-toggle"
-      aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-      title={theme === "dark" ? "Day mode" : "Night mode"}
+      className={`mfx-shift ${compact ? "mfx-shift--compact" : ""}`}
+      aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+      aria-pressed={isDark}
+      title={isDark ? "Day mode" : "Night mode"}
     >
-      <AnimatePresence mode="wait">
-        {theme === "dark" ? (
-          <motion.svg
-            key="sun"
-            initial={{ rotate: -90, opacity: 0 }}
-            animate={{ rotate: 0, opacity: 1 }}
-            exit={{ rotate: 90, opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            width="18" height="18" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-          >
-            <circle cx="12" cy="12" r="5"/>
-            <line x1="12" y1="1" x2="12" y2="3"/>
-            <line x1="12" y1="21" x2="12" y2="23"/>
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-            <line x1="1" y1="12" x2="3" y2="12"/>
-            <line x1="21" y1="12" x2="23" y2="12"/>
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-          </motion.svg>
-        ) : (
-          <motion.svg
-            key="moon"
-            initial={{ rotate: 90, opacity: 0 }}
-            animate={{ rotate: 0, opacity: 1 }}
-            exit={{ rotate: -90, opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            width="18" height="18" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-          >
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-          </motion.svg>
-        )}
-      </AnimatePresence>
+      <span className="mfx-shift-track">
+        <motion.span
+          className="mfx-shift-thumb"
+          animate={{ x: isDark ? "100%" : "0%" }}
+          transition={{ type: "spring", stiffness: 480, damping: 32 }}
+        />
+        <span className={`mfx-shift-opt ${!isDark ? "mfx-shift-opt--active" : ""}`}>
+          <Sun size={13} strokeWidth={2.2} />
+          {!compact && <span>Day</span>}
+        </span>
+        <span className={`mfx-shift-opt ${isDark ? "mfx-shift-opt--active" : ""}`}>
+          <Moon size={13} strokeWidth={2.2} />
+          {!compact && <span>Night</span>}
+        </span>
+      </span>
     </button>
   );
 }
@@ -62,11 +66,11 @@ function ThemeToggle() {
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [tick, setTick] = useState(0);
   const location = useLocation();
+  const { open: openApplication } = useDriverApplication();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
+    const onScroll = () => setScrolled(window.scrollY > 16);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -75,133 +79,165 @@ export function Navbar() {
     setMobileOpen(false);
   }, [location]);
 
-  // Blinking clock effect for "live" feel
   useEffect(() => {
-    const t = setInterval(() => setTick(n => n + 1), 1000);
-    return () => clearInterval(t);
-  }, []);
-
-  const now = new Date();
-  const timeStr = now.toLocaleTimeString("en-US", { hour12: false, hour: "2-digit", minute: "2-digit" });
+    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [mobileOpen]);
 
   return (
     <>
-      <header className={`ops-navbar ${scrolled ? "ops-navbar--scrolled" : ""}`}>
-        {/* Red left accent strip */}
-        <div className="ops-red-accent" />
+      <header className={`mfx-nav ${scrolled ? "mfx-nav--scrolled" : ""}`}>
+        {/* Hazard stripe */}
+        <div className="mfx-hazard" aria-hidden="true" />
 
-        {/* Logo zone */}
-        <Link to="/" className="ops-logo-zone">
-          <span className="ops-logo-mark">MNK</span>
-          <div className="ops-logo-meta">
-            <span className="ops-logo-tagline">LOGISTICS LLC</span>
-            <span className="ops-logo-status">
-              <span className="ops-live-dot" />
-              OPS LIVE
-            </span>
-          </div>
-        </Link>
-
-        {/* Divider */}
-        <div className="ops-divider" />
-
-        {/* Navigation links — numbered */}
-        <nav className="ops-nav-links">
-          {NAV_LINKS.map((link) => {
-            const isActive = location.pathname === link.path;
-            return (
-              <Link key={link.name} to={link.path} className={`ops-nav-item ${isActive ? "ops-nav-item--active" : ""}`}>
-                <span className="ops-nav-num">{link.num}</span>
-                <span className="ops-nav-name">{link.name}</span>
-                {isActive && (
-                  <motion.span
-                    layoutId="ops-indicator"
-                    className="ops-nav-active-bar"
-                    transition={{ type: "spring", stiffness: 500, damping: 35 }}
-                  />
-                )}
-              </Link>
-            );
-          })}
-        </nav>
-
-        {/* Right side */}
-        <div className="ops-right">
-          {/* Live clock */}
-          <div className="ops-clock">
-            <span className="ops-clock-label">CT</span>
-            <span className="ops-clock-time">{timeStr}</span>
-          </div>
-
-          <div className="ops-divider" />
-
-          <ThemeToggle />
-
-          <div className="ops-divider" />
-
-          {/* CTA */}
-          <Link to="/contact" className="ops-cta">
-            <span>REQUEST QUOTE</span>
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
+        {/* Main deck */}
+        <div className="mfx-deck">
+          {/* Brand logo */}
+          <Link to="/" className="mfx-brand">
+            <div className="mfx-brand-lane">
+              <img
+                src="/logo.png"
+                alt="MNK Logistics LLC"
+                className="mfx-brand-logo mfx-brand-logo--drive"
+              />
+            </div>
           </Link>
 
-          {/* Hamburger — mobile only */}
-          <button className="ops-hamburger" onClick={() => setMobileOpen(true)} aria-label="Open menu">
-            <span /><span /><span />
-          </button>
+          {/* Waypoint rail navigation */}
+          <nav className="mfx-rail" aria-label="Main navigation">
+            <div className="mfx-rail-track" aria-hidden="true">
+              <div className="mfx-rail-dash" />
+            </div>
+            <ul className="mfx-rail-stops">
+              {NAV_LINKS.map((link) => {
+                const isActive = location.pathname === link.path;
+                return (
+                  <li key={link.code}>
+                    <Link
+                      to={link.path}
+                      className={`mfx-stop ${isActive ? "mfx-stop--active" : ""}`}
+                    >
+                      <span className="mfx-stop-node">
+                        <span className="mfx-stop-dot" />
+                        {isActive && (
+                          <motion.span
+                            layoutId="mfx-stop-ring"
+                            className="mfx-stop-pulse"
+                            transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                          />
+                        )}
+                      </span>
+                      <span className="mfx-stop-code">{link.code}</span>
+                      <span className="mfx-stop-name">{link.name}</span>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
+
+          {/* Right terminal */}
+          <div className="mfx-terminal">
+            <a href="tel:+18005551234" className="mfx-comms">
+              <span className="mfx-comms-label">COMMS</span>
+              <span className="mfx-comms-num">800·555·1234</span>
+            </a>
+
+            <ThemeShift />
+
+            <button type="button" className="mfx-dispatch" onClick={openApplication}>
+              <span className="mfx-dispatch-text">APPLY NOW</span>
+              <span className="mfx-dispatch-arrow">▶</span>
+            </button>
+
+            <button
+              className="mfx-gate-btn"
+              onClick={() => setMobileOpen(true)}
+              aria-label="Open menu"
+            >
+              <Menu size={20} strokeWidth={2.5} />
+            </button>
+          </div>
+        </div>
+
+        {/* Live route ticker */}
+        <div className="mfx-ticker" aria-hidden="true">
+          <div className="mfx-ticker-track">
+            <TickerStrip />
+            <TickerStrip ariaHidden />
+          </div>
         </div>
       </header>
 
-      {/* Mobile overlay */}
+      {/* Mobile dock gate */}
       <AnimatePresence>
         {mobileOpen && (
-          <motion.div
-            initial={{ opacity: 0, x: "100%" }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: "100%" }}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="ops-mobile-overlay"
-          >
-            {/* top bar */}
-            <div className="ops-mobile-top">
-              <span className="ops-logo-mark" style={{ fontSize: "1.3rem" }}>MNK<span style={{ color: "var(--red)" }}>.</span></span>
-              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                <ThemeToggle />
-                <button className="ops-mobile-close" onClick={() => setMobileOpen(false)}><X size={26} /></button>
-              </div>
-            </div>
-
-            {/* links */}
-            <nav className="ops-mobile-nav">
-              {NAV_LINKS.map((link, i) => (
-                <motion.div
-                  key={link.name}
-                  initial={{ opacity: 0, x: 32 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.08 + i * 0.07, duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="mfx-gate-backdrop"
+              onClick={() => setMobileOpen(false)}
+            />
+            <motion.div
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
+              className="mfx-gate-panel"
+            >
+              <div className="mfx-hazard" aria-hidden="true" />
+              <div className="mfx-gate-header">
+                <Link to="/" className="mfx-gate-brand" onClick={() => setMobileOpen(false)}>
+                  <img
+                    src="/logo.png"
+                    alt="MNK Logistics LLC"
+                    className="mfx-brand-logo mfx-brand-logo--mobile"
+                  />
+                </Link>
+                <button
+                  className="mfx-gate-close"
+                  onClick={() => setMobileOpen(false)}
+                  aria-label="Close menu"
                 >
-                  <Link
-                    to={link.path}
-                    className={`ops-mobile-link ${location.pathname === link.path ? "ops-mobile-link--active" : ""}`}
-                    onClick={() => setMobileOpen(false)}
-                  >
-                    <span className="ops-mobile-num">{link.num}</span>
-                    {link.name}
-                  </Link>
-                </motion.div>
-              ))}
-            </nav>
+                  <X size={22} />
+                </button>
+              </div>
 
-            {/* footer */}
-            <div className="ops-mobile-footer">
-              <Link to="/contact" className="ops-mobile-cta" onClick={() => setMobileOpen(false)}>
-                REQUEST A QUOTE →
-              </Link>
-              <p className="ops-mobile-note">● DISPATCH ACTIVE · 24/7 · 48 STATES</p>
-            </div>
-          </motion.div>
+              <nav className="mfx-gate-nav">
+                {NAV_LINKS.map((link, i) => {
+                  const isActive = location.pathname === link.path;
+                  return (
+                    <motion.div
+                      key={link.code}
+                      initial={{ opacity: 0, x: 40 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.06 + i * 0.07, duration: 0.35 }}
+                    >
+                      <Link
+                        to={link.path}
+                        className={`mfx-gate-link ${isActive ? "mfx-gate-link--active" : ""}`}
+                        onClick={() => setMobileOpen(false)}
+                      >
+                        <span className="mfx-gate-link-code">{link.code}</span>
+                         <span className="mfx-gate-link-name">{link.name}</span>
+                        <span className="mfx-gate-link-arrow">▶</span>
+                      </Link>
+                    </motion.div>
+                  );
+                })}
+              </nav>
+
+              <div className="mfx-gate-footer">
+                <ThemeShift compact />
+                <a href="tel:+18005551234" className="mfx-gate-comms">800·555·1234</a>
+                <button type="button" className="mfx-gate-dispatch" onClick={() => { setMobileOpen(false); openApplication(); }}>
+                  APPLY NOW ▶
+                </button>
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </>
