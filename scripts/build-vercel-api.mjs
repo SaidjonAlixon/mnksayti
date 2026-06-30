@@ -8,7 +8,7 @@ globalThis.require = createRequire(import.meta.url);
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
 await build({
-  entryPoints: [path.join(root, "api/handler.ts")],
+  entryPoints: [path.join(root, "artifacts/api-server/src/vercel-handler.ts")],
   outfile: path.join(root, "api/index.js"),
   bundle: true,
   platform: "node",
