@@ -1,7 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "version": 2,
-  "installCommand": "pnpm install --frozen-lockfile",
+  "installCommand": "corepack enable && pnpm install --frozen-lockfile",
   "buildCommand": "BASE_PATH=/ pnpm --filter @workspace/mnk-logistics run build",
   "outputDirectory": "artifacts/mnk-logistics/dist/public",
   "framework": null,
