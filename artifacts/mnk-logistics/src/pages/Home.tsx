@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { motion, useInView } from "framer-motion";
 import * as Accordion from "@radix-ui/react-accordion";
 import { ChevronDown } from "lucide-react";
-import { DispatchBoard } from "../components/DispatchBoard";
 import { useCounter } from "../hooks/useCounter";
 import { useDriverApplication } from "../context/DriverApplicationContext";
 
@@ -150,15 +149,6 @@ export function Home() {
             </div>
           ))}
         </motion.div>
-      </section>
-
-      {/* DISPATCH — edge to edge */}
-      <section className="hw-band hw-band--dark">
-        <div className="hw-band-head">
-          <span className="hw-band-label">Live operations</span>
-          <h2 className="hw-band-title">Active loads on the board</h2>
-        </div>
-        <DispatchBoard />
       </section>
 
       {/* CAPABILITIES — divider grid, no cards */}
