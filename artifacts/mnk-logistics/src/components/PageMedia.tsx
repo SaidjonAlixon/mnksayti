@@ -42,12 +42,13 @@ type MediaSplitProps = {
   image: string;
   alt: string;
   reverse?: boolean;
+  className?: string;
   children: ReactNode;
 };
 
-export function MediaSplit({ image, alt, reverse = false, children }: MediaSplitProps) {
+export function MediaSplit({ image, alt, reverse = false, className = "", children }: MediaSplitProps) {
   return (
-    <div className={`media-split ${reverse ? "media-split--reverse" : ""}`}>
+    <div className={`media-split ${reverse ? "media-split--reverse" : ""} ${className}`.trim()}>
       <MediaFigure src={image} alt={alt} className="media-figure--cover" />
       <div className="media-split__body">{children}</div>
     </div>

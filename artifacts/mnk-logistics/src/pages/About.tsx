@@ -8,9 +8,15 @@ import { TRUCK_IMAGES } from "../constants/truck-images";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const ABOUT_STATS = [
+  { val: "2018", label: "Year founded" },
+  { val: "48", label: "States covered" },
+  { val: "24/7", label: "Live dispatch" },
+];
+
 const fadeIn = {
   hidden: { opacity: 0, y: 40 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } },
 };
 
 const CORP_CARDS = [
@@ -165,44 +171,40 @@ export function About() {
         </div>
       </section>
 
-      <section className="py-24">
-        <div className="max-w-[1400px] mx-auto px-4 md:px-8">
-          <MediaSplit image={TRUCK_IMAGES.terminal} alt="MNK operations at terminal">
-            <div className="prose prose-lg prose-p:font-sans prose-p:text-[var(--muted)] prose-headings:font-display prose-headings:text-[var(--ink)]">
-              <h2>Built on reliability. Driven by data.</h2>
-              <p>
-                Founded in 2018, MNK Logistics started with a simple observation: the freight industry was full of promises, but lacked execution. We set out to build an asset-based carrier that operates with the speed and transparency of a modern tech company.
-              </p>
-              <p>
-                Today, our fleet moves essential freight across all 48 contiguous states. From temperature-sensitive pharmaceuticals to just-in-time manufacturing components, we treat every load as critical. Our 24/7 dispatch desk ensures that when you hand us a load, you can stop worrying about it.
-              </p>
-            </div>
-          </MediaSplit>
-
-          <motion.div 
-            initial="hidden" whileInView="visible" viewport={{ once: true }} transition={{ delay: 0.2 }} variants={fadeIn}
-            className="mt-12 max-w-md mx-auto lg:mx-0 lg:ml-auto"
+      <section className="about-story">
+        <div className="about-story__inner">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.55 }}
           >
-            <div className="glass p-10 border border-[var(--blue)] shadow-[0_20px_40px_rgba(11,36,71,0.08)] relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--blue-light)] rounded-full blur-[50px] opacity-20" />
-              <h3 className="font-mono text-sm font-bold tracking-widest text-[var(--blue)] mb-8">AT A GLANCE</h3>
-              <div className="space-y-6">
-                <div>
-                  <div className="font-display text-4xl font-bold text-[var(--ink)]">2018</div>
-                  <div className="font-sans text-[var(--muted)]">Year Founded</div>
-                </div>
-                <div className="h-[1px] w-full bg-[var(--hairline)]" />
-                <div>
-                  <div className="font-display text-4xl font-bold text-[var(--ink)]">48</div>
-                  <div className="font-sans text-[var(--muted)]">States Covered</div>
-                </div>
-                <div className="h-[1px] w-full bg-[var(--hairline)]" />
-                <div>
-                  <div className="font-display text-4xl font-bold text-[var(--ink)]">24/7</div>
-                  <div className="font-sans text-[var(--muted)]">Live Operations</div>
+            <MediaSplit
+              image={TRUCK_IMAGES.terminal}
+              alt="MNK operations at terminal"
+              className="about-story__split"
+            >
+              <div className="about-story__content">
+                <span className="about-story__label">Our story</span>
+                <h2 className="about-story__title">Built on reliability. Driven by data.</h2>
+                <p className="about-story__text">
+                  Founded in 2018, MNK Logistics set out to be an asset-based carrier with the speed and
+                  transparency of a modern tech company — execution over excuses.
+                </p>
+                <p className="about-story__text">
+                  Today we move freight across all 48 contiguous states with 24/7 dispatch and real-time
+                  visibility on every load.
+                </p>
+                <div className="about-story__stats">
+                  {ABOUT_STATS.map((stat) => (
+                    <div key={stat.label} className="about-story__stat">
+                      <span className="about-story__stat-val">{stat.val}</span>
+                      <span className="about-story__stat-label">{stat.label}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
-            </div>
+            </MediaSplit>
           </motion.div>
         </div>
       </section>
