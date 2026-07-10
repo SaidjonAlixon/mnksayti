@@ -20,7 +20,6 @@ export type DriverApplicationForm = {
   cdlFront: File | null;
   cdlBack: File | null;
   medicalCard: File | null;
-  mvrReport: File | null;
   resume: File | null;
   referenceLetter: File | null;
 };
@@ -45,7 +44,6 @@ export const EMPTY_DRIVER_FORM: DriverApplicationForm = {
   cdlFront: null,
   cdlBack: null,
   medicalCard: null,
-  mvrReport: null,
   resume: null,
   referenceLetter: null,
 };

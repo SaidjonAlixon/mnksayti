@@ -1140,64 +1140,6 @@
   .mfx-shift { display: none; }
 }
 
-/* Route ticker */
-.mfx-ticker {
-  height: 22px;
-  overflow: hidden;
-  background: #1A1A1A;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-  width: 100%;
-}
-
-[data-theme="dark"] .mfx-ticker {
-  background: #060A10;
-}
-
-.mfx-ticker-track {
-  display: flex;
-  align-items: center;
-  width: max-content;
-  height: 100%;
-  animation: mfx-ticker-scroll 45s linear infinite;
-  will-change: transform;
-}
-
-.mfx-ticker-strip {
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-  height: 100%;
-}
-
-@keyframes mfx-ticker-scroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-
-.mfx-ticker-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 0 14px;
-  flex-shrink: 0;
-  white-space: nowrap;
-}
-
-.mfx-ticker-city {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  color: rgba(255, 255, 255, 0.55);
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.mfx-ticker-sep {
-  font-size: 8px;
-  color: var(--red);
-}
-
 /* Mobile dock gate */
 .mfx-gate-backdrop {
   position: fixed;

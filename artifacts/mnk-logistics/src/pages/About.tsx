@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Check, Shield, TrendingUp, Users } from "lucide-react";
+import { MediaFigure, MediaGallery, MediaSplit, PageHeroMedia } from "../components/PageMedia";
+import { TRUCK_IMAGES } from "../constants/truck-images";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -53,8 +55,7 @@ export function About() {
   return (
     <div className="w-full bg-[var(--paper)]">
       
-      {/* Hero */}
-      <section className="bg-[var(--blue-dark)] pt-32 pb-24 text-center border-b border-white/10">
+      <PageHeroMedia image={TRUCK_IMAGES.fleetLine} blur={9} className="pt-32 pb-24 text-center">
         <div className="max-w-[1000px] mx-auto px-4 md:px-8">
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="font-mono text-sm font-bold tracking-widest text-[var(--blue-light)] mb-8">
             HOME / ABOUT
@@ -65,8 +66,14 @@ export function About() {
           >
             About MNK Logistics
           </motion.h1>
+          <motion.p
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}
+            className="font-sans text-lg text-white/70 max-w-2xl mx-auto mt-6"
+          >
+            Asset-based carrier built for brokers, shippers, and drivers who expect execution — not excuses.
+          </motion.p>
         </div>
-      </section>
+      </PageHeroMedia>
 
       {/* CORP registry cards */}
       <section className="corp-strip">
@@ -96,6 +103,16 @@ export function About() {
             </motion.article>
           ))}
         </div>
+      </section>
+
+      <section className="py-16 px-4 md:px-8 max-w-[1400px] mx-auto">
+        <MediaGallery
+          items={[
+            { src: TRUCK_IMAGES.highway, alt: "MNK truck on the highway", label: "Coast-to-coast lanes" },
+            { src: TRUCK_IMAGES.convoy, alt: "MNK convoy on the road", label: "Fleet in motion" },
+            { src: TRUCK_IMAGES.sleeper, alt: "MNK sleeper cab", label: "Late-model equipment" },
+          ]}
+        />
       </section>
 
       {/* CORP folio index */}
@@ -148,25 +165,23 @@ export function About() {
         </div>
       </section>
 
-      {/* Story Split */}
       <section className="py-24">
-        <div className="max-w-[1400px] mx-auto px-4 md:px-8 flex flex-col lg:flex-row gap-16 items-center">
-          <motion.div 
-            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn}
-            className="w-full lg:w-[60%] prose prose-lg prose-p:font-sans prose-p:text-[var(--muted)] prose-headings:font-display prose-headings:text-[var(--ink)]"
-          >
-            <h2>Built on reliability. Driven by data.</h2>
-            <p>
-              Founded in 2018, MNK Logistics started with a simple observation: the freight industry was full of promises, but lacked execution. We set out to build an asset-based carrier that operates with the speed and transparency of a modern tech company.
-            </p>
-            <p>
-              Today, our fleet moves essential freight across all 48 contiguous states. From temperature-sensitive pharmaceuticals to just-in-time manufacturing components, we treat every load as critical. Our 24/7 dispatch desk ensures that when you hand us a load, you can stop worrying about it.
-            </p>
-          </motion.div>
-          
+        <div className="max-w-[1400px] mx-auto px-4 md:px-8">
+          <MediaSplit image={TRUCK_IMAGES.terminal} alt="MNK operations at terminal">
+            <div className="prose prose-lg prose-p:font-sans prose-p:text-[var(--muted)] prose-headings:font-display prose-headings:text-[var(--ink)]">
+              <h2>Built on reliability. Driven by data.</h2>
+              <p>
+                Founded in 2018, MNK Logistics started with a simple observation: the freight industry was full of promises, but lacked execution. We set out to build an asset-based carrier that operates with the speed and transparency of a modern tech company.
+              </p>
+              <p>
+                Today, our fleet moves essential freight across all 48 contiguous states. From temperature-sensitive pharmaceuticals to just-in-time manufacturing components, we treat every load as critical. Our 24/7 dispatch desk ensures that when you hand us a load, you can stop worrying about it.
+              </p>
+            </div>
+          </MediaSplit>
+
           <motion.div 
             initial="hidden" whileInView="visible" viewport={{ once: true }} transition={{ delay: 0.2 }} variants={fadeIn}
-            className="w-full lg:w-[40%]"
+            className="mt-12 max-w-md mx-auto lg:mx-0 lg:ml-auto"
           >
             <div className="glass p-10 border border-[var(--blue)] shadow-[0_20px_40px_rgba(11,36,71,0.08)] relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--blue-light)] rounded-full blur-[50px] opacity-20" />
@@ -263,6 +278,12 @@ export function About() {
             <motion.h2 initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn} className="font-display text-4xl font-bold text-[var(--ink)] mb-12">
               Credentials
             </motion.h2>
+            <MediaFigure
+              src={TRUCK_IMAGES.convoy}
+              alt="MNK certified fleet on the road"
+              caption="DOT · MC · Insured operations"
+              className="mb-8"
+            />
             <div className="bg-white border border-[var(--hairline)] rounded-[20px] shadow-sm overflow-hidden">
               <div className="bg-[var(--blue-dark)] px-8 py-6">
                 <h3 className="font-mono text-white text-sm tracking-widest font-bold">MNK LOGISTICS LLC</h3>

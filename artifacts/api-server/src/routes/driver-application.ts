@@ -36,7 +36,6 @@ const FILE_FIELDS = [
   "cdlFront",
   "cdlBack",
   "medicalCard",
-  "mvrReport",
   "resume",
   "referenceLetter",
 ] as const;
@@ -74,7 +73,7 @@ router.post(
         storedFiles.push(await storeUploadedFile(field, file, applicationId));
       }
 
-      const requiredDocs = ["cdlFront", "cdlBack", "medicalCard", "mvrReport"] as const;
+      const requiredDocs = ["cdlFront", "cdlBack", "medicalCard"] as const;
       const missing = requiredDocs.filter((f) => !fileBuffers.has(f));
       if (missing.length > 0) {
         res.status(400).json({ error: `Missing required files: ${missing.join(", ")}` });

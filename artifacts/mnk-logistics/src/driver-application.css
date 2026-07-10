@@ -56,6 +56,11 @@
   --dap-upload-border: rgba(26, 26, 26, 0.2);
   --dap-radio-inset: #FFFFFF;
 
+  --dap-select-menu-bg: #FFFFFF;
+  --dap-select-menu-border: rgba(26, 26, 26, 0.12);
+  --dap-select-menu-hover: rgba(10, 77, 156, 0.08);
+  --dap-select-menu-active: rgba(10, 77, 156, 0.14);
+
   width: 100%;
   max-width: 720px;
   height: min-content;
@@ -96,6 +101,10 @@
   --dap-upload-bg: rgba(255, 255, 255, 0.02);
   --dap-upload-border: rgba(255, 255, 255, 0.18);
   --dap-radio-inset: #12141D;
+  --dap-select-menu-bg: #1A1F2E;
+  --dap-select-menu-border: rgba(255, 255, 255, 0.12);
+  --dap-select-menu-hover: rgba(255, 255, 255, 0.08);
+  --dap-select-menu-active: rgba(224, 20, 26, 0.18);
 }
 
 .dap-hazard {
@@ -776,8 +785,94 @@ button.mfx-dispatch {
   color: var(--dap-input-fg);
 }
 
+[data-theme="dark"] .dap-exp-select {
+  color-scheme: dark;
+}
+
+.dap-exp-select option {
+  background-color: var(--dap-select-menu-bg);
+  color: var(--dap-input-fg);
+}
+
 .dap-exp-select option[value=""] {
   color: var(--dap-input-placeholder);
+}
+
+.dap-exp-select-dropdown {
+  position: relative;
+}
+
+.dap-exp-select-trigger {
+  width: 100%;
+  appearance: none;
+  text-align: left;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: var(--dap-input-placeholder);
+  background: var(--dap-input-bg);
+  border: 1px solid var(--dap-input-border);
+  border-radius: 10px;
+  padding: 16px 44px 16px 16px;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.dap-exp-select-trigger--filled {
+  color: var(--dap-input-fg);
+}
+
+.dap-exp-select-trigger:focus-visible {
+  border-color: rgba(224, 20, 26, 0.45);
+  box-shadow: 0 0 0 3px rgba(224, 20, 26, 0.12);
+}
+
+.dap-exp-select-dropdown--open .dap-exp-select-chevron {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.dap-exp-select-menu {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  background: var(--dap-select-menu-bg);
+  border: 1px solid var(--dap-select-menu-border);
+  border-radius: 10px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+}
+
+.dap-exp-select-option {
+  width: 100%;
+  text-align: left;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: var(--dap-input-fg);
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.dap-exp-select-option:hover,
+.dap-exp-select-option:focus-visible {
+  background: var(--dap-select-menu-hover);
+  outline: none;
+}
+
+.dap-exp-select-option--placeholder {
+  color: var(--dap-input-placeholder);
+}
+
+.dap-exp-select-option--active {
+  background: var(--dap-select-menu-active);
+  font-weight: 600;
 }
 
 .dap-exp-select:focus {
@@ -792,6 +887,7 @@ button.mfx-dispatch {
   transform: translateY(-50%);
   color: var(--dap-input-icon);
   pointer-events: none;
+  transition: transform 0.2s;
 }
 
 .dap-exp-field {

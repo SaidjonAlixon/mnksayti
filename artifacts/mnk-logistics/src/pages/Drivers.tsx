@@ -2,6 +2,8 @@ import { motion } from "framer-motion";
 import * as Accordion from "@radix-ui/react-accordion";
 import { ChevronDown } from "lucide-react";
 import { useDriverApplication } from "../context/DriverApplicationContext";
+import { MediaFigure, MediaGallery, PageHeroMedia } from "../components/PageMedia";
+import { TRUCK_IMAGES } from "../constants/truck-images";
 
 const fadeIn = {
   hidden: { opacity: 0, y: 40 },
@@ -52,7 +54,7 @@ export function Drivers() {
   return (
     <div className="w-full bg-[var(--paper)]">
 
-      <section className="bg-[var(--blue-dark)] pt-32 pb-24 text-center">
+      <PageHeroMedia image={TRUCK_IMAGES.sleeper} blur={9} className="pt-32 pb-24 text-center">
         <div className="max-w-[1000px] mx-auto px-4 md:px-8">
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="font-mono text-sm font-bold tracking-widest text-[var(--red)] mb-6 bg-white/10 inline-block px-4 py-2 rounded-full">
             COMPANY DRIVER · CDL-A
@@ -78,7 +80,7 @@ export function Drivers() {
             Start application →
           </motion.button>
         </div>
-      </section>
+      </PageHeroMedia>
 
       <section className="flt-strip">
         <div className="flt-head">
@@ -108,6 +110,12 @@ export function Drivers() {
 
       <section className="flt-split">
         <div>
+          <MediaFigure
+            src={TRUCK_IMAGES.fleetLine}
+            alt="MNK trucks ready for dispatch"
+            caption="Fleet · Ready to roll"
+            className="mb-8"
+          />
           <motion.h2 initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn} className="flt-section-title">
             Minimum requirements
           </motion.h2>
@@ -192,6 +200,15 @@ export function Drivers() {
       <section className="flt-spec">
         <span className="flt-spec-label">FLT · Equipment specs</span>
         <h2 className="flt-spec-title">What you'll drive</h2>
+        <div className="px-4 md:px-8 max-w-[1400px] mx-auto mb-10">
+          <MediaGallery
+            items={[
+              { src: TRUCK_IMAGES.sleeper, alt: "Freightliner sleeper cab", label: "Sleeper tractors" },
+              { src: TRUCK_IMAGES.yard, alt: "Trailers at the yard", label: "Trailer fleet" },
+              { src: TRUCK_IMAGES.convoy, alt: "Trucks in convoy", label: "On the road" },
+            ]}
+          />
+        </div>
         <div className="flt-spec-grid">
           {FLT_SPECS.map((s, i) => (
             <motion.article

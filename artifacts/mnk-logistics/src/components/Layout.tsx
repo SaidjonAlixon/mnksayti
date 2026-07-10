@@ -26,7 +26,7 @@ export function Layout() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="h-full pt-[88px]"
+            className="h-full pt-[66px]"
           >
             <Outlet />
           </motion.div>

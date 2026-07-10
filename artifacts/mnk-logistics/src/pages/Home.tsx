@@ -5,22 +5,49 @@ import * as Accordion from "@radix-ui/react-accordion";
 import { ChevronDown } from "lucide-react";
 import { useCounter } from "../hooks/useCounter";
 import { useDriverApplication } from "../context/DriverApplicationContext";
+import { MediaFigure, MediaGallery } from "../components/PageMedia";
+import { TRUCK_IMAGES } from "../constants/truck-images";
 
 const fade = {
   hidden: { opacity: 0, y: 28 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.65, ease: [0.16, 1, 0.3, 1] } },
 };
 
-const LIVE_LANES = [
-  "CHI → DAL · IN TRANSIT",
-  "ATL → MIA · LOADING",
-  "LAX → PHX · DISPATCHED",
-  "NYC → ATL · IN TRANSIT",
-  "HOU → DEN · DELIVERED",
-  "MEM → CHI · LOADING",
-  "SEA → LAX · IN TRANSIT",
-  "DEN → DAL · DISPATCHED",
+const HERO_FREIGHT = [
+  { title: "Retail & consumer goods", note: "Store replenishment, seasonal surges" },
+  { title: "Food & beverage", note: "Temperature-controlled, food-grade units" },
+  { title: "Building materials", note: "Flatbed, step-deck, job-site delivery" },
+  { title: "Industrial & auto parts", note: "JIT lanes, plant-to-warehouse runs" },
+  { title: "Healthcare supplies", note: "Time-critical, documented chain of custody" },
 ];
+
+const HERO_STANDARDS = [
+  { title: "Named dispatcher", note: "Same ops contact on every account" },
+  { title: "Pickup & delivery photos", note: "Visual confirmation at both ends" },
+  { title: "Straight lane pricing", note: "No hidden accessorial surprises" },
+  { title: "Asset-based capacity", note: "Our trucks, our drivers, our name" },
+];
+
+const HERO_FLOW = [
+  { n: "01", title: "Tell us the lane", note: "Equipment, weight, window — we quote fast" },
+  { n: "02", title: "Wheels roll tracked", note: "Live GPS from gate to gate" },
+  { n: "03", title: "Proof delivered", note: "POD and docs back the same day" },
+];
+
+const HERO_INDUSTRIES = [
+  "Retail",
+  "Manufacturing",
+  "Agriculture",
+  "Energy",
+  "Healthcare",
+  "Automotive",
+];
+
+const HERO_PARTNER = {
+  quote: "We stopped chasing updates. MNK runs the lane and reports before we ask.",
+  role: "Logistics manager · National shipper",
+};
+
 
 const HUBS = [
   "HOUSTON", "DALLAS", "CHICAGO", "NYC", "ATLANTA", "PHOENIX",
@@ -36,9 +63,9 @@ const CAPS = [
 ];
 
 const FLEET = [
-  { t: "Dry Van", s: "Available", d: "53ft · 45,000 lbs · Air-ride suspension" },
-  { t: "Reefer", s: "Available", d: "Temperature controlled · Food-grade certified" },
-  { t: "Flatbed", s: "Limited", d: "Step-deck · Over-dimensional capability" },
+  { t: "Dry Van", s: "Available", d: "53ft · 45,000 lbs · Air-ride suspension", img: TRUCK_IMAGES.highway, cap: "Dry van on interstate lane" },
+  { t: "Reefer", s: "Available", d: "Temperature controlled · Food-grade certified", img: TRUCK_IMAGES.yard, cap: "Reefer unit at terminal" },
+  { t: "Flatbed", s: "Limited", d: "Step-deck · Over-dimensional capability", img: TRUCK_IMAGES.convoy, cap: "Flatbed convoy ready to roll" },
 ];
 
 const STEPS = [
@@ -90,23 +117,81 @@ export function Home() {
       {/* HERO — departure board, no map */}
       <section className="sig-hero">
         <div className="sig-hero-bg" aria-hidden="true">
-          <span className="sig-watermark">48</span>
-          <div className="sig-road">
-            <div className="sig-road-dot" />
-          </div>
+          <video
+            className="sig-hero-video"
+            src="/orqa_fon.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+          />
+          <div className="sig-hero-video-overlay" />
         </div>
 
         <div className="sig-hero-layout">
-          <div className="sig-board" aria-hidden="true">
-            <div className="sig-board-label">ACTIVE LANES</div>
-            <div className="sig-board-scroll">
-              <div className="sig-board-track">
-                {[...LIVE_LANES, ...LIVE_LANES].map((lane, i) => (
-                  <span key={i} className="sig-board-row">{lane}</span>
+          <motion.aside
+            className="sig-hero-aside"
+            initial="hidden"
+            animate="visible"
+            variants={fade}
+            transition={{ delay: 0.1 }}
+          >
+            <div className="sig-hero-card sig-hero-card--accent">
+              <span className="sig-hero-card-label">Freight we move</span>
+              <ul className="sig-hero-list">
+                {HERO_FREIGHT.map((row) => (
+                  <li key={row.title} className="sig-hero-list-item">
+                    <span className="sig-hero-list-title">{row.title}</span>
+                    <span className="sig-hero-list-note">{row.note}</span>
+                  </li>
                 ))}
-              </div>
+              </ul>
             </div>
-          </div>
+
+            <div className="sig-hero-card">
+              <span className="sig-hero-card-label">How we operate</span>
+              <ul className="sig-hero-list">
+                {HERO_STANDARDS.map((row) => (
+                  <li key={row.title} className="sig-hero-list-item">
+                    <span className="sig-hero-list-title">{row.title}</span>
+                    <span className="sig-hero-list-note">{row.note}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </motion.aside>
+
+          <motion.div
+            className="sig-hero-hub"
+            initial="hidden"
+            animate="visible"
+            variants={fade}
+            transition={{ delay: 0.16 }}
+          >
+            <div className="sig-hero-flow">
+              {HERO_FLOW.map((step) => (
+                <div key={step.n} className="sig-hero-flow-step">
+                  <span className="sig-hero-flow-num">{step.n}</span>
+                  <div className="sig-hero-flow-body">
+                    <span className="sig-hero-flow-title">{step.title}</span>
+                    <span className="sig-hero-flow-note">{step.note}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="sig-hero-badges">
+              {HERO_INDUSTRIES.map((industry) => (
+                <span key={industry} className="sig-hero-badge">{industry}</span>
+              ))}
+            </div>
+            <blockquote className="sig-hero-card sig-hero-card--quote sig-hero-card--comms-hub">
+              <span className="sig-hero-card-label">Partner voice</span>
+              <p className="sig-hero-quote">"{HERO_PARTNER.quote}"</p>
+              <footer className="sig-hero-quote-role">{HERO_PARTNER.role}</footer>
+              <Link to="/about" className="sig-hero-comms-link">Our story →</Link>
+            </blockquote>
+          </motion.div>
 
           <div className="sig-main">
             <motion.div className="sig-status" initial="hidden" animate="visible" variants={fade}>
@@ -127,6 +212,18 @@ export function Home() {
             <motion.div className="sig-actions" initial="hidden" animate="visible" variants={fade} transition={{ delay: 0.18 }}>
               <button type="button" className="sig-btn sig-btn--primary" onClick={openApplication}>Apply Now →</button>
               <Link to="/drivers" className="sig-btn sig-btn--ghost">Join the fleet</Link>
+            </motion.div>
+
+            <motion.div
+              className="sig-hero-equip"
+              initial="hidden"
+              animate="visible"
+              variants={fade}
+              transition={{ delay: 0.24 }}
+            >
+              {["Shippers", "Brokers", "3PL partners", "Owner-operators"].map((eq) => (
+                <span key={eq} className="sig-hero-equip-pill">{eq}</span>
+              ))}
             </motion.div>
           </div>
         </div>
@@ -149,6 +246,18 @@ export function Home() {
             </div>
           ))}
         </motion.div>
+      </section>
+
+      <section className="hw-band hw-band--media">
+        <h2 className="hw-band-title hw-band-title--solo">On the road with MNK</h2>
+        <p className="hw-hubs-note">Asset-based fleet — maintained equipment, professional drivers, documented every mile.</p>
+        <MediaGallery
+          items={[
+            { src: TRUCK_IMAGES.fleetLine, alt: "MNK trucks lined up at yard", label: "Fleet line" },
+            { src: TRUCK_IMAGES.sleeper, alt: "Late-model sleeper cab", label: "Sleeper fleet" },
+            { src: TRUCK_IMAGES.terminal, alt: "Truck at logistics terminal", label: "Terminal ops" },
+          ]}
+        />
       </section>
 
       {/* CAPABILITIES — divider grid, no cards */}
@@ -185,6 +294,7 @@ export function Home() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.08, duration: 0.5 }}
             >
+              <MediaFigure src={f.img} alt={f.cap} caption={f.cap} className="hw-fleet-photo" />
               <div className="hw-fleet-head">
                 <h3 className="hw-fleet-name">{f.t}</h3>
                 <span className={`hw-fleet-tag ${f.s === "Limited" ? "hw-fleet-tag--warn" : ""}`}>{f.s}</span>
@@ -304,6 +414,12 @@ export function Home() {
             viewport={{ once: true }}
             transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
           >
+            <MediaFigure
+              src={TRUCK_IMAGES.terminal}
+              alt="MNK truck at logistics terminal"
+              caption="Terminal · Chicago hub"
+              className="hw-faq-photo"
+            />
             <div className="hw-faq-desk">
               <span className="hw-faq-desk-label">Need a direct answer?</span>
               <div className="hw-faq-desk-status">

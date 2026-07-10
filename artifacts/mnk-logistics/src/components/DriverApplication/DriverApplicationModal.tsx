@@ -1,4 +1,4 @@
-import { useState, useEffect, type ChangeEvent, type DragEvent } from "react";
+import { useState, useEffect, useRef, type ChangeEvent, type DragEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight, ChevronDown, Upload, Check, Truck, User, FileCheck, ClipboardList, Mail, Phone, MapPin, FileText, type LucideIcon } from "lucide-react";
 import { useDriverApplication } from "../../context/DriverApplicationContext";
@@ -78,6 +78,87 @@ function ExperienceFileBox({
   );
 }
 
+const CDL_OPTIONS = [
+  { value: "A", label: "Class A" },
+  { value: "B", label: "Class B" },
+] as const;
+
+function CdlTypeSelect({
+  value,
+  onChange,
+}: {
+  value: "A" | "B" | "";
+  onChange: (value: "A" | "B" | "") => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const label = CDL_OPTIONS.find((o) => o.value === value)?.label ?? "Select CDL Type…";
+
+  useEffect(() => {
+    if (!open) return;
+
+    const onPointerDown = (e: MouseEvent) => {
+      if (!rootRef.current?.contains(e.target as Node)) setOpen(false);
+    };
+
+    document.addEventListener("mousedown", onPointerDown);
+    return () => document.removeEventListener("mousedown", onPointerDown);
+  }, [open]);
+
+  return (
+    <div
+      ref={rootRef}
+      className={`dap-exp-select-wrap dap-exp-select-dropdown ${open ? "dap-exp-select-dropdown--open" : ""}`}
+    >
+      <span className="dap-exp-sr">CDL type</span>
+      <button
+        type="button"
+        className={`dap-exp-select-trigger ${value ? "dap-exp-select-trigger--filled" : ""}`}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        onClick={() => setOpen((o) => !o)}
+      >
+        {label}
+      </button>
+      <ChevronDown size={18} className="dap-exp-select-chevron" aria-hidden="true" />
+      {open && (
+        <ul className="dap-exp-select-menu" role="listbox" aria-label="CDL type">
+          <li role="presentation">
+            <button
+              type="button"
+              role="option"
+              aria-selected={value === ""}
+              className={`dap-exp-select-option dap-exp-select-option--placeholder ${value === "" ? "dap-exp-select-option--active" : ""}`}
+              onClick={() => {
+                onChange("");
+                setOpen(false);
+              }}
+            >
+              Select CDL Type…
+            </button>
+          </li>
+          {CDL_OPTIONS.map((option) => (
+            <li key={option.value} role="presentation">
+              <button
+                type="button"
+                role="option"
+                aria-selected={value === option.value}
+                className={`dap-exp-select-option ${value === option.value ? "dap-exp-select-option--active" : ""}`}
+                onClick={() => {
+                  onChange(option.value);
+                  setOpen(false);
+                }}
+              >
+                {option.label}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
 function DriverExperienceStep({
   form,
   patch,
@@ -87,19 +168,7 @@ function DriverExperienceStep({
 }) {
   return (
     <div className="dap-exp">
-      <label className="dap-exp-select-wrap">
-        <span className="dap-exp-sr">CDL type</span>
-        <select
-          className={`dap-exp-select ${form.cdlClass ? "dap-exp-select--filled" : ""}`}
-          value={form.cdlClass}
-          onChange={(e) => patch({ cdlClass: e.target.value as "A" | "B" | "" })}
-        >
-          <option value="">Select CDL Type…</option>
-          <option value="A">Class A</option>
-          <option value="B">Class B</option>
-        </select>
-        <ChevronDown size={18} className="dap-exp-select-chevron" aria-hidden="true" />
-      </label>
+      <CdlTypeSelect value={form.cdlClass} onChange={(cdlClass) => patch({ cdlClass })} />
 
       <label className="dap-exp-field">
         <span className="dap-exp-label">Years of commercial driving experience?</span>
@@ -205,7 +274,7 @@ export function DriverApplicationModal() {
 
   const canSubmit = () => {
     if (isDriverRole) {
-      return !!form.dateOfBirth && !!form.mvrReport;
+      return !!form.dateOfBirth;
     }
     return true;
   };
@@ -433,7 +502,7 @@ export function DriverApplicationModal() {
                     <div className="dap-review-block">
                       <h4>Files attached</h4>
                       <ul>
-                        {[form.cdlFront, form.cdlBack, form.medicalCard, form.mvrReport, form.resume, form.referenceLetter]
+                        {[form.cdlFront, form.cdlBack, form.medicalCard, form.resume, form.referenceLetter]
                           .filter(Boolean)
                           .map((f) => <li key={f!.name}>{f!.name}</li>)}
                       </ul>
@@ -450,17 +519,6 @@ export function DriverApplicationModal() {
                             onChange={(e) => patch({ dateOfBirth: e.target.value })}
                           />
                         </label>
-                        <div className="dap-exp-section">
-                          <span className="dap-exp-label">MVR report *</span>
-                          <ExperienceFileBox
-                            wide
-                            title="Upload MVR report"
-                            subtext="PDF, JPG, PNG up to 10MB"
-                            accept=".pdf,.jpg,.jpeg,.png,.webp"
-                            file={form.mvrReport}
-                            onChange={(f) => patch({ mvrReport: f })}
-                          />
-                        </div>
                       </div>
                     )}
 

@@ -29,7 +29,6 @@ export async function submitDriverApplication(form: DriverApplicationForm): Prom
     "cdlFront",
     "cdlBack",
     "medicalCard",
-    "mvrReport",
     "resume",
     "referenceLetter",
   ] as const;

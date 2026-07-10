@@ -12,26 +12,6 @@ const NAV_LINKS = [
   { code: "COM", name: "Contact", path: "/contact" },
 ];
 
-const ROUTE_CITIES = [
-  "HOUSTON", "DALLAS", "CHICAGO", "NYC", "ATLANTA", "PHOENIX",
-  "DENVER", "SEATTLE", "MIAMI", "DETROIT", "MEMPHIS", "LA",
-];
-
-const TICKER_ITEMS = [...ROUTE_CITIES, ...ROUTE_CITIES, ...ROUTE_CITIES, ...ROUTE_CITIES];
-
-function TickerStrip({ ariaHidden = false }: { ariaHidden?: boolean }) {
-  return (
-    <div className="mfx-ticker-strip" aria-hidden={ariaHidden || undefined}>
-      {TICKER_ITEMS.map((city, i) => (
-        <span key={`${city}-${i}`} className="mfx-ticker-item">
-          <span className="mfx-ticker-city">{city}</span>
-          <span className="mfx-ticker-sep">▸</span>
-        </span>
-      ))}
-    </div>
-  );
-}
-
 function ThemeShift({ compact = false }: { compact?: boolean }) {
   const { theme, toggle } = useTheme();
   const isDark = theme === "dark";
@@ -157,14 +137,6 @@ export function Navbar() {
             >
               <Menu size={20} strokeWidth={2.5} />
             </button>
-          </div>
-        </div>
-
-        {/* Live route ticker */}
-        <div className="mfx-ticker" aria-hidden="true">
-          <div className="mfx-ticker-track">
-            <TickerStrip />
-            <TickerStrip ariaHidden />
           </div>
         </div>
       </header>
