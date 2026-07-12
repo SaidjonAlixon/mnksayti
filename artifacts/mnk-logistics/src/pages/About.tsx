@@ -238,31 +238,59 @@ export function About() {
 
       <section className="about-story">
         <div className="about-story__inner">
-          {ABOUT_STORY_BLOCKS.map((block, i) => (
-            <motion.div
-              key={block.id}
-              className="about-story__block"
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.55, delay: i * 0.05 }}
+          <motion.div
+            className="about-story__block about-story__block--feature"
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.55 }}
+          >
+            <MediaSplit
+              image={ABOUT_STORY_BLOCKS[0].image}
+              alt={ABOUT_STORY_BLOCKS[0].alt}
+              className="about-story__split"
             >
-              <MediaSplit
-                image={block.image}
-                alt={block.alt}
-                reverse={block.reverse}
-                className="about-story__split"
+              <div className="about-story__content">
+                <span className="about-story__label">{ABOUT_STORY_BLOCKS[0].label}</span>
+                <h2 className="about-story__title">{ABOUT_STORY_BLOCKS[0].title}</h2>
+                {ABOUT_STORY_BLOCKS[0].paragraphs.map((text) => (
+                  <p key={text.slice(0, 24)} className="about-story__text">
+                    {text}
+                  </p>
+                ))}
+                <div className="about-story__stats about-story__stats--pair">
+                  {ABOUT_STORY_BLOCKS[0].stats.slice(0, 2).map((stat) => (
+                    <div key={stat.label} className="about-story__stat">
+                      <span className="about-story__stat-val">{stat.val}</span>
+                      <span className="about-story__stat-label">{stat.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </MediaSplit>
+          </motion.div>
+
+          <div className="about-story__pair">
+            {ABOUT_STORY_BLOCKS.slice(1).map((block, i) => (
+              <motion.article
+                key={block.id}
+                className="about-story__card"
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.5, delay: i * 0.08 }}
               >
+                <MediaFigure
+                  src={block.image}
+                  alt={block.alt}
+                  className="about-story__card-media"
+                />
                 <div className="about-story__content">
                   <span className="about-story__label">{block.label}</span>
-                  <h2 className="about-story__title">{block.title}</h2>
-                  {block.paragraphs.map((text) => (
-                    <p key={text.slice(0, 24)} className="about-story__text">
-                      {text}
-                    </p>
-                  ))}
-                  <div className="about-story__stats">
-                    {block.stats.map((stat) => (
+                  <h2 className="about-story__title about-story__title--sm">{block.title}</h2>
+                  <p className="about-story__text">{block.paragraphs[0]}</p>
+                  <div className="about-story__stats about-story__stats--pair">
+                    {block.stats.slice(0, 2).map((stat) => (
                       <div key={stat.label} className="about-story__stat">
                         <span className="about-story__stat-val">{stat.val}</span>
                         <span className="about-story__stat-label">{stat.label}</span>
@@ -270,9 +298,9 @@ export function About() {
                     ))}
                   </div>
                 </div>
-              </MediaSplit>
-            </motion.div>
-          ))}
+              </motion.article>
+            ))}
+          </div>
         </div>
       </section>
 

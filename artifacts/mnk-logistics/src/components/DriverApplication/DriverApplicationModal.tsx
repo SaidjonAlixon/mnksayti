@@ -6,11 +6,46 @@ import { EMPTY_DRIVER_FORM, POSITIONS, type DriverApplicationForm } from "./type
 import { submitDriverApplication } from "./submit";
 import { formatHomeAddress, parseHomeAddress } from "./parseAddress";
 import {
+  digitsOnly,
   formatPersonName,
   formatUsPhone,
   isValidPersonName,
   isValidUsPhone,
 } from "./contactInput";
+
+type ContactFieldErrors = {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  phone?: string;
+  homeAddress?: string;
+};
+
+function isValidEmail(value: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
+}
+
+function getContactFieldErrors(form: DriverApplicationForm): ContactFieldErrors {
+  const errors: ContactFieldErrors = {};
+  if (!form.firstName.trim()) errors.firstName = "First name is required";
+  else if (!isValidPersonName(form.firstName)) errors.firstName = "Use letters only (min 2 characters)";
+
+  if (!form.lastName.trim()) errors.lastName = "Last name is required";
+  else if (!isValidPersonName(form.lastName)) errors.lastName = "Use letters only (min 2 characters)";
+
+  if (!form.email.trim()) errors.email = "Email is required";
+  else if (!isValidEmail(form.email)) errors.email = "Enter a valid email (name@example.com)";
+
+  const phoneDigits = digitsOnly(form.phone).length;
+  if (!form.phone.trim()) errors.phone = "US phone number is required";
+  else if (phoneDigits < 10) errors.phone = `Need ${10 - phoneDigits} more digit${10 - phoneDigits === 1 ? "" : "s"} (US 10 digits)`;
+  else if (!isValidUsPhone(form.phone)) errors.phone = "Enter a valid US number: (555) 000-0000";
+
+  if (!form.homeAddress.trim()) errors.homeAddress = "Home address is required";
+  else if (!parseHomeAddress(form.homeAddress)) errors.homeAddress = "Enter a fuller address (street, city…)";
+
+  return errors;
+}
 
 const STEPS = [
   { label: "Position", icon: Truck },
@@ -23,19 +58,24 @@ function IconField({
   label,
   icon: Icon,
   className = "",
+  error,
+  hint,
   ...props
 }: {
   label: string;
   icon: LucideIcon;
   className?: string;
+  error?: string;
+  hint?: string;
 } & React.InputHTMLAttributes<HTMLInputElement>) {
   return (
-    <label className={`dap-icon-field ${className}`}>
+    <label className={`dap-icon-field ${error ? "dap-icon-field--error" : ""} ${className}`.trim()}>
       <span className="dap-icon-label">{label}</span>
       <div className="dap-icon-input-wrap">
         <Icon size={18} className="dap-icon-input-icon" aria-hidden="true" />
-        <input className="dap-icon-input" {...props} />
+        <input className="dap-icon-input" aria-invalid={!!error} {...props} />
       </div>
+      {error ? <span className="dap-field-error">{error}</span> : hint ? <span className="dap-field-hint">{hint}</span> : null}
     </label>
   );
 }
@@ -246,6 +286,8 @@ export function DriverApplicationModal() {
 
   const [addressError, setAddressError] = useState("");
   const [contactError, setContactError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<ContactFieldErrors>({});
+  const [stepHint, setStepHint] = useState("");
 
   const patch = (partial: Partial<DriverApplicationForm>) => setForm((f) => ({ ...f, ...partial }));
 
@@ -257,6 +299,8 @@ export function DriverApplicationModal() {
     setApplicationId("");
     setAddressError("");
     setContactError("");
+    setFieldErrors({});
+    setStepHint("");
   };
 
   const handleClose = () => {
@@ -265,26 +309,6 @@ export function DriverApplicationModal() {
   };
 
   const isDriverRole = form.position === "company_driver" || form.position === "owner_operator";
-
-  const canContinue = () => {
-    if (step === 0) return !!form.position;
-    if (step === 1) {
-      return (
-        isValidPersonName(form.firstName) &&
-        isValidPersonName(form.lastName) &&
-        isValidUsPhone(form.phone) &&
-        form.email.includes("@") &&
-        form.homeAddress.trim().length > 0
-      );
-    }
-    if (step === 2) {
-      if (isDriverRole) {
-        return form.cdlClass && form.yearsOTR && form.cdlFront && form.cdlBack && form.medicalCard;
-      }
-      return form.yearsOTR.trim().length > 0;
-    }
-    return true;
-  };
 
   const canSubmit = () => {
     if (isDriverRole) {
@@ -306,25 +330,67 @@ export function DriverApplicationModal() {
     }
   };
 
+  const clearFieldError = (key: keyof ContactFieldErrors) => {
+    setFieldErrors((prev) => {
+      if (!prev[key]) return prev;
+      const next = { ...prev };
+      delete next[key];
+      return next;
+    });
+    setContactError("");
+    setStepHint("");
+  };
+
   const handleContinue = () => {
+    setStepHint("");
+    setContactError("");
+    setAddressError("");
+
+    if (step === 0 && !form.position) {
+      setStepHint("Select a position to continue");
+      return;
+    }
+
     if (step === 1) {
-      if (!isValidPersonName(form.firstName) || !isValidPersonName(form.lastName)) {
-        setContactError("Enter a valid first and last name (letters only)");
+      const errors = getContactFieldErrors(form);
+      setFieldErrors(errors);
+      const messages = Object.values(errors).filter(Boolean);
+      if (messages.length > 0) {
+        setContactError(messages[0] ?? "");
+        setStepHint(`Fix ${messages.length} field${messages.length === 1 ? "" : "s"} above to continue`);
         return;
       }
-      if (!isValidUsPhone(form.phone)) {
-        setContactError("Enter a valid US phone number: (555) 000-0000");
-        return;
-      }
-      setContactError("");
+
       const parsed = parseHomeAddress(form.homeAddress);
       if (!parsed) {
-        setAddressError("Please enter your full address (at least 3 characters)");
+        setFieldErrors({ homeAddress: "Enter a fuller address (street, city…)" });
+        setAddressError("Enter a fuller address (street, city…)");
+        setStepHint("Fix the address field to continue");
         return;
       }
-      setAddressError("");
+
+      setFieldErrors({});
       patch({ city: parsed.city, state: parsed.state, zip: parsed.zip });
     }
+
+    if (step === 2) {
+      if (isDriverRole) {
+        const missing: string[] = [];
+        if (!form.cdlClass) missing.push("CDL type");
+        if (!form.yearsOTR) missing.push("years of experience");
+        if (!form.cdlFront) missing.push("CDL front photo");
+        if (!form.cdlBack) missing.push("CDL back photo");
+        if (!form.medicalCard) missing.push("medical card");
+        if (missing.length) {
+          setStepHint(`Still needed: ${missing.join(", ")}`);
+          return;
+        }
+      } else if (!form.yearsOTR.trim()) {
+        setStepHint("Enter your investment experience to continue");
+        return;
+      }
+    }
+
     setStep((s) => s + 1);
   };
 
@@ -446,8 +512,9 @@ export function DriverApplicationModal() {
                         icon={User}
                         placeholder="John"
                         value={form.firstName}
+                        error={fieldErrors.firstName}
                         onChange={(e) => {
-                          setContactError("");
+                          clearFieldError("firstName");
                           patch({ firstName: formatPersonName(e.target.value) });
                         }}
                         autoComplete="given-name"
@@ -460,8 +527,9 @@ export function DriverApplicationModal() {
                         icon={User}
                         placeholder="Doe"
                         value={form.lastName}
+                        error={fieldErrors.lastName}
                         onChange={(e) => {
-                          setContactError("");
+                          clearFieldError("lastName");
                           patch({ lastName: formatPersonName(e.target.value) });
                         }}
                         autoComplete="family-name"
@@ -476,7 +544,11 @@ export function DriverApplicationModal() {
                       type="email"
                       placeholder="john@example.com"
                       value={form.email}
-                      onChange={(e) => patch({ email: e.target.value })}
+                      error={fieldErrors.email}
+                      onChange={(e) => {
+                        clearFieldError("email");
+                        patch({ email: e.target.value });
+                      }}
                       autoComplete="email"
                     />
                     <IconField
@@ -485,8 +557,14 @@ export function DriverApplicationModal() {
                       type="tel"
                       placeholder="(555) 000-0000"
                       value={form.phone}
+                      error={fieldErrors.phone}
+                      hint={
+                        form.phone && digitsOnly(form.phone).length < 10
+                          ? `US numbers only · ${digitsOnly(form.phone).length}/10 digits`
+                          : "US numbers only · 10 digits"
+                      }
                       onChange={(e) => {
-                        setContactError("");
+                        clearFieldError("phone");
                         patch({ phone: formatUsPhone(e.target.value) });
                       }}
                       autoComplete="tel-national"
@@ -494,20 +572,20 @@ export function DriverApplicationModal() {
                       maxLength={14}
                       pattern="\(\d{3}\) \d{3}-\d{4}"
                     />
-                    <p className="dap-field-hint">US numbers only · 10 digits</p>
                     <IconField
                       label="Home address"
                       icon={MapPin}
                       placeholder="Street, city, region"
                       value={form.homeAddress}
+                      error={fieldErrors.homeAddress || addressError}
                       onChange={(e) => {
+                        clearFieldError("homeAddress");
                         setAddressError("");
                         patch({ homeAddress: e.target.value });
                       }}
                       autoComplete="street-address"
                     />
                     {contactError && <p className="dap-error">{contactError}</p>}
-                    {addressError && <p className="dap-error">{addressError}</p>}
                   </div>
                 )}
 
@@ -588,7 +666,10 @@ export function DriverApplicationModal() {
 
         {status !== "success" && (
           <footer className="dap-footer">
-            <span className="dap-page">{step + 1} / {STEPS.length}</span>
+            <div className="dap-footer-meta">
+              <span className="dap-page">{step + 1} / {STEPS.length}</span>
+              {stepHint && <p className="dap-footer-hint">{stepHint}</p>}
+            </div>
             <div className="dap-footer-actions">
               {step > 0 && (
                 <button type="button" className="dap-btn dap-btn--ghost" onClick={() => setStep((s) => s - 1)} disabled={status === "submitting"}>
@@ -596,11 +677,23 @@ export function DriverApplicationModal() {
                 </button>
               )}
               {step < STEPS.length - 1 ? (
-                <button type="button" className="dap-btn dap-btn--primary" disabled={!canContinue()} onClick={handleContinue}>
+                <button type="button" className="dap-btn dap-btn--primary" disabled={status === "submitting"} onClick={handleContinue}>
                   Continue <ChevronRight size={16} />
                 </button>
               ) : (
-                <button type="button" className="dap-btn dap-btn--primary" disabled={status === "submitting" || !canSubmit()} onClick={handleSubmit}>
+                <button
+                  type="button"
+                  className="dap-btn dap-btn--primary"
+                  disabled={status === "submitting"}
+                  onClick={() => {
+                    if (!canSubmit()) {
+                      setStepHint("Date of birth is required to submit");
+                      return;
+                    }
+                    setStepHint("");
+                    void handleSubmit();
+                  }}
+                >
                   {status === "submitting" ? "Submitting…" : "Submit application →"}
                 </button>
               )}

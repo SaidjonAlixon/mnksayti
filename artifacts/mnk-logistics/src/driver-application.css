@@ -317,6 +317,30 @@
   box-shadow: 0 0 0 3px rgba(224, 20, 26, 0.12);
 }
 
+.dap-icon-field--error .dap-icon-input-wrap {
+  border-color: rgba(224, 20, 26, 0.75);
+  box-shadow: 0 0 0 3px rgba(224, 20, 26, 0.14);
+}
+
+.dap-field-error {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #ff6b6b;
+}
+
+.dap-field-hint {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+}
+
 .dap-icon-input-icon {
   flex-shrink: 0;
   color: var(--dap-input-icon);
@@ -604,16 +628,6 @@
   margin: 0;
 }
 
-.dap-field-hint {
-  margin: -6px 0 0;
-  font-family: var(--font-mono);
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.4);
-}
-
 .dap-footer {
   display: flex;
   align-items: center;
@@ -624,12 +638,30 @@
   flex-shrink: 0;
 }
 
+.dap-footer-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  flex: 1;
+}
+
 .dap-page {
   font-family: var(--font-mono);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.1em;
   color: var(--muted);
+}
+
+.dap-footer-hint {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #ff6b6b;
+  line-height: 1.35;
 }
 
 .dap-footer-actions {

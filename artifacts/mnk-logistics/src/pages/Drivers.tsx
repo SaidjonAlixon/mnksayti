@@ -111,7 +111,7 @@ export function Drivers() {
       </section>
 
       <section className="flt-join">
-        <div className="flt-join__left">
+        <div className="flt-join__top">
           <MediaFigure
             src={TRUCK_IMAGES.fleetLine}
             alt="MNK trucks ready for dispatch"
@@ -120,7 +120,7 @@ export function Drivers() {
           />
           <div className="flt-join__reqs">
             <h2 className="flt-join__heading">Minimum requirements</h2>
-            <ul className="flt-req-list">
+            <ul className="flt-req-list flt-req-list--grid">
               {REQUIREMENTS.map((req, i) => (
                 <motion.li
                   key={req}
@@ -136,22 +136,23 @@ export function Drivers() {
               ))}
             </ul>
           </div>
-          <div className="flt-join__perks">
-            {FLT_PERKS.map((p) => (
-              <div key={p.label} className="flt-join__perk">
-                <span className="flt-join__perk-val">{p.val}</span>
-                <span className="flt-join__perk-label">{p.label}</span>
-              </div>
-            ))}
-          </div>
         </div>
 
-        <div className="flt-join__right">
+        <div className="flt-join__perks">
+          {FLT_PERKS.map((p) => (
+            <div key={p.label} className="flt-join__perk">
+              <span className="flt-join__perk-val">{p.val}</span>
+              <span className="flt-join__perk-label">{p.label}</span>
+            </div>
+          ))}
+        </div>
+
+        <div className="flt-join__dock">
           <div className="flt-recruit-head">
             <span className="flt-recruit-label">FLT · Recruiting dock</span>
             <h2 className="flt-recruit-title">How to join the fleet</h2>
           </div>
-          <div className="flt-recruit-grid">
+          <div className="flt-recruit-grid flt-recruit-grid--wide">
             {FLT_DOCKS.map((d, i) => (
               <motion.article
                 key={d.num}
@@ -183,22 +184,22 @@ export function Drivers() {
               </motion.article>
             ))}
           </div>
-
-          <motion.div
-            className="flt-join__cta"
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <div className="flt-join__cta-copy">
-              <strong>Ready to roll?</strong>
-              <p>Start your CDL-A application online — recruiting replies within one business day.</p>
-            </div>
-            <button type="button" className="flt-join__cta-btn" onClick={openApplication}>
-              Apply now →
-            </button>
-          </motion.div>
         </div>
+
+        <motion.div
+          className="flt-join__cta"
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          <div className="flt-join__cta-copy">
+            <strong>Ready to roll?</strong>
+            <p>Start your CDL-A application online — recruiting replies within one business day.</p>
+          </div>
+          <button type="button" className="flt-join__cta-btn" onClick={openApplication}>
+            Apply now →
+          </button>
+        </motion.div>
       </section>
 
       <section className="flt-lanes">
