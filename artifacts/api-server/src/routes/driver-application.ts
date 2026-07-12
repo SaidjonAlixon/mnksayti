@@ -15,9 +15,22 @@ const upload = multer({
 
 const applicationSchema = z.object({
   position: z.enum(["company_driver", "owner_operator", "investor"]),
-  firstName: z.string().min(1).max(80),
-  lastName: z.string().min(1).max(80),
-  phone: z.string().min(7).max(30),
+  firstName: z
+    .string()
+    .trim()
+    .min(2)
+    .max(80)
+    .regex(/^[A-Za-z]+(?:[ '\-][A-Za-z]+)*$/, "Invalid first name"),
+  lastName: z
+    .string()
+    .trim()
+    .min(2)
+    .max(80)
+    .regex(/^[A-Za-z]+(?:[ '\-][A-Za-z]+)*$/, "Invalid last name"),
+  phone: z
+    .string()
+    .trim()
+    .refine((v) => v.replace(/\D/g, "").length === 10, "US phone must be 10 digits"),
   email: z.string().email().max(120),
   city: z.string().min(1).max(80),
   state: z.string().min(2).max(10),

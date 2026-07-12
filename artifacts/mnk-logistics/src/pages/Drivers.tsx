@@ -5,11 +5,6 @@ import { useDriverApplication } from "../context/DriverApplicationContext";
 import { MediaFigure, MediaGallery, PageHeroMedia } from "../components/PageMedia";
 import { TRUCK_IMAGES } from "../constants/truck-images";
 
-const fadeIn = {
-  hidden: { opacity: 0, y: 40 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } },
-};
-
 const FLT_TICKETS = [
   { code: "PAY-01", icon: "$0.70", unit: "per mile", iconClass: "", title: "Weekly pay", desc: "Direct deposit every Friday — no holdbacks, no surprises." },
   { code: "FLT-02", icon: "2024", unit: "model year", iconClass: "flt-ticket-icon--blue", title: "Fleet", desc: "Late-model Freightliner & Volvo sleepers, governed at 68 mph." },
@@ -38,6 +33,13 @@ const FLT_SPECS = [
   { type: "SPEC-A", name: "Freightliner Cascadia", rows: [["Year", "2022–2024"], ["Engine", "Detroit DD15"], ["Governor", "68 mph"], ["APU", "Yes"]] },
   { type: "SPEC-B", name: "Volvo VNL 760", rows: [["Year", "2023–2024"], ["Engine", "Volvo D13"], ["Governor", "68 mph"], ["Fridge", "Yes"]] },
   { type: "SPEC-C", name: "Trailer Fleet", rows: [["Dry Van", "53 ft"], ["Reefer", "53 ft"], ["Flatbed", "48 ft"], ["Avg Age", "< 3 yrs"]] },
+];
+
+const FLT_PERKS = [
+  { val: "$0.70", label: "CPM starting" },
+  { val: "Fri", label: "Weekly deposit" },
+  { val: "68", label: "Mph governed" },
+  { val: "2wk", label: "Typical out" },
 ];
 
 const REQUIREMENTS = [
@@ -108,35 +110,43 @@ export function Drivers() {
         </div>
       </section>
 
-      <section className="flt-split">
-        <div>
+      <section className="flt-join">
+        <div className="flt-join__left">
           <MediaFigure
             src={TRUCK_IMAGES.fleetLine}
             alt="MNK trucks ready for dispatch"
             caption="Fleet · Ready to roll"
-            className="mb-8"
+            className="flt-join__media"
           />
-          <motion.h2 initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn} className="flt-section-title">
-            Minimum requirements
-          </motion.h2>
-          <ul className="flt-req-list">
-            {REQUIREMENTS.map((req, i) => (
-              <motion.li
-                key={req}
-                className="flt-req-item"
-                initial={{ opacity: 0, x: -10 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.07 }}
-              >
-                <span className="flt-req-check">✓</span>
-                {req}
-              </motion.li>
+          <div className="flt-join__reqs">
+            <h2 className="flt-join__heading">Minimum requirements</h2>
+            <ul className="flt-req-list">
+              {REQUIREMENTS.map((req, i) => (
+                <motion.li
+                  key={req}
+                  className="flt-req-item"
+                  initial={{ opacity: 0, x: -10 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.05 }}
+                >
+                  <span className="flt-req-check">✓</span>
+                  {req}
+                </motion.li>
+              ))}
+            </ul>
+          </div>
+          <div className="flt-join__perks">
+            {FLT_PERKS.map((p) => (
+              <div key={p.label} className="flt-join__perk">
+                <span className="flt-join__perk-val">{p.val}</span>
+                <span className="flt-join__perk-label">{p.label}</span>
+              </div>
             ))}
-          </ul>
+          </div>
         </div>
 
-        <div className="flt-recruit">
+        <div className="flt-join__right">
           <div className="flt-recruit-head">
             <span className="flt-recruit-label">FLT · Recruiting dock</span>
             <h2 className="flt-recruit-title">How to join the fleet</h2>
@@ -149,7 +159,7 @@ export function Drivers() {
                 initial={{ opacity: 0, y: 12 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.06 }}
+                transition={{ delay: i * 0.05 }}
               >
                 {d.href ? (
                   <a href={d.href} className="flt-dock-link">
@@ -173,6 +183,21 @@ export function Drivers() {
               </motion.article>
             ))}
           </div>
+
+          <motion.div
+            className="flt-join__cta"
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <div className="flt-join__cta-copy">
+              <strong>Ready to roll?</strong>
+              <p>Start your CDL-A application online — recruiting replies within one business day.</p>
+            </div>
+            <button type="button" className="flt-join__cta-btn" onClick={openApplication}>
+              Apply now →
+            </button>
+          </motion.div>
         </div>
       </section>
 

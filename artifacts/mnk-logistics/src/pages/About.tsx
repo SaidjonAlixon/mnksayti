@@ -8,11 +8,59 @@ import { TRUCK_IMAGES } from "../constants/truck-images";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const ABOUT_STATS = [
-  { val: "2018", label: "Year founded" },
-  { val: "48", label: "States covered" },
-  { val: "24/7", label: "Live dispatch" },
-];
+const ABOUT_STORY_BLOCKS = [
+  {
+    id: "story",
+    reverse: false,
+    image: TRUCK_IMAGES.terminal,
+    alt: "MNK operations at terminal",
+    label: "Our story",
+    title: "Built on reliability. Driven by data.",
+    paragraphs: [
+      "Founded in 2018, MNK Logistics set out to be an asset-based carrier with the speed and transparency of a modern tech company — execution over excuses.",
+      "Today we move freight across all 48 contiguous states with 24/7 dispatch and real-time visibility on every load.",
+    ],
+    stats: [
+      { val: "2018", label: "Year founded" },
+      { val: "48", label: "States covered" },
+      { val: "24/7", label: "Live dispatch" },
+    ],
+  },
+  {
+    id: "fleet",
+    reverse: true,
+    image: TRUCK_IMAGES.highway,
+    alt: "MNK truck on the open highway",
+    label: "Our fleet",
+    title: "Late-model power. Maintained like it matters.",
+    paragraphs: [
+      "Every tractor in the MNK fleet is late-model equipment with GPS, ELD compliance, and preventive maintenance on a fixed schedule — not when something breaks.",
+      "Shippers get clean equipment and on-time wheels. Drivers get trucks they can trust for long hauls coast to coast.",
+    ],
+    stats: [
+      { val: "2022+", label: "Model years" },
+      { val: "GPS", label: "On every unit" },
+      { val: "68", label: "Mph governed" },
+    ],
+  },
+  {
+    id: "ops",
+    reverse: false,
+    image: TRUCK_IMAGES.convoy,
+    alt: "MNK convoy moving freight",
+    label: "Operations",
+    title: "Dispatch that answers. Freight that moves.",
+    paragraphs: [
+      "Our ops desk is staffed around the clock — brokers and shippers talk to people who know the load, not a ticket queue.",
+      "From pickup confirmation to delivery POD, status updates stay in sync so partners never chase us for answers.",
+    ],
+    stats: [
+      { val: "<30m", label: "Quote reply" },
+      { val: "POD", label: "Same day" },
+      { val: "1:1", label: "Load support" },
+    ],
+  },
+] as const;
 
 const fadeIn = {
   hidden: { opacity: 0, y: 40 },
@@ -39,6 +87,23 @@ const CORP_SEALS = [
   { glyph: "CARGO", name: "Cargo Bond", desc: "$1M cargo insurance per load" },
   { glyph: "ATA", name: "Industry Member", desc: "American Trucking Associations" },
 ];
+
+const JOURNEY = [
+  { year: "2018", title: "The Beginning", desc: "Started operations with a single truck and a dispatch-first mindset." },
+  { year: "2020", title: "Regional Expansion", desc: "Secured direct contracts and expanded coverage to 15 states." },
+  { year: "2022", title: "National Authority", desc: "Granted operating authority across all 48 contiguous states." },
+  { year: "2024", title: "Tech Integration", desc: "Launched API tracking, automated status, and live dispatch tools." },
+  { year: "2026", title: "Scale & Partnerships", desc: "Growing broker relationships and late-model fleet capacity nationwide." },
+] as const;
+
+const CREDENTIALS = [
+  { label: "DOT number", val: "XXXXXXX" },
+  { label: "MC number", val: "XXXXXXX" },
+  { label: "Cargo insurance", val: "$1,000,000" },
+  { label: "Liability", val: "$1,000,000" },
+  { label: "Safety rating", val: "Satisfactory", ok: true },
+  { label: "SCAC code", val: "MNKL" },
+] as const;
 
 export function About() {
   useEffect(() => {
@@ -173,39 +238,41 @@ export function About() {
 
       <section className="about-story">
         <div className="about-story__inner">
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.55 }}
-          >
-            <MediaSplit
-              image={TRUCK_IMAGES.terminal}
-              alt="MNK operations at terminal"
-              className="about-story__split"
+          {ABOUT_STORY_BLOCKS.map((block, i) => (
+            <motion.div
+              key={block.id}
+              className="about-story__block"
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.55, delay: i * 0.05 }}
             >
-              <div className="about-story__content">
-                <span className="about-story__label">Our story</span>
-                <h2 className="about-story__title">Built on reliability. Driven by data.</h2>
-                <p className="about-story__text">
-                  Founded in 2018, MNK Logistics set out to be an asset-based carrier with the speed and
-                  transparency of a modern tech company — execution over excuses.
-                </p>
-                <p className="about-story__text">
-                  Today we move freight across all 48 contiguous states with 24/7 dispatch and real-time
-                  visibility on every load.
-                </p>
-                <div className="about-story__stats">
-                  {ABOUT_STATS.map((stat) => (
-                    <div key={stat.label} className="about-story__stat">
-                      <span className="about-story__stat-val">{stat.val}</span>
-                      <span className="about-story__stat-label">{stat.label}</span>
-                    </div>
+              <MediaSplit
+                image={block.image}
+                alt={block.alt}
+                reverse={block.reverse}
+                className="about-story__split"
+              >
+                <div className="about-story__content">
+                  <span className="about-story__label">{block.label}</span>
+                  <h2 className="about-story__title">{block.title}</h2>
+                  {block.paragraphs.map((text) => (
+                    <p key={text.slice(0, 24)} className="about-story__text">
+                      {text}
+                    </p>
                   ))}
+                  <div className="about-story__stats">
+                    {block.stats.map((stat) => (
+                      <div key={stat.label} className="about-story__stat">
+                        <span className="about-story__stat-val">{stat.val}</span>
+                        <span className="about-story__stat-label">{stat.label}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            </MediaSplit>
-          </motion.div>
+              </MediaSplit>
+            </motion.div>
+          ))}
         </div>
       </section>
 
@@ -241,76 +308,75 @@ export function About() {
         </div>
       </section>
 
-      {/* Timeline & Credentials Split */}
-      <section className="py-32">
-        <div className="max-w-[1400px] mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-24">
-          
-          {/* Timeline */}
-          <div>
-            <motion.h2 initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn} className="font-display text-4xl font-bold text-[var(--ink)] mb-12">
-              The Journey
-            </motion.h2>
-            <div className="relative timeline-container pl-8">
-              <div className="absolute top-0 bottom-0 left-[11px] w-[2px] bg-[var(--hairline)]" />
-              <div className="timeline-line absolute top-0 left-[11px] w-[2px] bg-[var(--blue)]" />
-              
-              {[
-                { year: "2018", title: "The Beginning", desc: "Started operations with a single truck." },
-                { year: "2020", title: "Regional Expansion", desc: "Secured direct contracts and expanded to 15 states." },
-                { temp: true },
-                { year: "2022", title: "National Authority", desc: "Granted operating authority for all 48 contiguous states." },
-                { year: "2024", title: "Tech Integration", desc: "Launched full API-integrated tracking and automated dispatch." }
-              ].map((node, i) => (
-                <div key={i} className={`relative mb-12 last:mb-0 ${node.temp ? 'opacity-0 h-4' : ''}`}>
-                  {!node.temp && (
-                    <>
-                      <div className="absolute left-[-32px] top-1 w-6 h-6 rounded-full bg-white border-4 border-[var(--blue)] z-10 shadow-[0_0_10px_rgba(10,77,156,0.3)]" />
-                      <div className="font-mono text-sm font-bold text-[var(--blue)] mb-2">{node.year}</div>
-                      <h3 className="font-display text-2xl font-bold text-[var(--ink)] mb-2">{node.title}</h3>
-                      <p className="font-sans text-[var(--muted)]">{node.desc}</p>
-                    </>
-                  )}
-                </div>
+      <section className="about-journey">
+        <div className="about-journey__inner">
+          <div className="about-journey__col">
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <span className="about-journey__label">Timeline</span>
+              <h2 className="about-journey__title">The Journey</h2>
+            </motion.div>
+
+            <div className="about-journey__rail timeline-container">
+              <div className="about-journey__line-bg" aria-hidden="true" />
+              <div className="about-journey__line timeline-line" aria-hidden="true" />
+              {JOURNEY.map((node, i) => (
+                <motion.article
+                  key={node.year}
+                  className="about-journey__node"
+                  initial={{ opacity: 0, x: -12 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.06 }}
+                >
+                  <span className="about-journey__dot" aria-hidden="true" />
+                  <span className="about-journey__year">{node.year}</span>
+                  <h3 className="about-journey__node-title">{node.title}</h3>
+                  <p className="about-journey__node-desc">{node.desc}</p>
+                </motion.article>
               ))}
             </div>
           </div>
 
-          {/* Credentials */}
-          <div>
-            <motion.h2 initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn} className="font-display text-4xl font-bold text-[var(--ink)] mb-12">
-              Credentials
-            </motion.h2>
-            <MediaFigure
-              src={TRUCK_IMAGES.convoy}
-              alt="MNK certified fleet on the road"
-              caption="DOT · MC · Insured operations"
-              className="mb-8"
-            />
-            <div className="bg-white border border-[var(--hairline)] rounded-[20px] shadow-sm overflow-hidden">
-              <div className="bg-[var(--blue-dark)] px-8 py-6">
-                <h3 className="font-mono text-white text-sm tracking-widest font-bold">MNK LOGISTICS LLC</h3>
+          <div className="about-journey__col">
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <span className="about-journey__label">Compliance</span>
+              <h2 className="about-journey__title">Credentials</h2>
+            </motion.div>
+
+            <div className="about-creds">
+              <MediaFigure
+                src={TRUCK_IMAGES.yard}
+                alt="MNK certified fleet at the yard"
+                caption="DOT · MC · Insured operations"
+                className="about-creds__media"
+              />
+              <div className="about-creds__panel">
+                <div className="about-creds__head">
+                  <strong>MNK Logistics LLC</strong>
+                  <span>Active authority · Cargo & liability on file</span>
+                </div>
+                <ul className="about-creds__list">
+                  {CREDENTIALS.map((row) => (
+                    <li key={row.label}>
+                      <span>{row.label}</span>
+                      <strong className={"ok" in row && row.ok ? "about-creds__ok" : undefined}>
+                        {"ok" in row && row.ok ? <Check size={14} aria-hidden="true" /> : null}
+                        {row.val}
+                      </strong>
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <ul className="divide-y divide-[var(--hairline)] font-mono text-sm">
-                {[
-                  { label: "DOT NUMBER", val: "XXXXXXX" },
-                  { label: "MC NUMBER", val: "XXXXXXX" },
-                  { label: "CARGO INSURANCE", val: "$1,000,000" },
-                  { label: "LIABILITY", val: "$1,000,000" },
-                  { label: "SAFETY RATING", val: "SATISFACTORY", color: "text-[var(--success)]" },
-                  { label: "SCAC CODE", val: "MNKL" },
-                ].map((row, i) => (
-                  <li key={i} className="flex justify-between items-center px-8 py-6">
-                    <span className="text-[var(--muted)]">{row.label}</span>
-                    <span className={`font-bold ${row.color || 'text-[var(--ink)]'}`}>
-                      {row.label === 'SAFETY RATING' && <Check className="inline w-4 h-4 mr-1" />}
-                      {row.val}
-                    </span>
-                  </li>
-                ))}
-              </ul>
             </div>
           </div>
-
         </div>
       </section>
     </div>

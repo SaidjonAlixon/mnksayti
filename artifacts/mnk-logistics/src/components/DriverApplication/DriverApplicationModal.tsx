@@ -5,6 +5,12 @@ import { useDriverApplication } from "../../context/DriverApplicationContext";
 import { EMPTY_DRIVER_FORM, POSITIONS, type DriverApplicationForm } from "./types";
 import { submitDriverApplication } from "./submit";
 import { formatHomeAddress, parseHomeAddress } from "./parseAddress";
+import {
+  formatPersonName,
+  formatUsPhone,
+  isValidPersonName,
+  isValidUsPhone,
+} from "./contactInput";
 
 const STEPS = [
   { label: "Position", icon: Truck },
@@ -239,6 +245,7 @@ export function DriverApplicationModal() {
   const [applicationId, setApplicationId] = useState("");
 
   const [addressError, setAddressError] = useState("");
+  const [contactError, setContactError] = useState("");
 
   const patch = (partial: Partial<DriverApplicationForm>) => setForm((f) => ({ ...f, ...partial }));
 
@@ -249,6 +256,7 @@ export function DriverApplicationModal() {
     setError("");
     setApplicationId("");
     setAddressError("");
+    setContactError("");
   };
 
   const handleClose = () => {
@@ -261,7 +269,13 @@ export function DriverApplicationModal() {
   const canContinue = () => {
     if (step === 0) return !!form.position;
     if (step === 1) {
-      return form.firstName && form.lastName && form.phone && form.email && form.homeAddress.trim();
+      return (
+        isValidPersonName(form.firstName) &&
+        isValidPersonName(form.lastName) &&
+        isValidUsPhone(form.phone) &&
+        form.email.includes("@") &&
+        form.homeAddress.trim().length > 0
+      );
     }
     if (step === 2) {
       if (isDriverRole) {
@@ -294,6 +308,15 @@ export function DriverApplicationModal() {
 
   const handleContinue = () => {
     if (step === 1) {
+      if (!isValidPersonName(form.firstName) || !isValidPersonName(form.lastName)) {
+        setContactError("Enter a valid first and last name (letters only)");
+        return;
+      }
+      if (!isValidUsPhone(form.phone)) {
+        setContactError("Enter a valid US phone number: (555) 000-0000");
+        return;
+      }
+      setContactError("");
       const parsed = parseHomeAddress(form.homeAddress);
       if (!parsed) {
         setAddressError("Please enter your full address (at least 3 characters)");
@@ -423,16 +446,28 @@ export function DriverApplicationModal() {
                         icon={User}
                         placeholder="John"
                         value={form.firstName}
-                        onChange={(e) => patch({ firstName: e.target.value })}
+                        onChange={(e) => {
+                          setContactError("");
+                          patch({ firstName: formatPersonName(e.target.value) });
+                        }}
                         autoComplete="given-name"
+                        inputMode="text"
+                        spellCheck={false}
+                        maxLength={40}
                       />
                       <IconField
                         label="Last name"
                         icon={User}
                         placeholder="Doe"
                         value={form.lastName}
-                        onChange={(e) => patch({ lastName: e.target.value })}
+                        onChange={(e) => {
+                          setContactError("");
+                          patch({ lastName: formatPersonName(e.target.value) });
+                        }}
                         autoComplete="family-name"
+                        inputMode="text"
+                        spellCheck={false}
+                        maxLength={40}
                       />
                     </div>
                     <IconField
@@ -450,9 +485,16 @@ export function DriverApplicationModal() {
                       type="tel"
                       placeholder="(555) 000-0000"
                       value={form.phone}
-                      onChange={(e) => patch({ phone: e.target.value })}
-                      autoComplete="tel"
+                      onChange={(e) => {
+                        setContactError("");
+                        patch({ phone: formatUsPhone(e.target.value) });
+                      }}
+                      autoComplete="tel-national"
+                      inputMode="numeric"
+                      maxLength={14}
+                      pattern="\(\d{3}\) \d{3}-\d{4}"
                     />
+                    <p className="dap-field-hint">US numbers only · 10 digits</p>
                     <IconField
                       label="Home address"
                       icon={MapPin}
@@ -464,6 +506,7 @@ export function DriverApplicationModal() {
                       }}
                       autoComplete="street-address"
                     />
+                    {contactError && <p className="dap-error">{contactError}</p>}
                     {addressError && <p className="dap-error">{addressError}</p>}
                   </div>
                 )}
