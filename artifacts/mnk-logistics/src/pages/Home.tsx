@@ -169,6 +169,11 @@ export function Home() {
             variants={fade}
             transition={{ delay: 0.16 }}
           >
+            <div className="sig-hero-equip">
+              {["Owner-operators", "Shippers", "Brokers", "3PL partners"].map((eq) => (
+                <span key={eq} className="sig-hero-equip-pill">{eq}</span>
+              ))}
+            </div>
             <div className="sig-hero-flow">
               {HERO_FLOW.map((step) => (
                 <div key={step.n} className="sig-hero-flow-step">
@@ -212,18 +217,6 @@ export function Home() {
             <motion.div className="sig-actions" initial="hidden" animate="visible" variants={fade} transition={{ delay: 0.18 }}>
               <button type="button" className="sig-btn sig-btn--primary" onClick={openApplication}>Apply Now →</button>
               <Link to="/drivers" className="sig-btn sig-btn--ghost">Join the fleet</Link>
-            </motion.div>
-
-            <motion.div
-              className="sig-hero-equip"
-              initial="hidden"
-              animate="visible"
-              variants={fade}
-              transition={{ delay: 0.24 }}
-            >
-              {["Shippers", "Brokers", "3PL partners", "Owner-operators"].map((eq) => (
-                <span key={eq} className="sig-hero-equip-pill">{eq}</span>
-              ))}
             </motion.div>
           </div>
         </div>

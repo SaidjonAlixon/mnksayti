@@ -308,14 +308,7 @@ export function DriverApplicationModal() {
     setTimeout(reset, 300);
   };
 
-  const isDriverRole = form.position === "company_driver" || form.position === "owner_operator";
-
-  const canSubmit = () => {
-    if (isDriverRole) {
-      return !!form.dateOfBirth;
-    }
-    return true;
-  };
+  const canSubmit = () => !!form.dateOfBirth;
 
   const handleSubmit = async () => {
     setStatus("submitting");
@@ -374,19 +367,14 @@ export function DriverApplicationModal() {
     }
 
     if (step === 2) {
-      if (isDriverRole) {
-        const missing: string[] = [];
-        if (!form.cdlClass) missing.push("CDL type");
-        if (!form.yearsOTR) missing.push("years of experience");
-        if (!form.cdlFront) missing.push("CDL front photo");
-        if (!form.cdlBack) missing.push("CDL back photo");
-        if (!form.medicalCard) missing.push("medical card");
-        if (missing.length) {
-          setStepHint(`Still needed: ${missing.join(", ")}`);
-          return;
-        }
-      } else if (!form.yearsOTR.trim()) {
-        setStepHint("Enter your investment experience to continue");
+      const missing: string[] = [];
+      if (!form.cdlClass) missing.push("CDL type");
+      if (!form.yearsOTR) missing.push("years of experience");
+      if (!form.cdlFront) missing.push("CDL front photo");
+      if (!form.cdlBack) missing.push("CDL back photo");
+      if (!form.medicalCard) missing.push("medical card");
+      if (missing.length) {
+        setStepHint(`Still needed: ${missing.join(", ")}`);
         return;
       }
     }
@@ -490,7 +478,7 @@ export function DriverApplicationModal() {
                         className={`dap-position ${form.position === p.id ? "dap-position--active" : ""}`}
                         onClick={() => patch({ position: p.id })}
                       >
-                        <span className="dap-position-num">{p.id === "company_driver" ? "01" : p.id === "owner_operator" ? "02" : "03"}</span>
+                        <span className="dap-position-num">{p.id === "company_driver" ? "01" : "02"}</span>
                         <span className="dap-position-body">
                           <strong>{p.title}</strong>
                           <span>{p.desc}</span>
@@ -589,20 +577,7 @@ export function DriverApplicationModal() {
                   </div>
                 )}
 
-                {step === 2 && isDriverRole && <DriverExperienceStep form={form} patch={patch} />}
-
-                {step === 2 && !isDriverRole && (
-                  <div className="dap-fields">
-                    <label className="dap-field">
-                      <span>Investment experience *</span>
-                      <input placeholder="Years in trucking / logistics investment" value={form.yearsOTR} onChange={(e) => patch({ yearsOTR: e.target.value })} />
-                    </label>
-                    <label className="dap-field">
-                      <span>Additional notes</span>
-                      <textarea rows={4} placeholder="Tell us about your investment goals..." value={form.additionalNotes} onChange={(e) => patch({ additionalNotes: e.target.value })} />
-                    </label>
-                  </div>
-                )}
+                {step === 2 && <DriverExperienceStep form={form} patch={patch} />}
 
                 {step === 3 && (
                   <div className="dap-review">
@@ -614,12 +589,10 @@ export function DriverApplicationModal() {
                       <h4>Contact</h4>
                       <p>{form.firstName} {form.lastName}<br />{form.phone} · {form.email}<br />{formatHomeAddress(form.city, form.state, form.zip, form.homeAddress)}</p>
                     </div>
-                    {isDriverRole && (
-                      <div className="dap-review-block">
-                        <h4>Experience</h4>
-                        <p>CDL Class {form.cdlClass} · {form.yearsOTR} yrs commercial driving</p>
-                      </div>
-                    )}
+                    <div className="dap-review-block">
+                      <h4>Experience</h4>
+                      <p>CDL Class {form.cdlClass} · {form.yearsOTR} yrs commercial driving</p>
+                    </div>
                     <div className="dap-review-block">
                       <h4>Files attached</h4>
                       <ul>
@@ -629,19 +602,17 @@ export function DriverApplicationModal() {
                       </ul>
                     </div>
 
-                    {isDriverRole && (
-                      <div className="dap-review-driver">
-                        <label className="dap-exp-field">
-                          <span className="dap-exp-label">Date of birth *</span>
-                          <input
-                            className="dap-exp-input"
-                            type="date"
-                            value={form.dateOfBirth}
-                            onChange={(e) => patch({ dateOfBirth: e.target.value })}
-                          />
-                        </label>
-                      </div>
-                    )}
+                    <div className="dap-review-driver">
+                      <label className="dap-exp-field">
+                        <span className="dap-exp-label">Date of birth *</span>
+                        <input
+                          className="dap-exp-input"
+                          type="date"
+                          value={form.dateOfBirth}
+                          onChange={(e) => patch({ dateOfBirth: e.target.value })}
+                        />
+                      </label>
+                    </div>
 
                     <label className="dap-field"><span>Additional notes</span><textarea rows={3} value={form.additionalNotes} onChange={(e) => patch({ additionalNotes: e.target.value })} /></label>
                     <div className="dap-exp-section">

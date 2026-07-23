@@ -593,6 +593,29 @@
   box-shadow: 0 6px 0 #E0141A, 0 12px 40px rgba(0, 0, 0, 0.55);
 }
 
+/* Mobile header: logo left, theme + apply + menu right */
+@media (max-width: 900px) {
+  .mfx-nav > .mfx-hazard {
+    display: none;
+  }
+
+  .mfx-nav {
+    border-bottom: 1px solid rgba(26, 26, 26, 0.12);
+  }
+
+  .mfx-nav--scrolled {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  }
+
+  [data-theme="dark"] .mfx-nav {
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+  }
+
+  [data-theme="dark"] .mfx-nav--scrolled {
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+  }
+}
+
 /* Hazard stripe */
 .mfx-hazard {
   height: 4px;
@@ -1107,8 +1130,8 @@
   line-height: 1;
 }
 
-@media (max-width: 768px) {
-  .mfx-dispatch { display: none; }
+.mfx-dispatch-text--short {
+  display: none;
 }
 
 .mfx-gate-btn {
@@ -1136,8 +1159,115 @@
 }
 
 @media (max-width: 900px) {
-  .mfx-gate-btn { display: flex; }
-  .mfx-shift { display: none; }
+  /* Ordered mobile bar: logo | theme | apply | menu — no divider lines */
+  .mfx-deck {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    padding: 0 10px 0 12px;
+    gap: 10px;
+    border-bottom: none;
+  }
+
+  .mfx-brand,
+  [data-theme="dark"] .mfx-brand {
+    border-right: none !important;
+    padding: 0;
+    flex-shrink: 1;
+    min-width: 0;
+  }
+
+  .mfx-brand:hover {
+    background: transparent;
+  }
+
+  .mfx-brand-lane {
+    min-width: 0;
+  }
+
+  .mfx-brand-logo {
+    height: 38px;
+    max-width: min(140px, 38vw);
+  }
+
+  .mfx-terminal,
+  [data-theme="dark"] .mfx-terminal {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-left: 0;
+    padding: 0;
+    height: auto;
+    border-left: none !important;
+    flex-shrink: 0;
+  }
+
+  .mfx-shift,
+  .mfx-shift--compact,
+  [data-theme="dark"] .mfx-shift {
+    display: flex !important;
+    height: 36px;
+    padding: 0;
+    border: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    background: transparent;
+  }
+
+  .mfx-shift--compact .mfx-shift-track {
+    width: 64px;
+    height: 32px;
+    border-radius: 8px;
+    border-width: 1px;
+  }
+
+  .mfx-dispatch {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    min-width: 64px;
+    padding: 0 12px;
+    margin: 0;
+    clip-path: none;
+    border-radius: 8px;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    color: #fff !important;
+    background: var(--red) !important;
+  }
+
+  .mfx-dispatch-text--full {
+    display: none;
+  }
+
+  .mfx-dispatch-text--short {
+    display: inline !important;
+    color: inherit;
+  }
+
+  .mfx-dispatch-arrow {
+    display: none;
+  }
+
+  .mfx-gate-btn,
+  [data-theme="dark"] .mfx-gate-btn {
+    display: flex !important;
+    width: 36px;
+    height: 36px;
+    border: none !important;
+    border-left: none !important;
+    border-radius: 8px;
+    flex-shrink: 0;
+  }
+}
+
+@media (min-width: 901px) {
+  .mfx-dispatch-text--short {
+    display: none;
+  }
 }
 
 /* Mobile dock gate */

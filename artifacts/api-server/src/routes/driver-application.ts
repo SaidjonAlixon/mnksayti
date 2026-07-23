@@ -14,7 +14,7 @@ const upload = multer({
 });
 
 const applicationSchema = z.object({
-  position: z.enum(["company_driver", "owner_operator", "investor"]),
+  position: z.enum(["company_driver", "owner_operator"]),
   firstName: z
     .string()
     .trim()
@@ -56,7 +56,6 @@ const FILE_FIELDS = [
 const POSITION_LABELS: Record<string, string> = {
   company_driver: "Company Driver",
   owner_operator: "Owner Operator",
-  investor: "Investor",
 };
 
 const router: IRouter = Router();

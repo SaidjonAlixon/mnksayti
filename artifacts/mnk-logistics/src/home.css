@@ -41,22 +41,22 @@
   height: 100%;
   object-fit: cover;
   object-position: center;
-  transform: scale(1.1);
-  filter: blur(10px);
+  transform: scale(1.06);
+  filter: blur(4px);
 }
 
 .sig-hero-video-overlay {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(100deg, rgba(10, 15, 24, 0.78) 0%, rgba(10, 15, 24, 0.38) 42%, rgba(10, 15, 24, 0.62) 100%),
-    linear-gradient(to top, rgba(10, 15, 24, 0.9) 0%, transparent 45%);
+    linear-gradient(100deg, rgba(10, 15, 24, 0.62) 0%, rgba(10, 15, 24, 0.28) 42%, rgba(10, 15, 24, 0.5) 100%),
+    linear-gradient(to top, rgba(10, 15, 24, 0.82) 0%, transparent 50%);
 }
 
 [data-theme="dark"] .sig-hero-video-overlay {
   background:
-    linear-gradient(100deg, rgba(6, 10, 16, 0.84) 0%, rgba(6, 10, 16, 0.44) 42%, rgba(6, 10, 16, 0.72) 100%),
-    linear-gradient(to top, rgba(6, 10, 16, 0.94) 0%, transparent 45%);
+    linear-gradient(100deg, rgba(6, 10, 16, 0.68) 0%, rgba(6, 10, 16, 0.32) 42%, rgba(6, 10, 16, 0.58) 100%),
+    linear-gradient(to top, rgba(6, 10, 16, 0.88) 0%, transparent 50%);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -166,25 +166,105 @@
 }
 
 @media (max-width: 899px) {
-  .sig-hero-aside {
-    order: 3;
+  .sig-hero-layout {
+    align-items: stretch;
+    padding: 24px 5vw 28px;
+    gap: 0;
+  }
+
+  .sig-main {
+    order: 1;
+    width: 100%;
+    min-height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    text-align: left;
+    padding: 12px 0 8px;
+    gap: 0;
+  }
+
+  .sig-status {
+    margin-bottom: 16px;
+  }
+
+  .sig-headline {
+    margin: 0 0 14px;
+  }
+
+  .sig-word {
+    font-size: clamp(2.75rem, 14vw, 3.75rem);
+    line-height: 0.92;
+  }
+
+  .sig-tagline {
+    margin: 0 0 22px;
+    max-width: none;
+    font-size: 0.95rem;
+    line-height: 1.55;
+  }
+
+  .sig-actions {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
+    width: 100%;
+    margin: 0;
   }
 
-  .sig-hero-card--accent {
-    grid-column: 1 / -1;
+  .sig-btn {
+    width: 100%;
+    justify-content: center;
+    height: 46px;
+    padding: 0 12px;
+    clip-path: none !important;
+    border-radius: 10px;
+    font-size: 10px;
+    letter-spacing: 0.1em;
   }
 
   .sig-hero-hub {
     order: 2;
+    width: 100%;
+    margin-top: 28px;
+    padding-top: 0;
+    border-top: none;
+    gap: 12px;
   }
-}
 
-@media (max-width: 520px) {
-  .sig-hero-aside {
-    grid-template-columns: 1fr;
+  /* Mobile: keep process steps only */
+  .sig-hero-aside,
+  .sig-hero-badges,
+  .sig-hero-card--quote,
+  .sig-hero-equip {
+    display: none !important;
+  }
+
+  .sig-hero-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .sig-hero-flow-step {
+    grid-template-columns: 32px 1fr;
+    gap: 10px;
+    padding: 14px 14px;
+    border-radius: 12px;
+  }
+
+  .sig-hero-flow-step:nth-child(n + 3) {
+    display: none;
+  }
+
+  .sig-hero-flow-title {
+    font-size: 0.95rem;
+  }
+
+  .sig-hero-flow-note {
+    font-size: 0.78rem;
+    line-height: 1.4;
   }
 }
 
@@ -380,12 +460,14 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 20px;
+  margin-top: 0;
+  margin-bottom: 4px;
 }
 
 @media (min-width: 900px) {
   .sig-hero-equip {
-    justify-content: flex-end;
+    justify-content: flex-start;
+    margin-bottom: 12px;
   }
 }
 
@@ -409,12 +491,6 @@
   align-items: flex-start;
   text-align: left;
   justify-content: center;
-}
-
-@media (max-width: 899px) {
-  .sig-main {
-    order: 1;
-  }
 }
 
 @media (min-width: 900px) {

@@ -1,4 +1,4 @@
-export type DriverPosition = "company_driver" | "owner_operator" | "investor";
+export type DriverPosition = "company_driver" | "owner_operator";
 
 export type DriverApplicationForm = {
   position: DriverPosition | "";
@@ -60,11 +60,5 @@ export const POSITIONS = [
     title: "Owner Operator",
     desc: "Bring your own truck — high percentage pay and dedicated dispatch.",
     tags: ["High %", "Fuel Cards", "Flexibility"],
-  },
-  {
-    id: "investor" as const,
-    title: "Investor",
-    desc: "Partner with MNK Logistics and grow your capital with us.",
-    tags: ["Profit share", "Transparent reports", "Fleet growth", "Safe returns"],
   },
 ];

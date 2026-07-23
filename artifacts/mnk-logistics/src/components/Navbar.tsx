@@ -123,10 +123,11 @@ export function Navbar() {
               <span className="mfx-comms-num">800·555·1234</span>
             </a>
 
-            <ThemeShift />
+            <ThemeShift compact />
 
             <button type="button" className="mfx-dispatch" onClick={openApplication}>
-              <span className="mfx-dispatch-text">APPLY NOW</span>
+              <span className="mfx-dispatch-text mfx-dispatch-text--full">APPLY NOW</span>
+              <span className="mfx-dispatch-text mfx-dispatch-text--short">APPLY</span>
               <span className="mfx-dispatch-arrow">▶</span>
             </button>
 
