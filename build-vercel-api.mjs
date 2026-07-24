@@ -17,11 +17,16 @@ const staticSrc = path.join(root, "artifacts/mnk-logistics/dist/public");
 const outputRoot = path.join(root, ".vercel/output");
 const staticOut = path.join(outputRoot, "static");
 const funcDir = path.join(outputRoot, "functions", "api.func");
-const shim = path.join(root, "scripts/import-meta-url-shim.cjs");
+const shim = path.join(root, "artifacts/api-server/import-meta-url-shim.cjs");
 
 if (!existsSync(staticSrc)) {
   throw new Error(`Frontend build missing: ${staticSrc}`);
 }
+
+writeFileSync(
+  shim,
+  'export const import_meta_url = require("node:url").pathToFileURL(__filename).href;\n',
+);
 
 rmSync(outputRoot, { recursive: true, force: true });
 mkdirSync(staticOut, { recursive: true });
