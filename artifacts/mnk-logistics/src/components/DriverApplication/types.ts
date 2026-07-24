@@ -1,6 +1,24 @@
 export type DriverPosition = "company_driver" | "owner_operator";
 
+export type DriverFileField =
+  | "cdlFront"
+  | "cdlBack"
+  | "medicalCard"
+  | "resume"
+  | "referenceLetter";
+
+export type UploadedDriverFile = {
+  field: DriverFileField;
+  originalName: string;
+  url: string;
+  size: number;
+  mimeType: string;
+};
+
+export type FileUploadStatus = "idle" | "uploading" | "ready" | "error";
+
 export type DriverApplicationForm = {
+  applicationId: string;
   position: DriverPosition | "";
   firstName: string;
   lastName: string;
@@ -22,9 +40,12 @@ export type DriverApplicationForm = {
   medicalCard: File | null;
   resume: File | null;
   referenceLetter: File | null;
+  uploadedFiles: Partial<Record<DriverFileField, UploadedDriverFile>>;
+  uploadStatus: Partial<Record<DriverFileField, FileUploadStatus>>;
 };
 
 export const EMPTY_DRIVER_FORM: DriverApplicationForm = {
+  applicationId: "",
   position: "",
   firstName: "",
   lastName: "",
@@ -46,6 +67,8 @@ export const EMPTY_DRIVER_FORM: DriverApplicationForm = {
   medicalCard: null,
   resume: null,
   referenceLetter: null,
+  uploadedFiles: {},
+  uploadStatus: {},
 };
 
 export const POSITIONS = [

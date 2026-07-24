@@ -2,8 +2,15 @@ import { useState, useEffect, useRef, type ChangeEvent, type DragEvent } from "r
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight, ChevronDown, Upload, Check, Truck, User, FileCheck, ClipboardList, Mail, Phone, MapPin, FileText, type LucideIcon } from "lucide-react";
 import { useDriverApplication } from "../../context/DriverApplicationContext";
-import { EMPTY_DRIVER_FORM, POSITIONS, type DriverApplicationForm } from "./types";
+import {
+  EMPTY_DRIVER_FORM,
+  POSITIONS,
+  type DriverApplicationForm,
+  type DriverFileField,
+  type FileUploadStatus,
+} from "./types";
 import { submitDriverApplication } from "./submit";
+import { uploadDriverFile } from "./upload";
 import { formatHomeAddress, parseHomeAddress } from "./parseAddress";
 import {
   digitsOnly,
@@ -12,6 +19,13 @@ import {
   isValidPersonName,
   isValidUsPhone,
 } from "./contactInput";
+
+function newSessionId(): string {
+  if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
+    return crypto.randomUUID();
+  }
+  return `app-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+}
 
 type ContactFieldErrors = {
   firstName?: string;
@@ -85,6 +99,7 @@ function ExperienceFileBox({
   subtext,
   accept,
   file,
+  status = "idle",
   onChange,
   wide,
   icon: Icon = Upload,
@@ -93,12 +108,14 @@ function ExperienceFileBox({
   subtext: string;
   accept: string;
   file: File | null;
+  status?: FileUploadStatus;
   onChange: (f: File | null) => void;
   wide?: boolean;
   icon?: LucideIcon;
 }) {
   const pick = (e: ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.files?.[0] ?? null);
+    e.target.value = "";
   };
 
   const onDrop = (e: DragEvent) => {
@@ -107,19 +124,39 @@ function ExperienceFileBox({
     if (dropped) onChange(dropped);
   };
 
+  const ready = status === "ready";
+  const uploading = status === "uploading";
+  const errored = status === "error";
+
+  const statusSub = uploading
+    ? "Uploading to secure storage…"
+    : ready
+      ? "Uploaded · Ready"
+      : errored
+        ? "Upload failed — tap to retry"
+        : subtext;
+
   return (
     <label
-      className={`dap-exp-upload ${wide ? "dap-exp-upload--wide" : ""} ${file ? "dap-exp-upload--filled" : ""}`}
+      className={[
+        "dap-exp-upload",
+        wide ? "dap-exp-upload--wide" : "",
+        ready ? "dap-exp-upload--filled" : "",
+        uploading ? "dap-exp-upload--uploading" : "",
+        errored ? "dap-exp-upload--error" : "",
+      ]
+        .filter(Boolean)
+        .join(" ")}
       onDragOver={(e) => e.preventDefault()}
       onDrop={onDrop}
     >
-      <input type="file" accept={accept} onChange={pick} className="dap-file-input" />
+      <input type="file" accept={accept} onChange={pick} className="dap-file-input" disabled={uploading} />
       <span className="dap-exp-upload-icon"><Icon size={wide ? 20 : 18} /></span>
       <span className="dap-exp-upload-body">
         <span className="dap-exp-upload-title">{file ? file.name : title}</span>
-        <span className="dap-exp-upload-sub">{subtext}</span>
+        <span className={`dap-exp-upload-sub ${ready ? "dap-exp-upload-sub--ok" : ""}`}>{statusSub}</span>
       </span>
-      {file && <span className="dap-file-ok"><Check size={14} /></span>}
+      {ready && <span className="dap-file-ok" aria-label="Uploaded"><Check size={16} strokeWidth={3} /></span>}
     </label>
   );
 }
@@ -208,9 +245,11 @@ function CdlTypeSelect({
 function DriverExperienceStep({
   form,
   patch,
+  onFileSelected,
 }: {
   form: DriverApplicationForm;
   patch: (partial: Partial<DriverApplicationForm>) => void;
+  onFileSelected: (field: DriverFileField, file: File | null) => void;
 }) {
   return (
     <div className="dap-exp">
@@ -236,14 +275,16 @@ function DriverExperienceStep({
             subtext="PDF, JPG, PNG"
             accept=".pdf,.jpg,.jpeg,.png,.webp"
             file={form.cdlFront}
-            onChange={(f) => patch({ cdlFront: f })}
+            status={form.uploadStatus.cdlFront}
+            onChange={(f) => onFileSelected("cdlFront", f)}
           />
           <ExperienceFileBox
             title="Back side"
             subtext="PDF, JPG, PNG"
             accept=".pdf,.jpg,.jpeg,.png,.webp"
             file={form.cdlBack}
-            onChange={(f) => patch({ cdlBack: f })}
+            status={form.uploadStatus.cdlBack}
+            onChange={(f) => onFileSelected("cdlBack", f)}
           />
         </div>
       </div>
@@ -256,7 +297,8 @@ function DriverExperienceStep({
           subtext="PDF, JPG, PNG up to 10MB"
           accept=".pdf,.jpg,.jpeg,.png,.webp"
           file={form.medicalCard}
-          onChange={(f) => patch({ medicalCard: f })}
+          status={form.uploadStatus.medicalCard}
+          onChange={(f) => onFileSelected("medicalCard", f)}
         />
       </div>
 
@@ -269,7 +311,8 @@ function DriverExperienceStep({
           subtext="PDF, DOCX up to 10MB — click, or drag and drop here"
           accept=".pdf,.doc,.docx"
           file={form.resume}
-          onChange={(f) => patch({ resume: f })}
+          status={form.uploadStatus.resume}
+          onChange={(f) => onFileSelected("resume", f)}
         />
       </div>
     </div>
@@ -279,7 +322,10 @@ function DriverExperienceStep({
 export function DriverApplicationModal() {
   const { isOpen, close } = useDriverApplication();
   const [step, setStep] = useState(0);
-  const [form, setForm] = useState<DriverApplicationForm>(EMPTY_DRIVER_FORM);
+  const [form, setForm] = useState<DriverApplicationForm>(() => ({
+    ...EMPTY_DRIVER_FORM,
+    applicationId: newSessionId(),
+  }));
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [error, setError] = useState("");
   const [applicationId, setApplicationId] = useState("");
@@ -293,7 +339,7 @@ export function DriverApplicationModal() {
 
   const reset = () => {
     setStep(0);
-    setForm(EMPTY_DRIVER_FORM);
+    setForm({ ...EMPTY_DRIVER_FORM, applicationId: newSessionId() });
     setStatus("idle");
     setError("");
     setApplicationId("");
@@ -303,12 +349,51 @@ export function DriverApplicationModal() {
     setStepHint("");
   };
 
+  const handleFileSelected = async (field: DriverFileField, file: File | null) => {
+    if (!file) {
+      setForm((f) => {
+        const uploadedFiles = { ...f.uploadedFiles };
+        const uploadStatus = { ...f.uploadStatus };
+        delete uploadedFiles[field];
+        delete uploadStatus[field];
+        return { ...f, [field]: null, uploadedFiles, uploadStatus };
+      });
+      return;
+    }
+
+    let sessionId = "";
+    setForm((f) => {
+      sessionId = f.applicationId || newSessionId();
+      return {
+        ...f,
+        applicationId: sessionId,
+        [field]: file,
+        uploadStatus: { ...f.uploadStatus, [field]: "uploading" },
+      };
+    });
+
+    try {
+      const result = await uploadDriverFile(field, file, sessionId);
+      setForm((f) => ({
+        ...f,
+        applicationId: result.sessionId || sessionId,
+        [field]: file,
+        uploadedFiles: { ...f.uploadedFiles, [field]: result.file },
+        uploadStatus: { ...f.uploadStatus, [field]: "ready" },
+      }));
+    } catch {
+      setForm((f) => ({
+        ...f,
+        [field]: file,
+        uploadStatus: { ...f.uploadStatus, [field]: "error" },
+      }));
+    }
+  };
+
   const handleClose = () => {
     close();
     setTimeout(reset, 300);
   };
-
-  const canSubmit = () => !!form.dateOfBirth;
 
   const handleSubmit = async () => {
     setStatus("submitting");
@@ -370,9 +455,18 @@ export function DriverApplicationModal() {
       const missing: string[] = [];
       if (!form.cdlClass) missing.push("CDL type");
       if (!form.yearsOTR) missing.push("years of experience");
-      if (!form.cdlFront) missing.push("CDL front photo");
-      if (!form.cdlBack) missing.push("CDL back photo");
-      if (!form.medicalCard) missing.push("medical card");
+      if (form.uploadStatus.cdlFront !== "ready") missing.push("CDL front photo");
+      if (form.uploadStatus.cdlBack !== "ready") missing.push("CDL back photo");
+      if (form.uploadStatus.medicalCard !== "ready") missing.push("medical card");
+      if (
+        form.uploadStatus.cdlFront === "uploading" ||
+        form.uploadStatus.cdlBack === "uploading" ||
+        form.uploadStatus.medicalCard === "uploading" ||
+        form.uploadStatus.resume === "uploading"
+      ) {
+        setStepHint("Wait for uploads to finish");
+        return;
+      }
       if (missing.length) {
         setStepHint(`Still needed: ${missing.join(", ")}`);
         return;
@@ -577,7 +671,9 @@ export function DriverApplicationModal() {
                   </div>
                 )}
 
-                {step === 2 && <DriverExperienceStep form={form} patch={patch} />}
+                {step === 2 && (
+                  <DriverExperienceStep form={form} patch={patch} onFileSelected={handleFileSelected} />
+                )}
 
                 {step === 3 && (
                   <div className="dap-review">
@@ -596,25 +692,16 @@ export function DriverApplicationModal() {
                     <div className="dap-review-block">
                       <h4>Files attached</h4>
                       <ul>
-                        {[form.cdlFront, form.cdlBack, form.medicalCard, form.resume, form.referenceLetter]
-                          .filter(Boolean)
-                          .map((f) => <li key={f!.name}>{f!.name}</li>)}
+                        {(["cdlFront", "cdlBack", "medicalCard", "resume", "referenceLetter"] as DriverFileField[])
+                          .filter((field) => form.uploadStatus[field] === "ready" && form[field])
+                          .map((field) => (
+                            <li key={field} className="dap-review-file-ok">
+                              {form[field]!.name}
+                            </li>
+                          ))}
                       </ul>
                     </div>
 
-                    <div className="dap-review-driver">
-                      <label className="dap-exp-field">
-                        <span className="dap-exp-label">Date of birth *</span>
-                        <input
-                          className="dap-exp-input"
-                          type="date"
-                          value={form.dateOfBirth}
-                          onChange={(e) => patch({ dateOfBirth: e.target.value })}
-                        />
-                      </label>
-                    </div>
-
-                    <label className="dap-field"><span>Additional notes</span><textarea rows={3} value={form.additionalNotes} onChange={(e) => patch({ additionalNotes: e.target.value })} /></label>
                     <div className="dap-exp-section">
                       <span className="dap-exp-label">Reference letter <em>(optional)</em></span>
                       <ExperienceFileBox
@@ -624,7 +711,8 @@ export function DriverApplicationModal() {
                         subtext="PDF, DOCX up to 10MB"
                         accept=".pdf,.doc,.docx"
                         file={form.referenceLetter}
-                        onChange={(f) => patch({ referenceLetter: f })}
+                        status={form.uploadStatus.referenceLetter}
+                        onChange={(f) => handleFileSelected("referenceLetter", f)}
                       />
                     </div>
                     {status === "error" && <p className="dap-error">{error}</p>}
@@ -657,10 +745,6 @@ export function DriverApplicationModal() {
                   className="dap-btn dap-btn--primary"
                   disabled={status === "submitting"}
                   onClick={() => {
-                    if (!canSubmit()) {
-                      setStepHint("Date of birth is required to submit");
-                      return;
-                    }
                     setStepHint("");
                     void handleSubmit();
                   }}

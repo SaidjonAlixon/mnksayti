@@ -2,34 +2,31 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Phone, Mail, MapPin, Clock, Check } from "lucide-react";
 import { ContactPageShell } from "../components/PageMedia";
-
-const HQ_ADDRESS = "1234 Freight Parkway, Suite 500, Chicago, IL 60601";
-const HQ_MAP_EMBED = `https://maps.google.com/maps?q=${encodeURIComponent(HQ_ADDRESS)}&z=15&hl=en&output=embed`;
-const HQ_MAP_LINK = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(HQ_ADDRESS)}`;
+import { COMPANY } from "../constants/company";
 
 const CONTACT_CARDS = [
   {
     icon: Phone,
     label: "Call dispatch",
-    value: "(555) 000-0000",
+    value: COMPANY.phoneDisplay,
     note: "24/7 live ops",
-    href: "tel:5550000000",
+    href: `tel:${COMPANY.phoneTel}`,
     accent: "red",
   },
   {
     icon: Mail,
     label: "Email quotes",
-    value: "dispatch@mnklogistics.com",
+    value: COMPANY.email,
     note: "Reply under 30 min",
-    href: "mailto:dispatch@mnklogistics.com",
+    href: `mailto:${COMPANY.email}`,
     accent: "blue",
   },
   {
     icon: MapPin,
     label: "Headquarters",
-    value: "Chicago, IL",
-    note: "1234 Freight Pkwy, Suite 500",
-    href: HQ_MAP_LINK,
+    value: COMPANY.cityState,
+    note: COMPANY.street,
+    href: COMPANY.mapLink,
     accent: "green",
   },
 ];
@@ -81,6 +78,7 @@ export function Contact() {
 
         <div className="com-v2-layout">
           <motion.section
+            id="quote"
             className="com-v2-panel com-v2-panel--form"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -172,18 +170,18 @@ export function Contact() {
             <div className="com-v2-panel com-v2-panel--map">
               <div className="com-v2-panel__head">
                 <h2>Find us</h2>
-                <p className="com-v2-panel__address">{HQ_ADDRESS}</p>
+                <p className="com-v2-panel__address">{COMPANY.addressLine}</p>
               </div>
               <div className="com-v2-map">
                 <iframe
                   title="MNK Logistics headquarters map"
-                  src={HQ_MAP_EMBED}
+                  src={COMPANY.mapEmbed}
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
                   allowFullScreen
                 />
               </div>
-              <a className="com-v2-map-link" href={HQ_MAP_LINK} target="_blank" rel="noopener noreferrer">
+              <a className="com-v2-map-link" href={COMPANY.mapLink} target="_blank" rel="noopener noreferrer">
                 Open in Google Maps
               </a>
             </div>

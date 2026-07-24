@@ -1,7 +1,4 @@
-import type { Express } from "express";
 import type { StoredFile } from "./storage.js";
-
-type MulterFile = Express.Multer.File;
 
 type DriverApplicationPayload = {
   applicationId: string;
@@ -34,37 +31,39 @@ function getTelegramConfig() {
 }
 
 function formatMessage(data: DriverApplicationPayload): string {
+  const location =
+    data.homeAddress?.trim() ||
+    [data.city, data.state, data.zip].filter(Boolean).join(", ");
+
   const lines = [
-    "🚛 <b>MNK — New Driver Application</b>",
-    `ID: <code>${data.applicationId}</code>`,
+    "🚛 <b>MNK Logistics — New Driver Application</b>",
+    `ID: <code>${escapeHtml(data.applicationId)}</code>`,
     "",
-    `<b>Position:</b> ${escapeHtml(data.position)}`,
+    "<b>Position</b>",
+    escapeHtml(data.position),
     "",
     "<b>Contact</b>",
-    `Name: ${escapeHtml(data.firstName)} ${escapeHtml(data.lastName)}`,
-    `Phone: ${escapeHtml(data.phone)}`,
-    `Email: ${escapeHtml(data.email)}`,
-    `Location: ${escapeHtml(data.homeAddress?.trim() || `${data.city}, ${data.state} ${data.zip}`)}`,
-    `DOB: ${escapeHtml(data.dateOfBirth)}`,
+    `• Name: <b>${escapeHtml(data.firstName)} ${escapeHtml(data.lastName)}</b>`,
+    `• Phone: ${escapeHtml(data.phone)}`,
+    `• Email: ${escapeHtml(data.email)}`,
+    `• Address: ${escapeHtml(location)}`,
     "",
     "<b>Experience</b>",
-    `CDL: ${escapeHtml(data.cdlClass)}`,
-    `Years OTR: ${escapeHtml(data.yearsOTR)}`,
-    `Endorsements: ${escapeHtml(data.endorsements || "—")}`,
-    `Preferred lanes: ${escapeHtml(data.preferredLanes || "—")}`,
-    `Currently employed: ${escapeHtml(data.currentlyEmployed || "—")}`,
+    `• CDL class: ${escapeHtml(data.cdlClass)}`,
+    `• Years OTR: ${escapeHtml(data.yearsOTR)}`,
+    `• Endorsements: ${escapeHtml(data.endorsements || "—")}`,
+    `• Preferred lanes: ${escapeHtml(data.preferredLanes || "—")}`,
+    `• Currently employed: ${escapeHtml(data.currentlyEmployed || "—")}`,
     "",
-    "<b>Notes</b>",
-    escapeHtml(data.additionalNotes || "—"),
-    "",
-    `<b>Files:</b> ${data.files.length}`,
+    `<b>Files (${data.files.length})</b>`,
   ];
 
   if (data.files.length > 0) {
-    lines.push("");
     for (const f of data.files) {
-      lines.push(`• ${escapeHtml(f.field)}: <a href="${f.url}">${escapeHtml(f.originalName)}</a>`);
+      lines.push(`• <a href="${escapeAttr(f.url)}">${escapeHtml(f.field)}</a>`);
     }
+  } else {
+    lines.push("• No files");
   }
 
   return lines.join("\n");
@@ -77,58 +76,39 @@ function escapeHtml(value: string): string {
     .replace(/>/g, "&gt;");
 }
 
-async function telegramRequest(
+function escapeAttr(value: string): string {
+  return escapeHtml(value).replace(/"/g, "&quot;");
+}
+
+async function sendTelegramMessage(
   token: string,
-  method: string,
-  body: FormData | Record<string, string | boolean>,
+  chatId: string,
+  text: string,
 ): Promise<void> {
-  const isFormData = body instanceof FormData;
-  const response = await fetch(`https://api.telegram.org/bot${token}/${method}`, {
+  const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
     method: "POST",
-    headers: isFormData ? undefined : { "Content-Type": "application/json" },
-    body: isFormData ? body : JSON.stringify(body),
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      chat_id: chatId,
+      text,
+      parse_mode: "HTML",
+      disable_web_page_preview: true,
+    }),
   });
 
   if (!response.ok) {
-    const text = await response.text();
-    throw new Error(`Telegram ${method} failed: ${response.status} ${text}`);
+    const body = await response.text();
+    throw new Error(`Telegram sendMessage failed: ${response.status} ${body}`);
   }
 }
 
-export async function notifyDriverApplication(
-  data: DriverApplicationPayload,
-  fileBuffers?: Map<string, MulterFile>,
-): Promise<void> {
+/** Notify Telegram with application details + Blob download links only (no file uploads). */
+export async function notifyDriverApplication(data: DriverApplicationPayload): Promise<void> {
   const config = getTelegramConfig();
   if (!config) {
     console.warn("[telegram] TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID not set — skipping notification");
     return;
   }
 
-  const { token, chatId } = config;
-
-  await telegramRequest(token, "sendMessage", {
-    chat_id: chatId,
-    text: formatMessage(data),
-    parse_mode: "HTML",
-    disable_web_page_preview: true,
-  });
-
-  for (const file of data.files) {
-    const form = new FormData();
-    form.append("chat_id", chatId);
-    form.append("caption", `${file.field}: ${file.originalName}`);
-
-    const bufferFile = fileBuffers?.get(file.field);
-    if (bufferFile) {
-      const blob = new Blob([new Uint8Array(bufferFile.buffer)], { type: bufferFile.mimetype });
-      form.append("document", blob, bufferFile.originalname);
-    } else if (file.url.startsWith("http")) {
-      form.append("document", file.url);
-    } else {
-      continue;
-    }
-
-    await telegramRequest(token, "sendDocument", form);
-  }
+  await sendTelegramMessage(config.token, config.chatId, formatMessage(data));
 }

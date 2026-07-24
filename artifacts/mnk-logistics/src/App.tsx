@@ -12,10 +12,23 @@ import { DriverApplicationProvider } from "./context/DriverApplicationContext";
 import { DriverApplicationModal } from "./components/DriverApplication/DriverApplicationModal";
 
 function ScrollToTop() {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
   useEffect(() => {
+    if (hash) {
+      const id = hash.replace("#", "");
+      // Wait for route content to paint, then scroll to target
+      requestAnimationFrame(() => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+          return;
+        }
+        window.scrollTo(0, 0);
+      });
+      return;
+    }
     window.scrollTo(0, 0);
-  }, [pathname]);
+  }, [pathname, hash]);
   return null;
 }
 

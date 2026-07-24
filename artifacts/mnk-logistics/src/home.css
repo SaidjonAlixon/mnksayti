@@ -157,11 +157,13 @@
 
 @media (min-width: 900px) {
   .sig-hero-aside {
-    justify-content: space-between;
+    justify-content: flex-start;
+    align-self: start;
   }
 
   .sig-hero-card--accent {
-    flex: 1;
+    flex: none;
+    height: auto;
   }
 }
 
@@ -272,10 +274,11 @@
   background: rgba(255, 255, 255, 0.07);
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 12px;
-  padding: 14px 16px;
+  padding: 12px 14px;
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+  height: fit-content;
 }
 
 .sig-hero-card--accent {
@@ -290,7 +293,7 @@
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.5);
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .sig-hero-list {
@@ -299,14 +302,14 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 0;
 }
 
 .sig-hero-list-item {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  padding-bottom: 10px;
+  gap: 1px;
+  padding: 7px 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
@@ -317,16 +320,16 @@
 
 .sig-hero-list-title {
   font-family: var(--font-sans);
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.92);
-  line-height: 1.3;
+  line-height: 1.25;
 }
 
 .sig-hero-list-note {
   font-family: var(--font-sans);
-  font-size: 0.72rem;
-  line-height: 1.45;
+  font-size: 0.7rem;
+  line-height: 1.35;
   color: rgba(255, 255, 255, 0.48);
 }
 
@@ -555,8 +558,13 @@
 }
 
 .sig-word--accent {
-  color: var(--red);
+  color: var(--red) !important;
   padding-right: 8px;
+  text-shadow: 0 2px 20px rgba(224, 20, 26, 0.35);
+}
+
+[data-theme="dark"] .sig-word--accent {
+  color: #E0141A !important;
 }
 
 .sig-tagline {
@@ -1411,6 +1419,10 @@
   text-decoration: none;
   clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
   transition: background 0.2s;
+  position: relative;
+  z-index: 2;
+  cursor: pointer;
+  pointer-events: auto;
 }
 
 .hw-faq-desk-btn:hover {
@@ -1486,6 +1498,8 @@
   background: url("/yuk_mashinalar/4.jpg") center / cover no-repeat;
   filter: blur(8px);
   transform: scale(1.08);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .hw-cta::after {
@@ -1493,13 +1507,21 @@
   position: absolute;
   inset: 0;
   background: rgba(10, 15, 24, 0.82);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .hw-cta-title,
 .hw-cta-sub,
 .hw-cta .hw-btn {
   position: relative;
-  z-index: 1;
+  z-index: 2;
+}
+
+.hw-cta .hw-btn {
+  display: inline-flex;
+  cursor: pointer;
+  pointer-events: auto;
 }
 
 .hw-cta-title {

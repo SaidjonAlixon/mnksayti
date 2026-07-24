@@ -13,9 +13,9 @@ const FLT_TICKETS = [
 ];
 
 const FLT_DOCKS = [
-  { num: "01", title: "Call recruiting", val: "(555) 000-0000", desc: "Speak to a recruiter Mon–Fri, 8am–6pm CST.", href: "tel:5550000000" },
+  { num: "01", title: "Call recruiting", val: "(412) 729-2000", desc: "Speak to a recruiter Mon–Fri, 8am–6pm EST.", href: "tel:+14127292000" },
   { num: "02", title: "Email resume", val: "drivers@mnklogistics.com", desc: "Send CDL, MVR, and work history — reply within 24 hrs.", href: "mailto:drivers@mnklogistics.com" },
-  { num: "03", title: "Orientation", val: "3 days", desc: "Paid orientation at our Chicago terminal — hotel covered." },
+  { num: "03", title: "Orientation", val: "3 days", desc: "Paid orientation at our Carnegie, PA terminal — hotel covered." },
   { num: "04", title: "First dispatch", val: "Day 4", desc: "Assigned a dedicated dispatcher who knows your lane prefs." },
   { num: "05", title: "Rider policy", val: "Pets OK", desc: "One pet under 40 lbs allowed after 30 days with deposit." },
   { num: "06", title: "Referral bonus", val: "$1,000", desc: "Paid after your referral completes 90 days on the road." },

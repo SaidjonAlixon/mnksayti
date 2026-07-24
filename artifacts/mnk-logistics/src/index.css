@@ -590,7 +590,7 @@
 }
 
 [data-theme="dark"] .mfx-nav--scrolled {
-  box-shadow: 0 6px 0 #E0141A, 0 12px 40px rgba(0, 0, 0, 0.55);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
 }
 
 /* Mobile header: logo left, theme + apply + menu right */
@@ -616,16 +616,9 @@
   }
 }
 
-/* Hazard stripe */
+/* Hazard stripe — unused in nav (kept for optional accents elsewhere) */
 .mfx-hazard {
-  height: 4px;
-  background: repeating-linear-gradient(
-    -45deg,
-    #E0141A,
-    #E0141A 8px,
-    #1A1A1A 8px,
-    #1A1A1A 16px
-  );
+  display: none;
 }
 
 /* Main deck */
@@ -1293,7 +1286,7 @@
 
 [data-theme="dark"] .mfx-gate-panel {
   background: #0A0F18;
-  border-top-color: var(--red);
+  border-top-color: rgba(255, 255, 255, 0.12);
 }
 
 .mfx-gate-header {

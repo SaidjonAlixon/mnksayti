@@ -581,7 +581,7 @@
   text-overflow: ellipsis;
 }
 
-.dap-file-ok { color: var(--success); }
+.dap-file-chip { color: var(--success); }
 
 .dap-review {
   display: flex;
@@ -1025,7 +1025,43 @@ button.mfx-dispatch {
 
 .dap-exp-upload--filled {
   border-style: solid;
-  border-color: rgba(31, 164, 99, 0.45);
+  border-color: rgba(31, 164, 99, 0.65);
+  background: rgba(31, 164, 99, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(31, 164, 99, 0.2);
+}
+
+.dap-exp-upload--uploading {
+  border-style: solid;
+  border-color: rgba(224, 20, 26, 0.35);
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.dap-exp-upload--error {
+  border-style: solid;
+  border-color: rgba(224, 20, 26, 0.55);
+  background: rgba(224, 20, 26, 0.06);
+}
+
+.dap-exp-upload-sub--ok {
+  color: var(--success);
+  font-weight: 600;
+}
+
+.dap-file-ok {
+  color: #fff;
+  background: var(--success);
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.dap-review-file-ok {
+  color: var(--success);
 }
 
 .dap-exp-upload--wide.dap-exp-upload--filled .dap-file-ok {

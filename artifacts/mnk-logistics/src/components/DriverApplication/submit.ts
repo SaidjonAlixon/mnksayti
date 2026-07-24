@@ -1,11 +1,22 @@
-import type { DriverApplicationForm } from "./types";
+import type { DriverApplicationForm, DriverFileField } from "./types";
 
-export async function submitDriverApplication(form: DriverApplicationForm): Promise<{ applicationId: string }> {
+const FILE_FIELDS: DriverFileField[] = [
+  "cdlFront",
+  "cdlBack",
+  "medicalCard",
+  "resume",
+  "referenceLetter",
+];
+
+export async function submitDriverApplication(
+  form: DriverApplicationForm,
+): Promise<{ applicationId: string }> {
   const body = new FormData();
 
   body.append(
     "data",
     JSON.stringify({
+      applicationId: form.applicationId || undefined,
       position: form.position,
       firstName: form.firstName,
       lastName: form.lastName,
@@ -25,15 +36,14 @@ export async function submitDriverApplication(form: DriverApplicationForm): Prom
     }),
   );
 
-  const fileFields = [
-    "cdlFront",
-    "cdlBack",
-    "medicalCard",
-    "resume",
-    "referenceLetter",
-  ] as const;
+  const uploadedList = FILE_FIELDS.map((field) => form.uploadedFiles[field]).filter(Boolean);
+  if (uploadedList.length > 0) {
+    body.append("uploadedFiles", JSON.stringify(uploadedList));
+  }
 
-  for (const field of fileFields) {
+  // Fallback: send raw files if blob upload did not complete for a field
+  for (const field of FILE_FIELDS) {
+    if (form.uploadedFiles[field]) continue;
     const file = form[field];
     if (file) body.append(field, file, file.name);
   }

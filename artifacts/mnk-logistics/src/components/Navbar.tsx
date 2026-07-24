@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Menu, Sun, Moon } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
 import { useDriverApplication } from "../context/DriverApplicationContext";
+import { COMPANY } from "../constants/company";
 
 const NAV_LINKS = [
   { code: "HUB", name: "Home", path: "/" },
@@ -67,9 +68,6 @@ export function Navbar() {
   return (
     <>
       <header className={`mfx-nav ${scrolled ? "mfx-nav--scrolled" : ""}`}>
-        {/* Hazard stripe */}
-        <div className="mfx-hazard" aria-hidden="true" />
-
         {/* Main deck */}
         <div className="mfx-deck">
           {/* Brand logo */}
@@ -85,9 +83,6 @@ export function Navbar() {
 
           {/* Waypoint rail navigation */}
           <nav className="mfx-rail" aria-label="Main navigation">
-            <div className="mfx-rail-track" aria-hidden="true">
-              <div className="mfx-rail-dash" />
-            </div>
             <ul className="mfx-rail-stops">
               {NAV_LINKS.map((link) => {
                 const isActive = location.pathname === link.path;
@@ -118,9 +113,9 @@ export function Navbar() {
 
           {/* Right terminal */}
           <div className="mfx-terminal">
-            <a href="tel:+18005551234" className="mfx-comms">
+            <a href={`tel:${COMPANY.phoneTel}`} className="mfx-comms">
               <span className="mfx-comms-label">COMMS</span>
-              <span className="mfx-comms-num">800·555·1234</span>
+              <span className="mfx-comms-num">{COMPANY.phoneDisplay}</span>
             </a>
 
             <ThemeShift compact />
@@ -160,7 +155,6 @@ export function Navbar() {
               transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
               className="mfx-gate-panel"
             >
-              <div className="mfx-hazard" aria-hidden="true" />
               <div className="mfx-gate-header">
                 <Link to="/" className="mfx-gate-brand" onClick={() => setMobileOpen(false)}>
                   <img
@@ -204,7 +198,7 @@ export function Navbar() {
 
               <div className="mfx-gate-footer">
                 <ThemeShift compact />
-                <a href="tel:+18005551234" className="mfx-gate-comms">800·555·1234</a>
+                <a href={`tel:${COMPANY.phoneTel}`} className="mfx-gate-comms">{COMPANY.phoneDisplay}</a>
                 <button type="button" className="mfx-gate-dispatch" onClick={() => { setMobileOpen(false); openApplication(); }}>
                   APPLY NOW ▶
                 </button>

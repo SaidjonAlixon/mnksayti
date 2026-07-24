@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Facebook, Twitter, Linkedin, Instagram } from "lucide-react";
+import { COMPANY } from "../constants/company";
 
 export function Footer() {
   return (
@@ -56,8 +57,13 @@ export function Footer() {
           <div>
             <h4 className="ft-col-title">Contact</h4>
             <ul className="ft-links">
-              <li><a href="tel:5550000000">(555) 000-0000</a></li>
-              <li><a href="mailto:dispatch@mnklogistics.com">dispatch@mnklogistics.com</a></li>
+              <li><a href={`tel:${COMPANY.phoneTel}`}>{COMPANY.phoneDisplay}</a></li>
+              <li><a href={`mailto:${COMPANY.email}`}>{COMPANY.email}</a></li>
+              <li>
+                <a href={COMPANY.mapLink} target="_blank" rel="noopener noreferrer">
+                  {COMPANY.addressLine}
+                </a>
+              </li>
               <li className="ft-hours">
                 <span className="ft-hours-label">Hours</span>
                 24/7/365 Dispatch

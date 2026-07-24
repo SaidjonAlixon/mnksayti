@@ -1624,6 +1624,7 @@
 }
 
 .com-v2-panel--form {
+  scroll-margin-top: 88px;
   padding: 28px 24px 24px;
 }
 

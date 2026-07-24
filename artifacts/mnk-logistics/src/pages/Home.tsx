@@ -205,9 +205,9 @@ export function Home() {
             </motion.div>
 
             <motion.h1 className="sig-headline" initial="hidden" animate="visible" variants={fade} transition={{ delay: 0.06 }}>
-              <span className="sig-word">Load</span>
-              <span className="sig-word sig-word--accent">Roll</span>
-              <span className="sig-word">Proof</span>
+              <span className="sig-word">Safety</span>
+              <span className="sig-word sig-word--accent">Reliability</span>
+              <span className="sig-word">Performance</span>
             </motion.h1>
 
             <motion.p className="sig-tagline" initial="hidden" animate="visible" variants={fade} transition={{ delay: 0.12 }}>
@@ -410,7 +410,7 @@ export function Home() {
             <MediaFigure
               src={TRUCK_IMAGES.terminal}
               alt="MNK truck at logistics terminal"
-              caption="Terminal · Chicago hub"
+              caption="Terminal · Carnegie, PA"
               className="hw-faq-photo"
             />
             <div className="hw-faq-desk">
@@ -422,7 +422,7 @@ export function Home() {
               <p className="hw-faq-desk-lead">
                 Skip the wait — call or email ops for lane rates, equipment, and availability.
               </p>
-              <a href="tel:5550000000" className="hw-faq-desk-phone">(555) 000-0000</a>
+              <a href="tel:+14127292000" className="hw-faq-desk-phone">(412) 729-2000</a>
               <a href="mailto:dispatch@mnklogistics.com" className="hw-faq-desk-email">
                 dispatch@mnklogistics.com
               </a>
@@ -440,7 +440,7 @@ export function Home() {
                   <span>On-time delivery</span>
                 </div>
               </div>
-              <Link to="/contact" className="hw-faq-desk-btn">Request a quote →</Link>
+              <Link to="/contact#quote" className="hw-faq-desk-btn">Request a quote →</Link>
             </div>
           </motion.aside>
         </div>
@@ -450,7 +450,7 @@ export function Home() {
       <section className="hw-cta">
         <h2 className="hw-cta-title">Ready to move?</h2>
         <p className="hw-cta-sub">Quote in under 2 minutes · 24/7 dispatch desk</p>
-        <Link to="/contact" className="hw-btn hw-btn--fill hw-btn--lg">Get a quote →</Link>
+        <Link to="/contact#quote" className="hw-btn hw-btn--fill hw-btn--lg">Get a quote →</Link>
       </section>
     </div>
   );

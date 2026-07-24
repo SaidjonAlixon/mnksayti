@@ -1,3 +1,7 @@
+import { loadEnvFile } from "./lib/load-env.js";
+
+loadEnvFile();
+
 import app from "./app.js";
 import { logger } from "./lib/logger.js";
 

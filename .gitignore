@@ -2,6 +2,11 @@
 .vercel
 api/index.js
 
+# Secrets — never commit
+.env
+.env.local
+.env.*.local
+
 # Local API uploads (when BLOB_READ_WRITE_TOKEN is not set)
 artifacts/api-server/uploads/
 

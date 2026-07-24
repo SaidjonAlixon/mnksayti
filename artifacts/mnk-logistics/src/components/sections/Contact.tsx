@@ -15,15 +15,19 @@ export function Contact() {
             <div className="space-y-6 font-mono text-sm tracking-wide text-[var(--mnk-steel)] mb-12 bg-[var(--mnk-ink)] p-6 border border-[var(--mnk-hairline)]">
               <div className="flex flex-col">
                 <span className="text-[var(--mnk-red)] mb-1">PHONE</span>
-                <span className="text-[var(--mnk-white)] text-lg">(555) 000-0000</span>
+                <span className="text-[var(--mnk-white)] text-lg">(412) 729-2000</span>
               </div>
               <div className="flex flex-col">
                 <span className="text-[var(--mnk-red)] mb-1">EMAIL</span>
                 <span className="text-[var(--mnk-white)]">dispatch@mnklogistics.com</span>
               </div>
               <div className="flex flex-col">
+                <span className="text-[var(--mnk-red)] mb-1">ADDRESS</span>
+                <span className="text-[var(--mnk-white)]">785 Arch St, Carnegie, PA 15106</span>
+              </div>
+              <div className="flex flex-col">
                 <span className="text-[var(--mnk-red)] mb-1">HOURS</span>
-                <span className="text-[var(--mnk-white)]">MON-FRI 6AM-8PM CT<br/>24/7 DISPATCH</span>
+                <span className="text-[var(--mnk-white)]">MON-FRI 6AM-8PM ET<br/>24/7 DISPATCH</span>
               </div>
             </div>
           </div>
