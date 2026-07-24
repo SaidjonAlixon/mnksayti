@@ -16,7 +16,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)));
 const staticSrc = path.join(root, "artifacts/mnk-logistics/dist/public");
 const outputRoot = path.join(root, ".vercel/output");
 const staticOut = path.join(outputRoot, "static");
-const funcDir = path.join(outputRoot, "functions", "api", "[[...path]].func");
+const funcDir = path.join(outputRoot, "functions", "api.func");
 const shim = path.join(root, "scripts/import-meta-url-shim.cjs");
 
 if (!existsSync(staticSrc)) {
@@ -60,7 +60,6 @@ writeFileSync(
       shouldAddHelpers: false,
       maxDuration: 60,
       memory: 1024,
-      supportsResponseStreaming: true,
     },
     null,
     2,
@@ -74,7 +73,7 @@ writeFileSync(
       version: 3,
       routes: [
         { handle: "filesystem" },
-        { src: "^/api(?:/.*)?$", dest: "/api/[[...path]]" },
+        { src: "^/api(?:/(.*))?$", dest: "/api" },
         { src: "^/(.*)$", dest: "/index.html" },
       ],
     },
