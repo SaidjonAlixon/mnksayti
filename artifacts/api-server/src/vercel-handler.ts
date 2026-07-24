@@ -8,7 +8,7 @@ import { logger } from "./lib/logger.js";
 
 loadEnvFile();
 
-/** Required for multer file uploads on Vercel serverless */
+/** Disable Vercel body parsing so multer can read multipart uploads. */
 export const config = {
   api: {
     bodyParser: false,
@@ -38,10 +38,13 @@ app.use(
   }),
 );
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: "2mb" }));
 app.use(express.urlencoded({ extended: true }));
 
-/** Match both `/driver-application` and `/api/driver-application`. */
+/**
+ * Vercel catch-all `api/[[...path]].js` may pass `/api/...` or `/...`.
+ * Mount once at both so driver-application routes always match.
+ */
 app.use("/api", router);
 app.use(router);
 

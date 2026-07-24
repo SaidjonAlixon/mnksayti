@@ -1,28 +1,74 @@
 import { createRequire } from "node:module";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  cpSync,
+  existsSync,
+  mkdirSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import { build } from "esbuild";
 
 globalThis.require = createRequire(import.meta.url);
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)));
+const staticSrc = path.join(root, "artifacts/mnk-logistics/dist/public");
+const outputRoot = path.join(root, ".vercel/output");
+const staticOut = path.join(outputRoot, "static");
+const funcDir = path.join(outputRoot, "functions", "api", "[[...path]].func");
+
+if (!existsSync(staticSrc)) {
+  throw new Error(`Frontend build missing: ${staticSrc}`);
+}
+
+rmSync(outputRoot, { recursive: true, force: true });
+mkdirSync(staticOut, { recursive: true });
+mkdirSync(funcDir, { recursive: true });
+
+cpSync(staticSrc, staticOut, { recursive: true });
 
 await build({
   entryPoints: [path.join(root, "artifacts/api-server/src/vercel-handler.ts")],
-  outfile: path.join(root, "api/index.js"),
+  outfile: path.join(funcDir, "index.js"),
   bundle: true,
   platform: "node",
-  format: "esm",
+  format: "cjs",
   target: "node20",
   logLevel: "info",
-  banner: {
-    js: `import { createRequire as __cr } from 'node:module';
-import __path from 'node:path';
-import __url from 'node:url';
-globalThis.require = __cr(import.meta.url);
-globalThis.__filename = __url.fileURLToPath(import.meta.url);
-globalThis.__dirname = __path.dirname(globalThis.__filename);`,
-  },
 });
 
-console.log("Vercel API bundle: api/index.js");
+writeFileSync(
+  path.join(funcDir, ".vc-config.json"),
+  JSON.stringify(
+    {
+      runtime: "nodejs20.x",
+      handler: "index.js",
+      launcherType: "Nodejs",
+      shouldAddHelpers: false,
+      maxDuration: 60,
+      memory: 1024,
+      supportsResponseStreaming: true,
+    },
+    null,
+    2,
+  ) + "\n",
+);
+
+writeFileSync(
+  path.join(outputRoot, "config.json"),
+  JSON.stringify(
+    {
+      version: 3,
+      routes: [
+        { handle: "filesystem" },
+        { src: "^/api(?:/.*)?$", dest: "/api/[[...path]]" },
+        { src: "^/(.*)$", dest: "/index.html" },
+      ],
+    },
+    null,
+    2,
+  ) + "\n",
+);
+
+console.log("Vercel Build Output API ready:", path.relative(root, outputRoot));
