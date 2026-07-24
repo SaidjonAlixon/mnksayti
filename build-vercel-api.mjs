@@ -17,6 +17,7 @@ const staticSrc = path.join(root, "artifacts/mnk-logistics/dist/public");
 const outputRoot = path.join(root, ".vercel/output");
 const staticOut = path.join(outputRoot, "static");
 const funcDir = path.join(outputRoot, "functions", "api", "[[...path]].func");
+const shim = path.join(root, "scripts/import-meta-url-shim.cjs");
 
 if (!existsSync(staticSrc)) {
   throw new Error(`Frontend build missing: ${staticSrc}`);
@@ -36,6 +37,17 @@ await build({
   format: "cjs",
   target: "node20",
   logLevel: "info",
+  inject: [shim],
+  define: {
+    "import.meta.url": "import_meta_url",
+  },
+  footer: {
+    js: `
+const __mod = module.exports;
+module.exports = __mod.default ?? __mod;
+if (__mod.config) module.exports.config = __mod.config;
+`,
+  },
 });
 
 writeFileSync(
